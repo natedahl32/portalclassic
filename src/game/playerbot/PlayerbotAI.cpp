@@ -20,6 +20,7 @@
 #include "../Player.h"
 #include "../ObjectMgr.h"
 #include "../Chat.h"
+#include "../Guild.h"
 #include "WorldPacket.h"
 #include "../Spell.h"
 #include "../Unit.h"
@@ -1046,6 +1047,45 @@ void PlayerbotAI::HandleBotOutgoingPacket(const WorldPacket& packet)
             }
             return;
         }
+
+		// Handle guild invite (auto accept if master is the guild leader, otherwise decline & send message)
+		case SMSG_GUILD_INVITE:
+		{
+			if (m_bot->GetGuildIdInvited())
+			{
+				const int guildId = m_bot->GetGuildIdInvited();
+				if (!guildId)
+				{
+					TellMaster("No guild id found!");
+					return;
+				}
+
+				const Guild* const guild = sGuildMgr.GetGuildById(guildId);
+				if (!guild)
+				{
+					TellMaster("No guild returned from Guild Manager by the id");
+					return;
+				}
+					
+				Player* const leader = sObjectMgr.GetPlayer(guild->GetLeaderGuid());
+				if (!leader)
+					return;
+
+				WorldPacket p;
+				if (!canObeyCommandFrom(*leader))
+				{
+					// TODO: This is incorrect. We are actually sending a message to the leader and not the person who invited us.
+					std::string buf = "I can't accept your invite unless my master is the Guild leader ";
+					buf += GetMaster()->GetName();
+					buf += ".";
+					SendWhisper(buf, *leader);
+					m_bot->GetSession()->HandleGuildDeclineOpcode(p); // packet not used
+				}
+				else
+					m_bot->GetSession()->HandleGuildAcceptOpcode(p);  // packet not used
+			}
+			return;
+		}
 
         // Handle when another player opens the trade window with the bot
         // also sends list of tradable items bot can trade if bot is allowed to obey commands from
