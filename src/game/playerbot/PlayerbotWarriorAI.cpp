@@ -129,15 +129,6 @@ void PlayerbotWarriorAI::DoNextCombatManeuver(Unit *pTarget)
     if (!ai)
         return;
 
-    switch (ai->GetScenarioType())
-    {
-        case PlayerbotAI::SCENARIO_DUEL:
-            if (HEROIC_STRIKE > 0)
-                ai->CastSpell(HEROIC_STRIKE);
-            return;
-    }
-    // ------- Non Duel combat ----------
-
     // Damage Attacks
 
     Player *m_bot = GetPlayerBot();
@@ -245,7 +236,7 @@ void PlayerbotWarriorAI::DoNextCombatManeuver(Unit *pTarget)
                 out << " > Shattering Throw";
             else if (HEROIC_THROW > 0 && ai->CastSpell(HEROIC_THROW, *pTarget))
                 out << " > Heroic Throw";
-            else if (m_bot->getRace() == RACE_TAUREN && !pTarget->HasAura(WAR_STOMP, EFFECT_INDEX_0) && !pTarget->HasAura(PIERCING_HOWL, EFFECT_INDEX_0) && !pTarget->HasAura(SHOCKWAVE, EFFECT_INDEX_0) && !pTarget->HasAura(CONCUSSION_BLOW, EFFECT_INDEX_0) && ai->CastSpell(WAR_STOMP, *pTarget))
+            else if (m_bot->getRace() == RACE_TAUREN && !pTarget->HasAura(WAR_STOMP, EFFECT_INDEX_0) && !pTarget->HasAura(PIERCING_HOWL, EFFECT_INDEX_0) && !pTarget->HasAura(SHOCKWAVE, EFFECT_INDEX_0) && !pTarget->HasAura(CONCUSSION_BLOW, EFFECT_INDEX_0) && fTargetDist <= 5.0f && ai->CastSpell(WAR_STOMP, *pTarget))
                 out << " > War Stomp";
             else if (m_bot->getRace() == RACE_HUMAN && m_bot->hasUnitState(UNIT_STAT_STUNNED) || m_bot->HasAuraType(SPELL_AURA_MOD_FEAR) || m_bot->HasAuraType(SPELL_AURA_MOD_DECREASE_SPEED) || m_bot->HasAuraType(SPELL_AURA_MOD_CHARM) && ai->CastSpell(EVERY_MAN_FOR_HIMSELF, *m_bot))
                 out << " > Every Man for Himself";

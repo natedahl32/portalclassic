@@ -1978,50 +1978,60 @@ bool ChatHandler::HandleLearnAllMyClassCommand(char* /*args*/)
     return true;
 }
 
+
+bool ChatHandler::HandleLearnAllSpellsForPlayerCommand(Player* player)
+{
+	SendSysMessage("Attempting to learn spells");
+	ChrClassesEntry const* clsEntry = sChrClassesStore.LookupEntry(player->getClass());
+	if (!clsEntry)
+		return true;
+	uint32 family = clsEntry->spellfamily;
+
+	for (uint32 i = 0; i < sSkillLineAbilityStore.GetNumRows(); ++i)
+	{
+		SkillLineAbilityEntry const* entry = sSkillLineAbilityStore.LookupEntry(i);
+		if (!entry)
+			continue;
+
+		SpellEntry const* spellInfo = sSpellStore.LookupEntry(entry->spellId);
+		if (!spellInfo)
+			continue;
+
+		// skip server-side/triggered spells
+		if (spellInfo->spellLevel == 0)
+			continue;
+
+		// skip wrong class/race skills
+		if (!player->IsSpellFitByClassAndRace(spellInfo->Id))
+			continue;
+
+		// skip other spell families
+		if (spellInfo->SpellFamilyName != family)
+			continue;
+
+		// skip spells with first rank learned as talent (and all talents then also)
+		uint32 first_rank = sSpellMgr.GetFirstSpellInChain(spellInfo->Id);
+		if (GetTalentSpellCost(first_rank) > 0)
+			continue;
+
+		// skip broken spells
+		if (!SpellMgr::IsSpellValid(spellInfo, player, false))
+			continue;
+
+		// if the spell requires a max level higher than the player, do not give it to them
+		if (spellInfo->spellLevel > player->getLevel())
+			continue;
+
+		player->learnSpell(spellInfo->Id, false);
+	}
+
+	SendSysMessage(LANG_COMMAND_LEARN_CLASS_SPELLS);
+	return true;
+}
+
 bool ChatHandler::HandleLearnAllMySpellsCommand(char* /*args*/)
 {
-    Player* player = m_session->GetPlayer();
-    ChrClassesEntry const* clsEntry = sChrClassesStore.LookupEntry(player->getClass());
-    if (!clsEntry)
-        return true;
-    uint32 family = clsEntry->spellfamily;
-
-    for (uint32 i = 0; i < sSkillLineAbilityStore.GetNumRows(); ++i)
-    {
-        SkillLineAbilityEntry const* entry = sSkillLineAbilityStore.LookupEntry(i);
-        if (!entry)
-            continue;
-
-        SpellEntry const* spellInfo = sSpellStore.LookupEntry(entry->spellId);
-        if (!spellInfo)
-            continue;
-
-        // skip server-side/triggered spells
-        if (spellInfo->spellLevel == 0)
-            continue;
-
-        // skip wrong class/race skills
-        if (!player->IsSpellFitByClassAndRace(spellInfo->Id))
-            continue;
-
-        // skip other spell families
-        if (spellInfo->SpellFamilyName != family)
-            continue;
-
-        // skip spells with first rank learned as talent (and all talents then also)
-        uint32 first_rank = sSpellMgr.GetFirstSpellInChain(spellInfo->Id);
-        if (GetTalentSpellCost(first_rank) > 0)
-            continue;
-
-        // skip broken spells
-        if (!SpellMgr::IsSpellValid(spellInfo, player, false))
-            continue;
-
-        player->learnSpell(spellInfo->Id, false);
-    }
-
-    SendSysMessage(LANG_COMMAND_LEARN_CLASS_SPELLS);
-    return true;
+	return HandleLearnAllSpellsForPlayerCommand(m_session->GetPlayer());
 }
 
 bool ChatHandler::HandleLearnAllMyTalentsCommand(char* /*args*/)

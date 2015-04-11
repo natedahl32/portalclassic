@@ -5150,6 +5150,7 @@ void PlayerbotAI::HandleCommand(const std::string& text, Player& fromPlayer)
         text.find("HealBot") != std::wstring::npos ||
         text.find("LOOT_OPENED") != std::wstring::npos ||
         text.find("CTRA") != std::wstring::npos ||
+		text.find("KLHTM") != std::wstring::npos ||	// KTM Threat Manager
         text.find("GathX") == 0) // Gatherer
         return;
 

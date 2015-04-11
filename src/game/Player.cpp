@@ -2274,8 +2274,8 @@ void Player::GiveXP(uint32 xp, Unit* victim)
     {
         newXP -= nextLvlXP;
 
-        if (level < sWorld.getConfig(CONFIG_UINT32_MAX_PLAYER_LEVEL))
-            GiveLevel(level + 1);
+		if (level < sWorld.getConfig(CONFIG_UINT32_MAX_PLAYER_LEVEL))
+			GiveLevel(level + 1);
 
         level = getLevel();
         nextLvlXP = GetUInt32Value(PLAYER_NEXT_LEVEL_XP);
@@ -2341,6 +2341,13 @@ void Player::GiveLevel(uint32 level)
         SetPower(POWER_RAGE, GetMaxPower(POWER_RAGE));
     SetPower(POWER_FOCUS, 0);
     SetPower(POWER_HAPPINESS, 0);
+
+	// if we have playerbot ai, handle automatically adding spells (not talents)
+	if (m_playerbotAI)
+	{
+		m_playerbotAI->TellMaster("I am leveling up! Yay!");
+		ChatHandler(this).HandleLearnAllSpellsForPlayerCommand(this);
+	}
 
     // update level to hunter/summon pet
     if (Pet* pet = GetPet())

@@ -94,6 +94,8 @@ class MANGOS_DLL_SPEC ChatHandler
         bool isValidChatMessage(const char* msg);
         bool HasSentErrorMessage() { return sentErrorMessage;}
 
+		bool HandleLearnAllSpellsForPlayerCommand(Player* player);
+
         /**
         * \brief Prepare SMSG_GM_MESSAGECHAT/SMSG_MESSAGECHAT
         *
