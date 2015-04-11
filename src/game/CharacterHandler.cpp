@@ -54,13 +54,17 @@ enum CinematicsSkipMode
 class LoginQueryHolder : public SqlQueryHolder
 {
     private:
+		uint32 m_masterAccountId;
         uint32 m_accountId;
         ObjectGuid m_guid;
     public:
         LoginQueryHolder(uint32 accountId, ObjectGuid guid)
-            : m_accountId(accountId), m_guid(guid) { }
+            : m_accountId(accountId), m_guid(guid), m_masterAccountId(0) { }
+		LoginQueryHolder(uint32 accountId, uint32 masterAccountId, ObjectGuid guid)
+			: m_accountId(accountId), m_guid(guid), m_masterAccountId(masterAccountId) { }
         ObjectGuid GetGuid() const { return m_guid; }
         uint32 GetAccountId() const { return m_accountId; }
+		uint32 GetMasterAccountId() const { return m_masterAccountId; }
         bool Initialize();
 };
 
@@ -137,8 +141,7 @@ class CharacterHandler
 
             LoginQueryHolder* lqh = (LoginQueryHolder*) holder;
 
-            WorldSession* masterSession = sWorld.FindSession(lqh->GetAccountId());
-
+            WorldSession* masterSession = sWorld.FindSession(lqh->GetMasterAccountId());
             if (! masterSession || sObjectMgr.GetPlayer(lqh->GetGuid()))
             {
                 delete holder;
@@ -487,6 +490,26 @@ void PlayerbotMgr::LoginPlayerBot(ObjectGuid playerGuid)
         return;
     }
     CharacterDatabase.DelayQueryHolder(&chrHandler, &CharacterHandler::HandlePlayerBotLoginCallback, holder);
+}
+
+// Added this method to allow bots to be added from a different account other than the masters. Accomodates 40 man raid teams of bots
+void PlayerbotMgr::LoginPlayerBot(ObjectGuid playerGuid, uint32 masterAccountId)
+{
+	// has bot already been added?
+	if (sObjectMgr.GetPlayer(playerGuid))
+		return;
+
+	uint32 accountId = sObjectMgr.GetPlayerAccountIdByGUID(playerGuid);
+	if (accountId == 0)
+		return;
+
+	LoginQueryHolder *holder = new LoginQueryHolder(accountId, masterAccountId, playerGuid);
+	if (!holder->Initialize())
+	{
+		delete holder;                                      // delete all unprocessed queries
+		return;
+	}
+	CharacterDatabase.DelayQueryHolder(&chrHandler, &CharacterHandler::HandlePlayerBotLoginCallback, holder);
 }
 
 void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
