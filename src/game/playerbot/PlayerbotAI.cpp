@@ -3481,6 +3481,7 @@ void PlayerbotAI::MovementReset()
         // is bot too far from the follow target
         if (!m_bot->IsWithinDistInMap(distTarget, 50))
         {
+			TellMaster("I am trying to follow you master but you are too far away!");
             DoTeleport(*m_followTarget);
             return;
         }
@@ -3743,7 +3744,7 @@ void PlayerbotAI::UpdateAI(const uint32 /*p_time*/)
 
         // bot was in combat recently - loot now
     if (m_botState == BOTSTATE_COMBAT)
-        {
+    {
         if (GetCombatOrder() & ORDERS_TEMP)
         {
             if (GetCombatOrder() & ORDERS_TEMP_WAIT_TANKAGGRO)
@@ -3752,20 +3753,29 @@ void PlayerbotAI::UpdateAI(const uint32 /*p_time*/)
                 TellMaster("I was still waiting OOC but I just got out of combat...");
             ClearCombatOrder(ORDERS_TEMP);
         }
-            SetState(BOTSTATE_LOOTING);
-            m_attackerInfo.clear();
-            if (HasCollectFlag(COLLECT_FLAG_COMBAT))
-                m_lootTargets.unique();
-            else
-                m_lootTargets.clear();
 
-        }
+        SetState(BOTSTATE_LOOTING);
+        m_attackerInfo.clear();
+        if (HasCollectFlag(COLLECT_FLAG_COMBAT))
+            m_lootTargets.unique();
+        else
+            m_lootTargets.clear();
 
-    if (m_botState == BOTSTATE_LOOTING)
-        return DoLoot();
+    }
+
+	if (m_botState == BOTSTATE_LOOTING)
+	{
+		// If we are not in the same group as our master, don't try to loot anything. This causes the bots
+		// to start moving around and getting summoned even when told to stay.
+		if (m_bot->IsInSameGroupWith(GetMaster()))
+			return DoLoot();
+		else
+			SetState(BOTSTATE_NORMAL);
+	}
+        
 
     if (m_botState == BOTSTATE_FLYING)
-        {
+    {
             /* std::ostringstream out;
                out << "Taxi: " << m_bot->GetName() << m_ignoreAIUpdatesUntilTime;
                TellMaster(out.str().c_str()); */
@@ -3774,7 +3784,7 @@ void PlayerbotAI::UpdateAI(const uint32 /*p_time*/)
         SetIgnoreUpdateTime(0);
 
         return;
-        }
+    }
 
         // if commanded to follow master and not already following master then follow master
     if (!m_bot->isInCombat() && !IsMoving())
@@ -6284,8 +6294,11 @@ void PlayerbotAI::_HandleCommandAttack(std::string &text, Player &fromPlayer)
         {
             if (!m_bot->IsFriendlyTo(thingToAttack))
             {
-                if (!m_bot->IsWithinLOSInMap(thingToAttack))
-                    DoTeleport(*m_followTarget);
+				if (!m_bot->IsWithinLOSInMap(thingToAttack))
+				{
+					TellMaster("Trying to attack something, but I'm too far away!");
+					DoTeleport(*m_followTarget);
+				}
                 if (m_bot->IsWithinLOSInMap(thingToAttack))
                     Attack(thingToAttack);
             }

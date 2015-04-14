@@ -347,8 +347,11 @@ void PlayerbotMgr::HandleMasterIncomingPacket(const WorldPacket& packet)
                         bot = itr->second;
                         if (!bot->IsFriendlyTo(thingToAttack))
                         {
-                            if (!bot->IsWithinLOSInMap(thingToAttack))
-                                bot->GetPlayerbotAI()->DoTeleport(*m_master);
+							if (!bot->IsWithinLOSInMap(thingToAttack))
+							{
+								bot->GetPlayerbotAI()->TellMaster("Trying to attack something, but I'm too far away!");
+								bot->GetPlayerbotAI()->DoTeleport(*m_master);
+							}
                             if (bot->IsWithinLOSInMap(thingToAttack))
                                 bot->GetPlayerbotAI()->Attack(thingToAttack);
                         }
