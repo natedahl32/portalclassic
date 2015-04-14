@@ -2342,7 +2342,11 @@ void Player::GiveLevel(uint32 level)
     SetPower(POWER_FOCUS, 0);
     SetPower(POWER_HAPPINESS, 0);
 
-	// if we have playerbot ai, handle automatically adding spells (not talents)
+	// tell playerbot manager that we leveled up
+	if (m_playerbotMgr)
+		m_playerbotMgr->OnMasterLevelUp();
+
+	// if this is a bot, handle automatically adding spells (not talents)
 	if (m_playerbotAI)
 	{
 		m_playerbotAI->TellMaster("I am leveling up! Yay!");

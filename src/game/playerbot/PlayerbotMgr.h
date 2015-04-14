@@ -44,7 +44,7 @@ public:
     void LogoutAllBots();
     void RemoveAllBotsFromGroup();
     void OnBotLogin(Player * const bot);
-	void OnBotLevelUp(Player * const bot);
+	void OnMasterLevelUp();
     void Stay();
 
 public:
