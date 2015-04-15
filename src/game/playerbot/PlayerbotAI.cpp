@@ -88,8 +88,12 @@ m_combatOrder(ORDERS_NONE), m_ScenarioType(SCENARIO_PVE),
     if (m_mgr->m_confCollectObjects)
         SetCollectFlag(COLLECT_FLAG_NEAROBJECT);
 
-    // start following master (will also teleport bot to master)
-    SetMovementOrder(MOVEMENT_FOLLOW, GetMaster());
+	// If the bot is in the same group as the master when summoned, then follow the master
+	// Otherwise, stay where they are until they join the masters group
+	if (m_bot->IsInSameGroupWith(GetMaster()))
+		SetMovementOrder(MOVEMENT_FOLLOW, GetMaster());
+	else
+		SetMovementOrder(MOVEMENT_STAY);
     BotDataRestore();
     m_DelayAttackInit = CurrentTime();
 
@@ -3723,11 +3727,11 @@ void PlayerbotAI::UpdateAI(const uint32 /*p_time*/)
 
         // handle combat (either self/master/group in combat, or combat state and valid target)
     if (IsInCombat() || (m_botState == BOTSTATE_COMBAT && m_targetCombat) ||  m_ScenarioType == SCENARIO_PVP_DUEL)
+    {
+        //check if the bot is Mounted
+        if (!m_bot->IsMounted())
         {
-            //check if the bot is Mounted
-            if (!m_bot->IsMounted())
-            {
-                if (!pSpell || !pSpell->IsChannelActive())
+            if (!pSpell || !pSpell->IsChannelActive())
             {
                 // DEBUG_LOG("m_DelayAttackInit (%li) + m_DelayAttack (%u) > time(%li)", m_DelayAttackInit, m_DelayAttack, CurrentTime());
                 if (m_DelayAttackInit + m_DelayAttack > CurrentTime())
@@ -3765,7 +3769,7 @@ void PlayerbotAI::UpdateAI(const uint32 /*p_time*/)
 
 	if (m_botState == BOTSTATE_LOOTING)
 	{
-		// If we are not in the same group as our master, don't try to loot anything. This causes the bots
+		// If we are not in the same group as our master, don't try to loot anything. Avoids the bots
 		// to start moving around and getting summoned even when told to stay.
 		if (m_bot->IsInSameGroupWith(GetMaster()))
 			return DoLoot();
@@ -3776,11 +3780,11 @@ void PlayerbotAI::UpdateAI(const uint32 /*p_time*/)
 
     if (m_botState == BOTSTATE_FLYING)
     {
-            /* std::ostringstream out;
-               out << "Taxi: " << m_bot->GetName() << m_ignoreAIUpdatesUntilTime;
-               TellMaster(out.str().c_str()); */
-            DoFlight();
-            SetState(BOTSTATE_NORMAL);
+        /* std::ostringstream out;
+            out << "Taxi: " << m_bot->GetName() << m_ignoreAIUpdatesUntilTime;
+            TellMaster(out.str().c_str()); */
+        DoFlight();
+        SetState(BOTSTATE_NORMAL);
         SetIgnoreUpdateTime(0);
 
         return;
@@ -3792,21 +3796,21 @@ void PlayerbotAI::UpdateAI(const uint32 /*p_time*/)
 
         // do class specific non combat actions
     if (GetClassAI() && !m_bot->IsMounted() && !IsRegenerating())
-        {
+    {
         GetClassAI()->DoNonCombatActions();
 
-            // have we been told to collect GOs
-            if (HasCollectFlag(COLLECT_FLAG_NEAROBJECT))
-            {
-                findNearbyGO();
-                // start looting if have targets
-                if (!m_lootTargets.empty())
-                    SetState(BOTSTATE_LOOTING);
-            }
+        // have we been told to collect GOs
+        if (HasCollectFlag(COLLECT_FLAG_NEAROBJECT))
+        {
+            findNearbyGO();
+            // start looting if have targets
+            if (!m_lootTargets.empty())
+                SetState(BOTSTATE_LOOTING);
+        }
 
         return;
-        }
     }
+}
 
 Spell* PlayerbotAI::GetCurrentSpell() const
 {
