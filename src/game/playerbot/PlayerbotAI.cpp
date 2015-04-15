@@ -1137,7 +1137,12 @@ void PlayerbotAI::HandleBotOutgoingPacket(const WorldPacket& packet)
                     m_bot->GetSession()->HandleGroupDeclineOpcode(p); // packet not used
                 }
                 else
-                    m_bot->GetSession()->HandleGroupAcceptOpcode(p);  // packet not used
+				{ 
+					// set movement to follow master when joining the group
+					SetMovementOrder(MOVEMENT_FOLLOW, GetMaster());
+					m_bot->GetSession()->HandleGroupAcceptOpcode(p);  // packet not used
+				}
+                    
             }
             return;
         }
