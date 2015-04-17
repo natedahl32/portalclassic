@@ -351,3 +351,8 @@ bool PlayerbotMageAI::BuffHelper(PlayerbotAI* ai, uint32 spellId, Unit *target)
 
         return false;
 }
+
+bool PlayerbotMageAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto)
+{
+	return false;
+}

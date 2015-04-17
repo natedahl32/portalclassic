@@ -399,3 +399,8 @@ void PlayerbotRogueAI::DoNonCombatActions()
         }
     }
 } // end DoNonCombatActions
+
+bool PlayerbotRogueAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto)
+{
+	return false;
+}

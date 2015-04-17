@@ -9953,6 +9953,11 @@ void Player::MoveItemToInventory(ItemPosCountVec const& dest, Item* pItem, bool 
         // in case trade we already have item in other player inventory
         pLastItem->SetState(in_characterInventoryDB ? ITEM_CHANGED : ITEM_NEW, this);
     }
+
+	// Playerbot code
+	// Check if item is an upgrade. If it is equip it.
+	if (m_playerbotAI && m_playerbotAI->IsItemAnUpgrade(pLastItem))
+		m_playerbotAI->EquipItem(pLastItem);
 }
 
 void Player::DestroyItem(uint8 bag, uint8 slot, bool update)

@@ -782,3 +782,8 @@ bool PlayerbotDruidAI::CastHoTOnTank()
 
     return false;
 }
+
+bool PlayerbotDruidAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto)
+{
+	return false;
+}

@@ -2,6 +2,7 @@
 #define _PlayerbotWarriorAI_H
 
 #include "PlayerbotClassAI.h"
+#include "../ItemPrototype.h"
 
 enum
 {
@@ -94,6 +95,8 @@ public:
 
     // Utility Functions
     bool CanPull();
+
+	bool IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto);
 
 private:
     CombatManeuverReturns DoFirstCombatManeuverPVE(Unit* pTarget);

@@ -433,3 +433,8 @@ void PlayerbotHunterAI::DoNonCombatActions()
         }
     }
 } // end DoNonCombatActions
+
+bool PlayerbotHunterAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto)
+{
+	return false;
+}

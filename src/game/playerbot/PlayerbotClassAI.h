@@ -58,6 +58,7 @@ public:
     time_t GetWaitUntil() { return m_WaitUntil; }
     void SetWait(uint8 t) { m_WaitUntil = m_ai->CurrentTime() + t; }
     void ClearWait() { m_WaitUntil = 0; }
+	virtual bool IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto);
     //void SetWaitUntil(time_t t) { m_WaitUntil = t; }
 
 protected:

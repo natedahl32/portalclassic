@@ -6,6 +6,7 @@
 #include "../GameEventMgr.h"
 #include "../ObjectGuid.h"
 #include "../Unit.h"
+#include "../ItemPrototype.h"
 
 class WorldPacket;
 class WorldObject;
@@ -450,6 +451,8 @@ public:
     bool IsInQuestItemList(uint32 itemid) { return m_needItemList.find(itemid) != m_needItemList.end(); };
     bool IsInQuestCreatureList(uint32 id) { return m_needCreatureOrGOList.find(id) != m_needCreatureOrGOList.end(); };
     bool IsItemUseful(uint32 itemid);
+	bool IsItemAnUpgrade(Item* pItem);
+	
     void SendOrders(Player& player);
     bool DoTeleport(WorldObject &obj);
     void DoLoot();
@@ -562,6 +565,8 @@ private:
     void _doSellItem(Item* const item, std::ostringstream &report, std::ostringstream &canSell, uint32 &TotalCost, uint32 &TotalSold);
     void MakeItemLink(const Item *item, std::ostringstream &out, bool IncludeQuantity = true);
     void MakeItemLink(const ItemPrototype *item, std::ostringstream &out);
+
+	bool IsItemAnUpgrade(ItemPrototype const *pProto);
 
     // it is safe to keep these back reference pointers because m_bot
     // owns the "this" object and m_master owns m_bot. The owner always cleans up.

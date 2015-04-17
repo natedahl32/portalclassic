@@ -546,3 +546,8 @@ bool PlayerbotShamanAI::CastHoTOnTank()
 
     return false;
 }
+
+bool PlayerbotShamanAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto)
+{
+	return false;
+}

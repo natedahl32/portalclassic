@@ -669,6 +669,146 @@ bool PlayerbotAI::IsItemUseful(uint32 itemid)
     return false;
 }
 
+bool PlayerbotAI::IsItemAnUpgrade(Item* pItem)
+{
+	// If the item is not useful, it is not an upgrade
+	if (!IsItemUseful(pItem->GetProto()->ItemId))
+		return false;		
+
+	const static uint32 item_weapon_skills[MAX_ITEM_SUBCLASS_WEAPON] =
+	{
+		SKILL_AXES, SKILL_2H_AXES, SKILL_BOWS, SKILL_GUNS, SKILL_MACES,
+		SKILL_2H_MACES, SKILL_POLEARMS, SKILL_SWORDS, SKILL_2H_SWORDS, 0,
+		SKILL_STAVES, 0, 0, SKILL_UNARMED, 0,
+		SKILL_DAGGERS, SKILL_THROWN, SKILL_ASSASSINATION, SKILL_CROSSBOWS, SKILL_WANDS,
+		SKILL_FISHING
+	};
+
+	const static uint32 item_armor_skills[MAX_ITEM_SUBCLASS_ARMOR] =
+	{
+		0, SKILL_CLOTH, SKILL_LEATHER, SKILL_MAIL, SKILL_PLATE_MAIL, 0, SKILL_SHIELD, 0, 0, 0
+	};
+
+	// We've already established the item is useful to us. So get the item prototype
+	ItemPrototype const *pProto = pItem->GetProto();
+	// If the item is not armor or a weapon, we can't consider it as an upgrade
+	switch (pProto->Class)
+	{
+		case ITEM_CLASS_WEAPON:
+		case ITEM_CLASS_ARMOR:
+			return IsItemAnUpgrade(pProto);
+			break;
+		default:
+			break;
+	}
+
+	// Not a weapon or armor item
+	return false;
+}
+
+bool PlayerbotAI::IsItemAnUpgrade(ItemPrototype const *pProto)
+{
+	std::list<EquipmentSlots> slots;
+	switch (pProto->InventoryType)
+	{
+	case INVTYPE_HEAD:
+		slots.push_back(EQUIPMENT_SLOT_HEAD);
+		break;
+	case INVTYPE_NECK:
+		slots.push_back(EQUIPMENT_SLOT_NECK);
+		break;
+	case INVTYPE_SHOULDERS:
+		slots.push_back(EQUIPMENT_SLOT_SHOULDERS);
+		break;
+	case INVTYPE_CHEST:
+		slots.push_back(EQUIPMENT_SLOT_CHEST);
+		break;
+	case INVTYPE_WAIST:
+		slots.push_back(EQUIPMENT_SLOT_WAIST);
+		break;
+	case INVTYPE_LEGS:
+		slots.push_back(EQUIPMENT_SLOT_LEGS);
+		break;
+	case INVTYPE_FEET:
+		slots.push_back(EQUIPMENT_SLOT_FEET);
+		break;
+	case INVTYPE_WRISTS:
+		slots.push_back(EQUIPMENT_SLOT_WRISTS);
+		break;
+	case INVTYPE_HANDS:
+		slots.push_back(EQUIPMENT_SLOT_HANDS);
+		break;
+	case INVTYPE_FINGER:
+		slots.push_back(EQUIPMENT_SLOT_FINGER1);
+		slots.push_back(EQUIPMENT_SLOT_FINGER2);
+		break;
+	case INVTYPE_TRINKET:
+		slots.push_back(EQUIPMENT_SLOT_TRINKET1);
+		slots.push_back(EQUIPMENT_SLOT_TRINKET2);
+		break;
+	case INVTYPE_WEAPON:
+		slots.push_back(EQUIPMENT_SLOT_MAINHAND);
+		slots.push_back(EQUIPMENT_SLOT_OFFHAND);
+		break;
+	case INVTYPE_WEAPONMAINHAND:
+	case INVTYPE_2HWEAPON:
+		slots.push_back(EQUIPMENT_SLOT_MAINHAND);
+		break;
+	case INVTYPE_SHIELD:
+	case INVTYPE_WEAPONOFFHAND:
+		slots.push_back(EQUIPMENT_SLOT_OFFHAND);
+		break;
+	case INVTYPE_RANGED:
+		slots.push_back(EQUIPMENT_SLOT_RANGED);
+		break;
+	case INVTYPE_CLOAK:
+		slots.push_back(EQUIPMENT_SLOT_BACK);
+		break;
+	default:
+		break;
+	}
+
+	// loop through each item and check it against the item given to us
+	for (std::list<EquipmentSlots>::const_iterator iterator = slots.begin(), end = slots.end(); iterator != end; ++iterator) {
+		EquipmentSlots slot = *iterator;
+
+		// Get current item in this slot
+		Item* pItemCurrent = m_bot->GetItemByPos(INVENTORY_SLOT_BAG_0, slot); // EquipmentSlots
+
+		// If we have an item in this slot
+		if (pItemCurrent)
+		{
+			const ItemPrototype* const pItemCurrentProto = pItemCurrent->GetProto();
+
+			// If item quality is better, we will assume the item is an upgrade. This isn't ALWAYS true, but it should be pretty close
+			if (pProto->Quality > pItemCurrentProto->Quality)
+				return true;
+			else if (pProto->Quality < pItemCurrentProto->Quality)
+				return false;
+
+			// If item is same quality and the level of the item is higher, we will assume the item is an upgrade. This isn't ALWAYS true, and isn't necessarily always close.
+			// Would be better to institue item lists instead but that's more work.
+			// TODO: Create item lists based on class spec and use that to determines if items of same quality are better or not (probably only really care about Epic and above quality, maybe Rare too at max level)
+			if (pProto->ItemLevel > pItemCurrentProto->ItemLevel)
+				return true;
+			else if (pProto->ItemLevel < pItemCurrentProto->ItemLevel)
+				return false;
+
+			// Check with class AI
+			return m_classAI->IsNewItemAnUpgrade(pProto, pItemCurrentProto);
+		}
+		// No item currently equipped. It's an upgrade
+		else {
+			TellMaster("No item currently found in this slot! I can equip here!");
+			return true;
+		}
+
+	}
+
+	// No slots?
+	return false;
+}
+
 void PlayerbotAI::ReloadAI()
 {
     switch (m_bot->getClass())
@@ -1524,7 +1664,7 @@ void PlayerbotAI::HandleBotOutgoingPacket(const WorldPacket& packet)
             return;
         }
 
-            /* uncomment this and your bots will tell you all their outgoing packet opcode names
+            /* uncomment this and your bots will tell you all their outgoing packet opcode names */
                case SMSG_MONSTER_MOVE:
                case SMSG_UPDATE_WORLD_STATE:
                case SMSG_COMPRESSED_UPDATE_OBJECT:
@@ -1538,20 +1678,19 @@ void PlayerbotAI::HandleBotOutgoingPacket(const WorldPacket& packet)
                case MSG_MOVE_START_STRAFE_RIGHT:
                case SMSG_DESTROY_OBJECT:
                case MSG_MOVE_START_BACKWARD:
-               case SMSG_AURA_UPDATE_ALL:
                case MSG_MOVE_FALL_LAND:
                case MSG_MOVE_JUMP:
-            return;*/
+            return;
 
                default:
                {
-            /*const char* oc = LookupOpcodeName(packet.GetOpcode());
+            const char* oc = LookupOpcodeName(packet.GetOpcode());
 
                 std::ostringstream out;
                 out << "botout: " << oc;
                 sLog.outError(out.str().c_str());
 
-            TellMaster(oc);*/
+            TellMaster(oc);
                }
     }
 }

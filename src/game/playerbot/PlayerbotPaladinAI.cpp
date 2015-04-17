@@ -664,3 +664,8 @@ bool PlayerbotPaladinAI::CastHoTOnTank()
 
     return false;
 }
+
+bool PlayerbotPaladinAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto)
+{
+	return false;
+}

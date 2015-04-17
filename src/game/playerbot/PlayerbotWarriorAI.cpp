@@ -537,4 +537,18 @@ bool PlayerbotWarriorAI::Pull()
     }
 
     return false;
-    }
+}
+
+bool PlayerbotWarriorAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto)
+{
+	// This is dependant on what spec we are in, for just use general stats
+	// ** CURRENTLY BASED ON FURY **
+	uint32 diffSTR = pNewProto->GetStatValue(ITEM_MOD_STRENGTH) - pCurrentProto->GetStatValue(ITEM_MOD_STRENGTH);
+	uint32 diffSTA = pNewProto->GetStatValue(ITEM_MOD_STAMINA) - pCurrentProto->GetStatValue(ITEM_MOD_STAMINA);
+	uint32 diffHealth = pNewProto->GetStatValue(ITEM_MOD_HEALTH) - pCurrentProto->GetStatValue(ITEM_MOD_HEALTH);
+	// Divide diffHealth by 10 because, 1 STAM = 10 HEALTH
+	// TODO: Take into account damage modifiers on the item
+	// TODO: Take into account spells on the item
+
+	return false;
+}

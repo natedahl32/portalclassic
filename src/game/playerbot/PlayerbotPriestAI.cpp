@@ -508,3 +508,8 @@ bool PlayerbotPriestAI::CastHoTOnTank()
 
     return false;
 }
+
+bool PlayerbotPriestAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto)
+{
+	return false;
+}

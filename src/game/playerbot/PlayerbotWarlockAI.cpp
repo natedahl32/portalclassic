@@ -567,3 +567,8 @@ void PlayerbotWarlockAI::DoNonCombatActions()
     if (pet && pet->GetEntry() == DEMON_FELHUNTER && FEL_INTELLIGENCE && !m_bot->HasAura(FEL_INTELLIGENCE) && m_ai->CastPetSpell(FEL_INTELLIGENCE))
         return;
 } // end DoNonCombatActions
+
+bool PlayerbotWarlockAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto)
+{
+	return false;
+}
