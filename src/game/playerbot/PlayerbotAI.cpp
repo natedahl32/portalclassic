@@ -1665,7 +1665,7 @@ void PlayerbotAI::HandleBotOutgoingPacket(const WorldPacket& packet)
         }
 
             /* uncomment this and your bots will tell you all their outgoing packet opcode names */
-               case SMSG_MONSTER_MOVE:
+            /*   case SMSG_MONSTER_MOVE:
                case SMSG_UPDATE_WORLD_STATE:
                case SMSG_COMPRESSED_UPDATE_OBJECT:
                case MSG_MOVE_SET_FACING:
@@ -1680,17 +1680,17 @@ void PlayerbotAI::HandleBotOutgoingPacket(const WorldPacket& packet)
                case MSG_MOVE_START_BACKWARD:
                case MSG_MOVE_FALL_LAND:
                case MSG_MOVE_JUMP:
-            return;
+            return;*/
 
                default:
                {
-            const char* oc = LookupOpcodeName(packet.GetOpcode());
+            /*const char* oc = LookupOpcodeName(packet.GetOpcode());
 
                 std::ostringstream out;
                 out << "botout: " << oc;
                 sLog.outError(out.str().c_str());
 
-            TellMaster(oc);
+            TellMaster(oc);*/
                }
     }
 }
