@@ -732,7 +732,8 @@ void PlayerbotMgr::HandleMasterIncomingPacket(const WorldPacket& packet)
 			for (PlayerBotMap::const_iterator it = GetPlayerBotsBegin(); it != GetPlayerBotsEnd(); ++it)
 			{
 				Player* const bot = it->second;
-				bot->GiveLevel(m_master->getLevel());
+				if (bot->getLevel() < m_master->getLevel())
+					bot->GiveLevel(m_master->getLevel());
 			}
 			return;
 		}

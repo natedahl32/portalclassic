@@ -1287,6 +1287,14 @@ void PlayerbotAI::HandleBotOutgoingPacket(const WorldPacket& packet)
             return;
         }
 
+		case SMSG_GROUP_LIST:
+		{
+			// if bot is no longer in a group, set movement to stay
+			if (!m_bot->IsInSameGroupWith(GetMaster()))
+				SetMovementOrder(MOVEMENT_STAY);
+			return;
+		}
+
 		// Handle guild invite (auto accept if master is the guild leader, otherwise decline & send message)
 		case SMSG_GUILD_INVITE:
 		{
@@ -1665,7 +1673,7 @@ void PlayerbotAI::HandleBotOutgoingPacket(const WorldPacket& packet)
         }
 
             /* uncomment this and your bots will tell you all their outgoing packet opcode names */
-            /*   case SMSG_MONSTER_MOVE:
+               case SMSG_MONSTER_MOVE:
                case SMSG_UPDATE_WORLD_STATE:
                case SMSG_COMPRESSED_UPDATE_OBJECT:
                case MSG_MOVE_SET_FACING:
@@ -1680,17 +1688,17 @@ void PlayerbotAI::HandleBotOutgoingPacket(const WorldPacket& packet)
                case MSG_MOVE_START_BACKWARD:
                case MSG_MOVE_FALL_LAND:
                case MSG_MOVE_JUMP:
-            return;*/
+            return;
 
                default:
                {
-            /*const char* oc = LookupOpcodeName(packet.GetOpcode());
+            const char* oc = LookupOpcodeName(packet.GetOpcode());
 
                 std::ostringstream out;
                 out << "botout: " << oc;
                 sLog.outError(out.str().c_str());
 
-            TellMaster(oc);*/
+            TellMaster(oc);
                }
     }
 }
@@ -3080,10 +3088,10 @@ void PlayerbotAI::TurnInQuests(WorldObject *questgiver)
 {
     ObjectGuid giverGUID = questgiver->GetObjectGuid();
 
-    if (!m_bot->IsInMap(questgiver))
+    /*if (!m_bot->IsInMap(questgiver))
         TellMaster("hey you are turning in quests without me!");
     else
-    {
+    {*/
         m_bot->SetSelectionGuid(giverGUID);
 
         // auto complete every completed quest this NPC has
@@ -3102,7 +3110,8 @@ void PlayerbotAI::TurnInQuests(WorldObject *questgiver)
             QuestStatus status = m_bot->GetQuestStatus(questID);
 
             // if quest is complete, turn it in
-            if (status == QUEST_STATUS_COMPLETE)
+			// playerbot update, even if quest is not complete allow it to be turned in anyway
+            if (status == QUEST_STATUS_COMPLETE || status == QUEST_STATUS_INCOMPLETE)
             {
                 // if bot hasn't already turned quest in
                 if (!m_bot->GetQuestRewardStatus(questID))
@@ -3110,13 +3119,18 @@ void PlayerbotAI::TurnInQuests(WorldObject *questgiver)
                     // auto reward quest if no choice in reward
                     if (pQuest->GetRewChoiceItemsCount() == 0)
                     {
-                        if (m_bot->CanRewardQuest(pQuest, false))
+						// Just reward quest
+						m_bot->RewardQuest(pQuest, 0, questgiver, false);
+						out << "Quest complete: |cff808080|Hquest:" << questID << ':' << pQuest->GetQuestLevel() << "|h[" << questTitle << "]|h|r";
+
+						// As a bot we don't care if the quest can be rewarded or not
+                        /*if (m_bot->CanRewardQuest(pQuest, false))
                         {
                             m_bot->RewardQuest(pQuest, 0, questgiver, false);
                             out << "Quest complete: |cff808080|Hquest:" << questID << ':' << pQuest->GetQuestLevel() << "|h[" << questTitle << "]|h|r";
                         }
                         else
-                            out << "|cffff0000Unable to turn quest in:|r |cff808080|Hquest:" << questID << ':' << pQuest->GetQuestLevel() << "|h[" << questTitle << "]|h|r";
+                            out << "|cffff0000Unable to turn quest in:|r |cff808080|Hquest:" << questID << ':' << pQuest->GetQuestLevel() << "|h[" << questTitle << "]|h|r";*/
                     }
 
                     // auto reward quest if one item as reward
@@ -3126,7 +3140,17 @@ void PlayerbotAI::TurnInQuests(WorldObject *questgiver)
                         ItemPrototype const *pRewardItem = sObjectMgr.GetItemPrototype(pQuest->RewChoiceItemId[rewardIdx]);
                         std::string itemName = pRewardItem->Name1;
                         ItemLocalization(itemName, pRewardItem->ItemId);
-                        if (m_bot->CanRewardQuest(pQuest, rewardIdx, false))
+
+						m_bot->RewardQuest(pQuest, rewardIdx, questgiver, true);
+
+						ItemLocalization(itemName, pRewardItem->ItemId);
+
+						out << "Quest complete: "
+							<< " |cff808080|Hquest:" << questID << ':' << pQuest->GetQuestLevel()
+							<< "|h[" << questTitle << "]|h|r reward: |cffffffff|Hitem:"
+							<< pRewardItem->ItemId << ":0:0:0:0:0:0:0" << "|h[" << itemName << "]|h|r";
+
+                        /*if (m_bot->CanRewardQuest(pQuest, rewardIdx, false))
                         {
                             m_bot->RewardQuest(pQuest, rewardIdx, questgiver, true);
 
@@ -3143,28 +3167,69 @@ void PlayerbotAI::TurnInQuests(WorldObject *questgiver)
                                 << "|cff808080|Hquest:" << questID << ':'
                                 << pQuest->GetQuestLevel() << "|h[" << questTitle << "]|h|r"
                                 << " reward: |cffffffff|Hitem:"
-                                << pRewardItem->ItemId << ":0:0:0:0:0:0:0" << "|h[" << itemName << "]|h|r";
+                                << pRewardItem->ItemId << ":0:0:0:0:0:0:0" << "|h[" << itemName << "]|h|r";*/
                     }
 
                     // else multiple rewards - let master pick
                     else
                     {
-                        out << "What reward should I take for |cff808080|Hquest:" << questID << ':' << pQuest->GetQuestLevel()
-                            << "|h[" << questTitle << "]|h|r? ";
+						// TODO: Auto pick reward based on IsAnUpgrade method
+						// TOOD: If is not an upgrade, pick the item we could possibly use (random if multiple)
+						// TODO: Otherwise just pick randomly since it doesn't really matter
+
+						int rewardIdx = -1;
                         for (uint8 i = 0; i < pQuest->GetRewChoiceItemsCount(); ++i)
                         {
-                            ItemPrototype const * const pRewardItem = sObjectMgr.GetItemPrototype(pQuest->RewChoiceItemId[i]);
-                            std::string itemName = pRewardItem->Name1;
-                            ItemLocalization(itemName, pRewardItem->ItemId);
-                            out << "|cffffffff|Hitem:" << pRewardItem->ItemId << ":0:0:0:0:0:0:0" << "|h[" << itemName << "]|h|r";
+							// Is the item useful
+							if (IsItemUseful(pQuest->RewChoiceItemId[i]))
+							{
+								ItemPrototype const * const pRewardItem = sObjectMgr.GetItemPrototype(pQuest->RewChoiceItemId[i]);
+
+								// Is the item an upgrade? If so, immediately choose this one (we are foregoing the possibility there is a better upgrade here, might be dangerous)
+								if (IsItemAnUpgrade(pRewardItem))
+								{
+									rewardIdx = i;
+									break;
+								}
+								
+								// Not an upgrade but it is useful. Set the reward index to this but keep looping through looking for an upgrade
+								rewardIdx = i;
+							}
+                            
+                            // If this is the last rewarded item and we haven't chosen anything yet, choose this one
+							if (i == (pQuest->GetRewChoiceItemsCount() - 1) && rewardIdx == -1)
+								rewardIdx = i;
                         }
+
+						// If a reward was chosen
+						if (rewardIdx > -1)
+						{
+							ItemPrototype const *pRewardItem = sObjectMgr.GetItemPrototype(pQuest->RewChoiceItemId[rewardIdx]);
+							std::string itemName = pRewardItem->Name1;
+							ItemLocalization(itemName, pRewardItem->ItemId);
+
+							m_bot->RewardQuest(pQuest, rewardIdx, questgiver, true);
+
+							ItemLocalization(itemName, pRewardItem->ItemId);
+
+							out << "Quest complete: "
+								<< " |cff808080|Hquest:" << questID << ':' << pQuest->GetQuestLevel()
+								<< "|h[" << questTitle << "]|h|r reward: |cffffffff|Hitem:"
+								<< pRewardItem->ItemId << ":0:0:0:0:0:0:0" << "|h[" << itemName << "]|h|r";
+						}
+						else
+						{
+							TellMaster("No reward was chosen for quest!");
+						}
                     }
                 }
             }
 
-            else if (status == QUEST_STATUS_INCOMPLETE)
+			// We want bots to complete incomplete quests. This is so we don't have to do the quest multiple times for each bot
+			// When we complete the quest, the bot should also.
+            /*else if (status == QUEST_STATUS_INCOMPLETE)
                 out << "|cffff0000Quest incomplete:|r "
-                    << " |cff808080|Hquest:" << questID << ':' << pQuest->GetQuestLevel() << "|h[" << questTitle << "]|h|r";
+                    << " |cff808080|Hquest:" << questID << ':' << pQuest->GetQuestLevel() << "|h[" << questTitle << "]|h|r";*/
 
             else if (status == QUEST_STATUS_AVAILABLE)
                 out << "|cff00ff00Quest available:|r "
@@ -3173,7 +3238,7 @@ void PlayerbotAI::TurnInQuests(WorldObject *questgiver)
             if (!out.str().empty())
                 TellMaster(out.str());
         }
-    }
+    //}
 }
 
 bool PlayerbotAI::IsInCombat()
