@@ -522,6 +522,8 @@ public:
     bool Deposit(const uint32 itemid);
     void BankBalance();
 
+	void Levelup();
+
 private:
     bool ExtractCommand(const std::string sLookingFor, std::string &text, bool bUseShort = false);
     // outsource commands for code clarity

@@ -3084,10 +3084,86 @@ void PlayerbotAI::AcceptQuest(Quest const *qInfo, Player *pGiver)
     }
 }
 
+void PlayerbotAI::Levelup() 
+{
+	// Learn all weapon skills if not already known
+	switch (m_bot->getClass())
+	{
+		case CLASS_SHAMAN:
+			if (!m_bot->HasSpell(196)) m_bot->addSpell(196, true, true, false, false);	// axes
+			if (!m_bot->HasSpell(199)) m_bot->addSpell(199, true, true, false, false);	// 2 handed maces
+			if (!m_bot->HasSpell(197)) m_bot->addSpell(197, true, true, false, false);	// 2 handed axes
+			if (!m_bot->HasSpell(1180)) m_bot->addSpell(1180, true, true, false, false);	// daggers
+			break;
+		case CLASS_WARRIOR:
+			if (!m_bot->HasSpell(196)) m_bot->addSpell(196, true, true, false, false);	// axes
+			if (!m_bot->HasSpell(201)) m_bot->addSpell(201, true, true, false, false);	// swords
+			if (!m_bot->HasSpell(202)) m_bot->addSpell(202, true, true, false, false);	// 2 handed swords
+			if (!m_bot->HasSpell(199)) m_bot->addSpell(199, true, true, false, false);	// 2 handed maces
+			if (!m_bot->HasSpell(197)) m_bot->addSpell(197, true, true, false, false);	// 2 handed axes
+			if (!m_bot->HasSpell(200)) m_bot->addSpell(200, true, true, false, false);	// polearms
+			if (!m_bot->HasSpell(227)) m_bot->addSpell(227, true, true, false, false);	// staves
+			if (!m_bot->HasSpell(1180)) m_bot->addSpell(1180, true, true, false, false);	// daggers
+			if (!m_bot->HasSpell(264)) m_bot->addSpell(264, true, true, false, false);	// bows
+			if (!m_bot->HasSpell(5011)) m_bot->addSpell(5011, true, true, false, false);	// crossbows
+			if (!m_bot->HasSpell(266)) m_bot->addSpell(266, true, true, false, false);	// guns
+			if (!m_bot->HasSpell(2567)) m_bot->addSpell(2567, true, true, false, false);	// thrown
+			break;
+		case CLASS_ROGUE:
+			if (!m_bot->HasSpell(196)) m_bot->addSpell(196, true, true, false, false);	// axes
+			if (!m_bot->HasSpell(201)) m_bot->addSpell(201, true, true, false, false);	// swords
+			if (!m_bot->HasSpell(198)) m_bot->addSpell(198, true, true, false, false);	// maces
+			if (!m_bot->HasSpell(264)) m_bot->addSpell(264, true, true, false, false);	// bows
+			if (!m_bot->HasSpell(5011)) m_bot->addSpell(5011, true, true, false, false);	// crossbows
+			if (!m_bot->HasSpell(266)) m_bot->addSpell(266, true, true, false, false);	// guns
+			if (!m_bot->HasSpell(2567)) m_bot->addSpell(2567, true, true, false, false);	// thrown
+			break;
+		case CLASS_HUNTER:
+			if (!m_bot->HasSpell(199)) m_bot->addSpell(199, true, true, false, false);	// 2 handed maces
+			if (!m_bot->HasSpell(197)) m_bot->addSpell(197, true, true, false, false);	// 2 handed axes
+			if (!m_bot->HasSpell(201)) m_bot->addSpell(201, true, true, false, false);	// swords
+			if (!m_bot->HasSpell(200)) m_bot->addSpell(200, true, true, false, false);	// polearms
+			if (!m_bot->HasSpell(227)) m_bot->addSpell(227, true, true, false, false);	// staves
+			if (!m_bot->HasSpell(1180)) m_bot->addSpell(1180, true, true, false, false);	// daggers
+			if (!m_bot->HasSpell(264)) m_bot->addSpell(264, true, true, false, false);	// bows
+			if (!m_bot->HasSpell(5011)) m_bot->addSpell(5011, true, true, false, false);	// crossbows
+			if (!m_bot->HasSpell(266)) m_bot->addSpell(266, true, true, false, false);	// guns
+			break;
+		case CLASS_PRIEST:
+			if (!m_bot->HasSpell(1180)) m_bot->addSpell(1180, true, true, false, false);	// daggers
+			break;
+		case CLASS_MAGE:
+			if (!m_bot->HasSpell(201)) m_bot->addSpell(201, true, true, false, false);	// swords
+			if (!m_bot->HasSpell(1180)) m_bot->addSpell(1180, true, true, false, false);	// daggers
+			break;
+		case CLASS_WARLOCK:
+			if (!m_bot->HasSpell(201)) m_bot->addSpell(201, true, true, false, false);	// swords
+			break;
+		case CLASS_DRUID:
+			if (!m_bot->HasSpell(199)) m_bot->addSpell(199, true, true, false, false);	// 2 handed maces
+			if (!m_bot->HasSpell(200)) m_bot->addSpell(200, true, true, false, false);	// polearms
+			if (!m_bot->HasSpell(1180)) m_bot->addSpell(1180, true, true, false, false);	// daggers
+			break;
+		case CLASS_PALADIN:
+			if (!m_bot->HasSpell(196)) m_bot->addSpell(196, true, true, false, false);	// axes
+			if (!m_bot->HasSpell(197)) m_bot->addSpell(197, true, true, false, false);	// 2 handed axes
+			if (!m_bot->HasSpell(201)) m_bot->addSpell(201, true, true, false, false);	// swords
+			if (!m_bot->HasSpell(202)) m_bot->addSpell(202, true, true, false, false);	// 2 handed swords
+			if (!m_bot->HasSpell(200)) m_bot->addSpell(200, true, true, false, false);	// polearms
+			break;
+		default:
+			break;
+	}
+
+	// Increase skills to max for current level
+	m_bot->UpdateSkillsToMaxSkillsForLevel();
+}
+
 void PlayerbotAI::TurnInQuests(WorldObject *questgiver)
 {
     ObjectGuid giverGUID = questgiver->GetObjectGuid();
 
+	TellMaster("Turning in quest!");
     /*if (!m_bot->IsInMap(questgiver))
         TellMaster("hey you are turning in quests without me!");
     else

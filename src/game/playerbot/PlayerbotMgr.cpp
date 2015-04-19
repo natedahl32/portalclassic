@@ -726,18 +726,6 @@ void PlayerbotMgr::HandleMasterIncomingPacket(const WorldPacket& packet)
             return;
         }
 
-		case CMSG_GRANT_LEVEL:
-		{
-			// for all master's bots
-			for (PlayerBotMap::const_iterator it = GetPlayerBotsBegin(); it != GetPlayerBotsEnd(); ++it)
-			{
-				Player* const bot = it->second;
-				if (bot->getLevel() < m_master->getLevel())
-					bot->GiveLevel(m_master->getLevel());
-			}
-			return;
-		}
-
         /*
         case CMSG_NAME_QUERY:
         case MSG_MOVE_START_FORWARD:
@@ -775,7 +763,11 @@ void PlayerbotMgr::OnMasterLevelUp()
 	for (PlayerBotMap::const_iterator it = GetPlayerBotsBegin(); it != GetPlayerBotsEnd(); ++it)
 	{
 		Player* const bot = it->second;
-		bot->GiveLevel(m_master->getLevel());
+		if (bot->getLevel() < m_master->getLevel())
+		{
+			bot->GiveLevel(m_master->getLevel());
+			bot->GetPlayerbotAI()->Levelup();
+		}
 	}
 }
 
