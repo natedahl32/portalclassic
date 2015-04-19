@@ -72,6 +72,8 @@ m_combatOrder(ORDERS_NONE), m_ScenarioType(SCENARIO_PVE),
     m_targetCombat = 0;
     m_targetAssist = 0;
     m_targetProtect = 0;
+	m_primaryProfession1 = 0;
+	m_primaryProfession2 = 0;
 
     // set collection options
     m_collectionFlags = 0;
@@ -99,7 +101,47 @@ m_combatOrder(ORDERS_NONE), m_ScenarioType(SCENARIO_PVE),
 
     // get class specific ai
     ReloadAI();
-    }
+
+	// Get primary profession of bot
+	if (m_bot->HasSpell(ALCHEMY_1))
+		m_primaryProfession1 = ALCHEMY_1;
+	else if (m_bot->HasSpell(BLACKSMITHING_1))
+		m_primaryProfession1 = BLACKSMITHING_1;
+	else if (m_bot->HasSpell(ENCHANTING_1))
+		m_primaryProfession1 = ENCHANTING_1;
+	else if (m_bot->HasSpell(ENGINEERING_1))
+		m_primaryProfession1 = ENGINEERING_1;
+	else if (m_bot->HasSpell(LEATHERWORKING_1))
+		m_primaryProfession1 = LEATHERWORKING_1;
+	else if (m_bot->HasSpell(TAILORING_1))
+		m_primaryProfession1 = TAILORING_1;
+	else if (m_bot->HasSpell(HERB_GATHERING_1))
+		m_primaryProfession1 = HERB_GATHERING_1;
+	else if (m_bot->HasSpell(MINING_1))
+		m_primaryProfession1 = MINING_1;
+	else if (m_bot->HasSpell(SKINNING_1))
+		m_primaryProfession1 = SKINNING_1;
+
+	// Get secondary profession of bot
+	if (m_bot->HasSpell(ALCHEMY_1) && m_primaryProfession1 != ALCHEMY_1)
+		m_primaryProfession2 = ALCHEMY_1;
+	else if (m_bot->HasSpell(BLACKSMITHING_1) && m_primaryProfession1 != BLACKSMITHING_1)
+		m_primaryProfession2 = BLACKSMITHING_1;
+	else if (m_bot->HasSpell(ENCHANTING_1) && m_primaryProfession1 != ENCHANTING_1)
+		m_primaryProfession2 = ENCHANTING_1;
+	else if (m_bot->HasSpell(ENGINEERING_1) && m_primaryProfession1 != ENGINEERING_1)
+		m_primaryProfession2 = ENGINEERING_1;
+	else if (m_bot->HasSpell(LEATHERWORKING_1) && m_primaryProfession1 != LEATHERWORKING_1)
+		m_primaryProfession2 = LEATHERWORKING_1;
+	else if (m_bot->HasSpell(TAILORING_1) && m_primaryProfession1 != TAILORING_1)
+		m_primaryProfession2 = TAILORING_1;
+	else if (m_bot->HasSpell(HERB_GATHERING_1) && m_primaryProfession1 != HERB_GATHERING_1)
+		m_primaryProfession2 = HERB_GATHERING_1;
+	else if (m_bot->HasSpell(MINING_1) && m_primaryProfession1 != MINING_1)
+		m_primaryProfession2 = MINING_1;
+	else if (m_bot->HasSpell(SKINNING_1) && m_primaryProfession1 != SKINNING_1)
+		m_primaryProfession2 = SKINNING_1;
+}
 
 PlayerbotAI::~PlayerbotAI()
 {
@@ -873,6 +915,13 @@ void PlayerbotAI::ReloadAI()
     HERB_GATHERING      = initSpell(HERB_GATHERING_1);
     MINING              = initSpell(MINING_1);
     SKINNING            = initSpell(SKINNING_1);
+
+	ALCHEMY				= initSpell(ALCHEMY_1);
+	BLACKSMITHING		= initSpell(BLACKSMITHING_1);
+	ENCHANTING			= initSpell(ENCHANTING_1);
+	ENGINEERING			= initSpell(ENGINEERING_1);
+	LEATHERWORKING		= initSpell(LEATHERWORKING_1);
+	TAILORING			= initSpell(TAILORING_1);
 }
 
 void PlayerbotAI::SendOrders(Player& /*player*/)
@@ -1673,7 +1722,7 @@ void PlayerbotAI::HandleBotOutgoingPacket(const WorldPacket& packet)
         }
 
             /* uncomment this and your bots will tell you all their outgoing packet opcode names */
-               case SMSG_MONSTER_MOVE:
+               /*case SMSG_MONSTER_MOVE:
                case SMSG_UPDATE_WORLD_STATE:
                case SMSG_COMPRESSED_UPDATE_OBJECT:
                case MSG_MOVE_SET_FACING:
@@ -1688,17 +1737,17 @@ void PlayerbotAI::HandleBotOutgoingPacket(const WorldPacket& packet)
                case MSG_MOVE_START_BACKWARD:
                case MSG_MOVE_FALL_LAND:
                case MSG_MOVE_JUMP:
-            return;
+            return;*/
 
                default:
                {
-            const char* oc = LookupOpcodeName(packet.GetOpcode());
+            /*const char* oc = LookupOpcodeName(packet.GetOpcode());
 
                 std::ostringstream out;
                 out << "botout: " << oc;
                 sLog.outError(out.str().c_str());
 
-            TellMaster(oc);
+            TellMaster(oc);*/
                }
     }
 }
@@ -3092,8 +3141,10 @@ void PlayerbotAI::Levelup()
 		case CLASS_SHAMAN:
 			if (!m_bot->HasSpell(196)) m_bot->addSpell(196, true, true, false, false);	// axes
 			if (!m_bot->HasSpell(199)) m_bot->addSpell(199, true, true, false, false);	// 2 handed maces
+			if (!m_bot->HasSpell(198)) m_bot->addSpell(198, true, true, false, false);	// maces
 			if (!m_bot->HasSpell(197)) m_bot->addSpell(197, true, true, false, false);	// 2 handed axes
 			if (!m_bot->HasSpell(1180)) m_bot->addSpell(1180, true, true, false, false);	// daggers
+			if (!m_bot->HasSpell(227)) m_bot->addSpell(227, true, true, false, false);	// staves
 			break;
 		case CLASS_WARRIOR:
 			if (!m_bot->HasSpell(196)) m_bot->addSpell(196, true, true, false, false);	// axes
@@ -3101,6 +3152,7 @@ void PlayerbotAI::Levelup()
 			if (!m_bot->HasSpell(202)) m_bot->addSpell(202, true, true, false, false);	// 2 handed swords
 			if (!m_bot->HasSpell(199)) m_bot->addSpell(199, true, true, false, false);	// 2 handed maces
 			if (!m_bot->HasSpell(197)) m_bot->addSpell(197, true, true, false, false);	// 2 handed axes
+			if (!m_bot->HasSpell(198)) m_bot->addSpell(198, true, true, false, false);	// maces
 			if (!m_bot->HasSpell(200)) m_bot->addSpell(200, true, true, false, false);	// polearms
 			if (!m_bot->HasSpell(227)) m_bot->addSpell(227, true, true, false, false);	// staves
 			if (!m_bot->HasSpell(1180)) m_bot->addSpell(1180, true, true, false, false);	// daggers
@@ -3113,6 +3165,7 @@ void PlayerbotAI::Levelup()
 			if (!m_bot->HasSpell(196)) m_bot->addSpell(196, true, true, false, false);	// axes
 			if (!m_bot->HasSpell(201)) m_bot->addSpell(201, true, true, false, false);	// swords
 			if (!m_bot->HasSpell(198)) m_bot->addSpell(198, true, true, false, false);	// maces
+			if (!m_bot->HasSpell(1180)) m_bot->addSpell(1180, true, true, false, false);	// daggers
 			if (!m_bot->HasSpell(264)) m_bot->addSpell(264, true, true, false, false);	// bows
 			if (!m_bot->HasSpell(5011)) m_bot->addSpell(5011, true, true, false, false);	// crossbows
 			if (!m_bot->HasSpell(266)) m_bot->addSpell(266, true, true, false, false);	// guns
@@ -3121,6 +3174,7 @@ void PlayerbotAI::Levelup()
 		case CLASS_HUNTER:
 			if (!m_bot->HasSpell(199)) m_bot->addSpell(199, true, true, false, false);	// 2 handed maces
 			if (!m_bot->HasSpell(197)) m_bot->addSpell(197, true, true, false, false);	// 2 handed axes
+			if (!m_bot->HasSpell(196)) m_bot->addSpell(196, true, true, false, false);	// axes
 			if (!m_bot->HasSpell(201)) m_bot->addSpell(201, true, true, false, false);	// swords
 			if (!m_bot->HasSpell(200)) m_bot->addSpell(200, true, true, false, false);	// polearms
 			if (!m_bot->HasSpell(227)) m_bot->addSpell(227, true, true, false, false);	// staves
@@ -3131,18 +3185,24 @@ void PlayerbotAI::Levelup()
 			break;
 		case CLASS_PRIEST:
 			if (!m_bot->HasSpell(1180)) m_bot->addSpell(1180, true, true, false, false);	// daggers
+			if (!m_bot->HasSpell(227)) m_bot->addSpell(227, true, true, false, false);	// staves
 			break;
 		case CLASS_MAGE:
 			if (!m_bot->HasSpell(201)) m_bot->addSpell(201, true, true, false, false);	// swords
+			if (!m_bot->HasSpell(227)) m_bot->addSpell(227, true, true, false, false);	// staves
 			if (!m_bot->HasSpell(1180)) m_bot->addSpell(1180, true, true, false, false);	// daggers
 			break;
 		case CLASS_WARLOCK:
 			if (!m_bot->HasSpell(201)) m_bot->addSpell(201, true, true, false, false);	// swords
+			if (!m_bot->HasSpell(227)) m_bot->addSpell(227, true, true, false, false);	// staves
+			if (!m_bot->HasSpell(1180)) m_bot->addSpell(1180, true, true, false, false);	// daggers
 			break;
 		case CLASS_DRUID:
+			if (!m_bot->HasSpell(198)) m_bot->addSpell(198, true, true, false, false);	// maces
 			if (!m_bot->HasSpell(199)) m_bot->addSpell(199, true, true, false, false);	// 2 handed maces
 			if (!m_bot->HasSpell(200)) m_bot->addSpell(200, true, true, false, false);	// polearms
 			if (!m_bot->HasSpell(1180)) m_bot->addSpell(1180, true, true, false, false);	// daggers
+			if (!m_bot->HasSpell(227)) m_bot->addSpell(227, true, true, false, false);	// staves
 			break;
 		case CLASS_PALADIN:
 			if (!m_bot->HasSpell(196)) m_bot->addSpell(196, true, true, false, false);	// axes
@@ -3150,13 +3210,124 @@ void PlayerbotAI::Levelup()
 			if (!m_bot->HasSpell(201)) m_bot->addSpell(201, true, true, false, false);	// swords
 			if (!m_bot->HasSpell(202)) m_bot->addSpell(202, true, true, false, false);	// 2 handed swords
 			if (!m_bot->HasSpell(200)) m_bot->addSpell(200, true, true, false, false);	// polearms
+			if (!m_bot->HasSpell(199)) m_bot->addSpell(199, true, true, false, false);	// 2 handed maces
+			if (!m_bot->HasSpell(198)) m_bot->addSpell(198, true, true, false, false);	// maces
 			break;
 		default:
 			break;
 	}
 
+	// Create random professions for the bot if they don't have any
+	if ((m_primaryProfession1 == 0 || m_primaryProfession2 == 0) && m_bot->getLevel() >= 5)
+	{
+		int profs[9] = { ALCHEMY_1, BLACKSMITHING_1, ENCHANTING_1, ENGINEERING_1, HERB_GATHERING_1, LEATHERWORKING_1, MINING_1, SKINNING_1, TAILORING_1 };
+		if (m_primaryProfession1 == 0)
+		{
+			int randIdx = rand() % 9;
+			m_primaryProfession1 = profs[randIdx];
+			m_bot->addSpell(m_primaryProfession1, true, true, false, false);
+		}
+		if (m_primaryProfession2 == 0)
+		{
+			// exclude the chosen primary1 profession
+			int profs2[8];
+			int prof2Idx = 0;
+			for (int i = 0; i < 9; i++)
+			{
+				if (m_primaryProfession1 != profs[i])
+				{
+					profs2[prof2Idx] = profs[i];
+					prof2Idx++;
+				}
+			}
+
+			// Choose a second profession randomly
+			int randIdx = rand() % 8;
+			m_primaryProfession2 = profs2[randIdx];
+			m_bot->addSpell(m_primaryProfession2, true, true, false, false);
+		}
+	}
+	else {
+		// Check level of bot and increase profressions by adding new spell if level appropriate
+		if (m_bot->getLevel() >= 35) {
+			uint32 alchUpgrades[3] = { ALCHEMY_2, ALCHEMY_3, ALCHEMY_4 };
+			uint32 bsUpgrades[3] = { BLACKSMITHING_2, BLACKSMITHING_3, BLACKSMITHING_4 };
+			uint32 enchantUpgrades[3] = { ENCHANTING_2, ENCHANTING_3, ENCHANTING_4 };
+			uint32 engUpgrades[3] = { ENGINEERING_2, ENGINEERING_3, ENGINEERING_4 };
+			uint32 lwUpgrades[3] = { LEATHERWORKING_2, LEATHERWORKING_3, LEATHERWORKING_4 };
+			uint32 tailUpgrades[3] = { TAILORING_2, TAILORING_3, TAILORING_4 };
+			uint32 herbUpgrades[3] = { HERB_GATHERING_2, HERB_GATHERING_3, HERB_GATHERING_4 };
+			uint32 mineUpgrades[3] = { MINING_2, MINING_3, MINING_4 };
+			uint32 skinUpgrades[3] = { SKINNING_2, SKINNING_3, SKINNING_4 };
+
+			UpgradeProfession(ALCHEMY_1, alchUpgrades);
+			UpgradeProfession(BLACKSMITHING_1, bsUpgrades);
+			UpgradeProfession(ENCHANTING_1, enchantUpgrades);
+			UpgradeProfession(ENGINEERING_1, engUpgrades);
+			UpgradeProfession(LEATHERWORKING_1, lwUpgrades);
+			UpgradeProfession(TAILORING_1, tailUpgrades);
+			UpgradeProfession(HERB_GATHERING_1, herbUpgrades);
+			UpgradeProfession(MINING_1, mineUpgrades);
+			UpgradeProfession(SKINNING_1, skinUpgrades);
+		}
+		else if (m_bot->getLevel() >= 20) {
+			uint32 alchUpgrades[3] = { ALCHEMY_2, ALCHEMY_3, 0 };
+			uint32 bsUpgrades[3] = { BLACKSMITHING_2, BLACKSMITHING_3, 0 };
+			uint32 enchantUpgrades[3] = { ENCHANTING_2, ENCHANTING_3, 0 };
+			uint32 engUpgrades[3] = { ENGINEERING_2, ENGINEERING_3, 0 };
+			uint32 lwUpgrades[3] = { LEATHERWORKING_2, LEATHERWORKING_3, 0 };
+			uint32 tailUpgrades[3] = { TAILORING_2, TAILORING_3, 0 };
+			uint32 herbUpgrades[3] = { HERB_GATHERING_2, HERB_GATHERING_3, 0 };
+			uint32 mineUpgrades[3] = { MINING_2, MINING_3, 0 };
+			uint32 skinUpgrades[3] = { SKINNING_2, SKINNING_3, 0 };
+
+			UpgradeProfession(ALCHEMY_1, alchUpgrades);
+			UpgradeProfession(BLACKSMITHING_1, bsUpgrades);
+			UpgradeProfession(ENCHANTING_1, enchantUpgrades);
+			UpgradeProfession(ENGINEERING_1, engUpgrades);
+			UpgradeProfession(LEATHERWORKING_1, lwUpgrades);
+			UpgradeProfession(TAILORING_1, tailUpgrades);
+			UpgradeProfession(HERB_GATHERING_1, herbUpgrades);
+			UpgradeProfession(MINING_1, mineUpgrades);
+			UpgradeProfession(SKINNING_1, skinUpgrades);
+		}
+		else if (m_bot->getLevel() >= 10) {
+			uint32 alchUpgrades[3] = { ALCHEMY_2, 0, 0 };
+			uint32 bsUpgrades[3] = { BLACKSMITHING_2, 0, 0 };
+			uint32 enchantUpgrades[3] = { ENCHANTING_2, 0, 0 };
+			uint32 engUpgrades[3] = { ENGINEERING_2, 0, 0 };
+			uint32 lwUpgrades[3] = { LEATHERWORKING_2, 0, 0 };
+			uint32 tailUpgrades[3] = { TAILORING_2, 0, 0 };
+			uint32 herbUpgrades[3] = { HERB_GATHERING_2, 0, 0 };
+			uint32 mineUpgrades[3] = { MINING_2, 0, 0 };
+			uint32 skinUpgrades[3] = { SKINNING_2, 0, 0 };
+
+			UpgradeProfession(ALCHEMY_1, alchUpgrades);
+			UpgradeProfession(BLACKSMITHING_1, bsUpgrades);
+			UpgradeProfession(ENCHANTING_1, enchantUpgrades);
+			UpgradeProfession(ENGINEERING_1, engUpgrades);
+			UpgradeProfession(LEATHERWORKING_1, lwUpgrades);
+			UpgradeProfession(TAILORING_1, tailUpgrades);
+			UpgradeProfession(HERB_GATHERING_1, herbUpgrades);
+			UpgradeProfession(MINING_1, mineUpgrades);
+			UpgradeProfession(SKINNING_1, skinUpgrades);
+		}
+	}
+	
+
 	// Increase skills to max for current level
 	m_bot->UpdateSkillsToMaxSkillsForLevel();
+}
+
+void PlayerbotAI::UpgradeProfession(uint32 profId, uint32 upgrades[3])
+{
+	if (m_primaryProfession1 == profId || m_primaryProfession2 == profId) {
+		for (int i = 0; i < 3; i++) {
+			if (upgrades[i] != 0) {
+				if (!m_bot->HasSpell(upgrades[i])) m_bot->addSpell(upgrades[i], true, true, false, false);
+			}
+		}
+	}
 }
 
 void PlayerbotAI::TurnInQuests(WorldObject *questgiver)

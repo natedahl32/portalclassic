@@ -5171,8 +5171,8 @@ void Player::UpdateSkillsToMaxSkillsForLevel()
             continue;
 
         uint32 pskill = itr->first;
-        if (IsProfessionOrRidingSkill(pskill))
-            continue;
+        /*if (IsProfessionOrRidingSkill(pskill))
+            continue;*/
         uint32 valueIndex = PLAYER_SKILL_VALUE_INDEX(skillStatus.pos);
         uint32 data = GetUInt32Value(valueIndex);
 
