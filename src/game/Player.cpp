@@ -2271,8 +2271,8 @@ void Player::GiveXP(uint32 xp, Unit* victim)
     {
         newXP -= nextLvlXP;
 
-        if (level < sWorld.getConfig(CONFIG_UINT32_MAX_PLAYER_LEVEL))
-            GiveLevel(level + 1);
+		if (level < sWorld.getConfig(CONFIG_UINT32_MAX_PLAYER_LEVEL))
+			GiveLevel(level + 1);
 
         level = getLevel();
         nextLvlXP = GetUInt32Value(PLAYER_NEXT_LEVEL_XP);
@@ -2338,6 +2338,17 @@ void Player::GiveLevel(uint32 level)
         SetPower(POWER_RAGE, GetMaxPower(POWER_RAGE));
     SetPower(POWER_FOCUS, 0);
     SetPower(POWER_HAPPINESS, 0);
+
+	// tell playerbot manager that we leveled up
+	if (m_playerbotMgr)
+		m_playerbotMgr->OnMasterLevelUp();
+
+	// if this is a bot, handle automatically adding spells (not talents)
+	if (m_playerbotAI)
+	{
+		m_playerbotAI->TellMaster("I am leveling up! Yay!");
+		ChatHandler(this).HandleLearnAllSpellsForPlayerCommand(this);
+	}
 
     // update level to hunter/summon pet
     if (Pet* pet = GetPet())
@@ -5157,8 +5168,8 @@ void Player::UpdateSkillsToMaxSkillsForLevel()
             continue;
 
         uint32 pskill = itr->first;
-        if (IsProfessionOrRidingSkill(pskill))
-            continue;
+        /*if (IsProfessionOrRidingSkill(pskill))
+            continue;*/
         uint32 valueIndex = PLAYER_SKILL_VALUE_INDEX(skillStatus.pos);
         uint32 data = GetUInt32Value(valueIndex);
 
@@ -9567,6 +9578,11 @@ void Player::MoveItemToInventory(ItemPosCountVec const& dest, Item* pItem, bool 
         // in case trade we already have item in other player inventory
         pLastItem->SetState(in_characterInventoryDB ? ITEM_CHANGED : ITEM_NEW, this);
     }
+
+	// Playerbot code
+	// Check if item is an upgrade. If it is equip it.
+	if (m_playerbotAI && m_playerbotAI->IsItemAnUpgrade(pLastItem))
+		m_playerbotAI->EquipItem(pLastItem);
 }
 
 void Player::DestroyItem(uint8 bag, uint8 slot, bool update)

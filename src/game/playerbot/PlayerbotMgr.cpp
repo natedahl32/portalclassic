@@ -348,8 +348,11 @@ void PlayerbotMgr::HandleMasterIncomingPacket(const WorldPacket& packet)
                         bot = itr->second;
                         if (!bot->IsFriendlyTo(thingToAttack))
                         {
-                            if (!bot->IsWithinLOSInMap(thingToAttack))
-                                bot->GetPlayerbotAI()->DoTeleport(*m_master);
+							if (!bot->IsWithinLOSInMap(thingToAttack))
+							{
+								bot->GetPlayerbotAI()->TellMaster("Trying to attack something, but I'm too far away!");
+								bot->GetPlayerbotAI()->DoTeleport(*m_master);
+							}
                             if (bot->IsWithinLOSInMap(thingToAttack))
                                 bot->GetPlayerbotAI()->Attack(thingToAttack);
                         }
@@ -757,6 +760,20 @@ void PlayerbotMgr::HandleMasterIncomingPacket(const WorldPacket& packet)
     }
 }
 
+void PlayerbotMgr::OnMasterLevelUp() 
+{
+	// give all bots the same level as the master so they stay current
+	for (PlayerBotMap::const_iterator it = GetPlayerBotsBegin(); it != GetPlayerBotsEnd(); ++it)
+	{
+		Player* const bot = it->second;
+		if (bot->getLevel() < m_master->getLevel())
+		{
+			bot->GiveLevel(m_master->getLevel());
+			bot->GetPlayerbotAI()->Levelup();
+		}
+	}
+}
+
 void PlayerbotMgr::HandleMasterOutgoingPacket(const WorldPacket& /*packet*/)
 {
     /*
@@ -1071,13 +1088,14 @@ bool ChatHandler::HandlePlayerbotCommand(char* args)
         return false;
     }
 
-    uint32 accountId = sObjectMgr.GetPlayerAccountIdByGUID(guid);
+	// Removed this restriction to accomodate 40 man raids teams of bots in vanilla
+    /*uint32 accountId = sObjectMgr.GetPlayerAccountIdByGUID(guid);
     if (accountId != m_session->GetAccountId())
     {
         PSendSysMessage("|cffff0000You may only add bots from the same account.");
         SetSentErrorMessage(true);
         return false;
-    }
+    }*/
 
     // create the playerbot manager if it doesn't already exist
     PlayerbotMgr* mgr = m_session->GetPlayer()->GetPlayerbotMgr();
@@ -1131,7 +1149,8 @@ bool ChatHandler::HandlePlayerbotCommand(char* args)
             return false;
         }
         CharacterDatabase.DirectPExecute("UPDATE characters SET online = 1 WHERE guid = '%u'", guid.GetCounter());
-        mgr->LoginPlayerBot(guid);
+		// Modified to allow bot to originate from an account not on the masters account
+        mgr->LoginPlayerBot(guid, mgr->GetMaster()->GetSession()->GetAccountId());
         PSendSysMessage("Bot added successfully.");
     }
     else if (cmdStr == "remove" || cmdStr == "logout")

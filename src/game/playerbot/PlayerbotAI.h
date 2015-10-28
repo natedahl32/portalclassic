@@ -6,6 +6,7 @@
 #include "../GameEventMgr.h"
 #include "../ObjectGuid.h"
 #include "../Unit.h"
+#include "../ItemPrototype.h"
 
 class WorldPacket;
 class WorldObject;
@@ -45,18 +46,46 @@ enum RacialTraits
 enum ProfessionSpells
 {
     ALCHEMY_1                      = 2259,
+	ALCHEMY_2					   = 3101,
+	ALCHEMY_3					   = 3464,
+	ALCHEMY_4					   = 11611,
     BLACKSMITHING_1                = 2018,
+	BLACKSMITHING_2				   = 3100,
+	BLACKSMITHING_3				   = 3538,
+	BLACKSMITHING_4				   = 9785,
     COOKING_1                      = 2550,
     ENCHANTING_1                   = 7411,
+	ENCHANTING_2				   = 7412,
+	ENCHANTING_3				   = 7413,
+	ENCHANTING_4				   = 13920,
     ENGINEERING_1                  = 4036,
+	ENGINEERING_2				   = 4037,
+	ENGINEERING_3				   = 4038,
+	ENGINEERING_4				   = 12656,
     FIRST_AID_1                    = 3273,
     FISHING_1                      = 7620,
     HERB_GATHERING_1               = 2366,
+	HERB_GATHERING_2			   = 2368,
+	HERB_GATHERING_3			   = 3570,
+	HERB_GATHERING_4			   = 11993,
     INSCRIPTION_1                  = 45357,
     JEWELCRAFTING_1                = 25229,
+	LEATHERWORKING_1			   = 2108,
+	LEATHERWORKING_2			   = 3104,
+	LEATHERWORKING_3			   = 3811,
+	LEATHERWORKING_4			   = 10662,
     MINING_1                       = 2575,
+	MINING_2					   = 2576,
+	MINING_3					   = 3564,
+	MINING_4					   = 10248,
     SKINNING_1                     = 8613,
-    TAILORING_1                    = 3908
+	SKINNING_2					   = 8617,
+	SKINNING_3					   = 8618,
+	SKINNING_4					   = 10768,
+    TAILORING_1                    = 3908,
+	TAILORING_2					   = 3909,
+	TAILORING_3					   = 3910,
+	TAILORING_4					   = 12180
 };
 
 enum NotableItems
@@ -450,6 +479,8 @@ public:
     bool IsInQuestItemList(uint32 itemid) { return m_needItemList.find(itemid) != m_needItemList.end(); };
     bool IsInQuestCreatureList(uint32 id) { return m_needCreatureOrGOList.find(id) != m_needCreatureOrGOList.end(); };
     bool IsItemUseful(uint32 itemid);
+	bool IsItemAnUpgrade(Item* pItem);
+	
     void SendOrders(Player& player);
     bool DoTeleport(WorldObject &obj);
     void DoLoot();
@@ -519,6 +550,8 @@ public:
     bool Deposit(const uint32 itemid);
     void BankBalance();
 
+	void Levelup();
+
 private:
     bool ExtractCommand(const std::string sLookingFor, std::string &text, bool bUseShort = false);
     // outsource commands for code clarity
@@ -562,6 +595,9 @@ private:
     void _doSellItem(Item* const item, std::ostringstream &report, std::ostringstream &canSell, uint32 &TotalCost, uint32 &TotalSold);
     void MakeItemLink(const Item *item, std::ostringstream &out, bool IncludeQuantity = true);
     void MakeItemLink(const ItemPrototype *item, std::ostringstream &out);
+
+	bool IsItemAnUpgrade(ItemPrototype const *pProto);
+	void UpgradeProfession(uint32 profId, uint32 upgrades[3]);
 
     // it is safe to keep these back reference pointers because m_bot
     // owns the "this" object and m_master owns m_bot. The owner always cleans up.
@@ -627,6 +663,16 @@ private:
            HERB_GATHERING,
            MINING,
            SKINNING;
+
+	uint32 ALCHEMY,
+		BLACKSMITHING,
+		ENCHANTING,
+		ENGINEERING,
+		LEATHERWORKING,
+		TAILORING;
+
+	uint32 m_primaryProfession1,
+		   m_primaryProfession2;
 
     SpellRanges m_spellRangeMap;
 

@@ -82,9 +82,9 @@ CombatManeuverReturns PlayerbotPriestAI::DoFirstCombatManeuver(Unit* pTarget)
                return HealPlayer(GetHealTarget());
             else
                 return RETURN_NO_ACTION_OK; // wait it out
-        }
+}
         else
-        {
+{
             m_ai->ClearGroupCombatOrder(PlayerbotAI::ORDERS_TEMP_WAIT_TANKAGGRO);
         }
     }
@@ -93,12 +93,12 @@ CombatManeuverReturns PlayerbotPriestAI::DoFirstCombatManeuver(Unit* pTarget)
     {
         if (m_WaitUntil > m_ai->CurrentTime() && !m_ai->IsGroupInCombat())
             return RETURN_NO_ACTION_OK; // wait it out
-        else
+    else
             m_ai->ClearGroupCombatOrder(PlayerbotAI::ORDERS_TEMP_WAIT_OOC);
     }
 
     switch (m_ai->GetScenarioType())
-    {
+{
         case PlayerbotAI::SCENARIO_PVP_DUEL:
         case PlayerbotAI::SCENARIO_PVP_BG:
         case PlayerbotAI::SCENARIO_PVP_ARENA:
@@ -113,7 +113,7 @@ CombatManeuverReturns PlayerbotPriestAI::DoFirstCombatManeuver(Unit* pTarget)
     }
 
     return RETURN_NO_ACTION_ERROR;
-}
+    }
 
 CombatManeuverReturns PlayerbotPriestAI::DoFirstCombatManeuverPVE(Unit* /*pTarget*/)
 {
@@ -130,17 +130,17 @@ CombatManeuverReturns PlayerbotPriestAI::DoFirstCombatManeuverPVE(Unit* /*pTarge
             return RETURN_FINISHED_FIRST_MOVES;
     }
     return RETURN_NO_ACTION_OK;
-}
+    }
 
 CombatManeuverReturns PlayerbotPriestAI::DoFirstCombatManeuverPVP(Unit* /*pTarget*/)
-{
+    {
     return RETURN_NO_ACTION_OK;
-}
+    }
 
 CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuver(Unit *pTarget)
-{
-    switch (m_ai->GetScenarioType())
     {
+    switch (m_ai->GetScenarioType())
+        {
         case PlayerbotAI::SCENARIO_PVP_DUEL:
         case PlayerbotAI::SCENARIO_PVP_BG:
         case PlayerbotAI::SCENARIO_PVP_ARENA:
@@ -155,7 +155,7 @@ CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuver(Unit *pTarget)
     }
 
     return RETURN_NO_ACTION_ERROR;
-}
+        }
 
 CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVE(Unit *pTarget)
 {
@@ -178,7 +178,7 @@ CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVE(Unit *pTarget)
     if (newTarget) // TODO: && party has a tank
     {
         if (newTarget && FADE > 0 && !m_bot->HasAura(FADE, EFFECT_INDEX_0))
-        {
+            {
             if (CastSpell(FADE, m_bot))
             {
                 //m_ai->TellMaster("I'm casting fade.");
@@ -193,7 +193,7 @@ CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVE(Unit *pTarget)
         // TODO: you forgot to check for the 'temporarily immune to PW:S because you only just got it cast on you' effect
         //       - which is different effect from the actual shield.
         if (m_ai->GetHealthPercent() < 25 && POWER_WORD_SHIELD > 0 && !m_bot->HasAura(POWER_WORD_SHIELD, EFFECT_INDEX_0))
-        {
+            {
             if (CastSpell(POWER_WORD_SHIELD) & RETURN_CONTINUE)
             {
                 //m_ai->TellMaster("I'm casting PW:S on myself.");
@@ -201,12 +201,12 @@ CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVE(Unit *pTarget)
             }
             else if (m_ai->IsHealer()) // Even if any other RETURN_ANY_OK - aside from RETURN_CONTINUE
                 m_ai->TellMaster("Your healer's about TO DIE. HELP ME.");
-        }
+            }
         if (m_ai->GetHealthPercent() < 35 && DESPERATE_PRAYER > 0 && m_ai->In_Reach(m_bot,DESPERATE_PRAYER) && CastSpell(DESPERATE_PRAYER, m_bot) & RETURN_CONTINUE)
-        {
+            {
             //m_ai->TellMaster("I'm casting desperate prayer.");
             return RETURN_CONTINUE;
-        }
+            }
 
         // Already healed self or tank. If healer, do nothing else to anger mob.
         if (m_ai->IsHealer())
@@ -214,7 +214,7 @@ CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVE(Unit *pTarget)
 
         // Have threat, can't quickly lower it. 3 options remain: Stop attacking, lowlevel damage (wand), keep on keeping on.
         if (newTarget->GetHealthPercent() > 25)
-        {
+            {
             // If elite, do nothing and pray tank gets aggro off you
             // TODO: Is there an IsElite function? If so, find it and insert.
             //if (newTarget->IsElite())
@@ -223,33 +223,33 @@ CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVE(Unit *pTarget)
             // Not an elite. You could insert PSYCHIC SCREAM here but in any PvE situation that's 90-95% likely
             // to worsen the situation for the group. ... So please don't.
             return CastSpell(SHOOT, pTarget);
-        }
-    }
+            }
+            }
 
     // Heal
     if (m_ai->IsHealer())
-    {
+            {
         if (HealPlayer(GetHealTarget()) & RETURN_CONTINUE)
             return RETURN_CONTINUE;
-    }
+            }
     else
-    {
+            {
         // Is this desirable? Debatable.
         // ... Certainly could be very detrimental to a shadow priest
         // TODO: In a group/raid with a healer you'd want this bot to focus on DPS (it's not specced/geared for healing either)
         if (HealPlayer(m_bot) & RETURN_CONTINUE)
             return RETURN_CONTINUE;
-    }
+            }
 
     // Do damage tweaking for healers here
     if (m_ai->IsHealer())
-    {
+            {
         // TODO: elite exception
         //if (Any target is an Elite)
         //    return;
 
         return CastSpell(SHOOT, pTarget);
-    }
+            }
 
     // Damage Spells
 
@@ -299,7 +299,7 @@ CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVE(Unit *pTarget)
             if (SMITE > 0 && m_ai->In_Reach(pTarget,SMITE) && CastSpell(SMITE, pTarget))
                 return RETURN_CONTINUE;
             break;
-    }
+            }
 
     // No spec due to low level OR no spell found yet
     if (MIND_BLAST > 0 && m_ai->In_Reach(pTarget,MIND_BLAST) && (!m_bot->HasSpellCooldown(MIND_BLAST)) && CastSpell(MIND_BLAST, pTarget))
@@ -307,10 +307,10 @@ CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVE(Unit *pTarget)
     if (SHADOW_WORD_PAIN > 0 && m_ai->In_Reach(pTarget,SHADOW_WORD_PAIN) && !pTarget->HasAura(SHADOW_WORD_PAIN, EFFECT_INDEX_0) && CastSpell(SHADOW_WORD_PAIN, pTarget))
         return RETURN_CONTINUE;
     if (MIND_FLAY > 0 && m_ai->In_Reach(pTarget,MIND_FLAY) && CastSpell(MIND_FLAY, pTarget))
-    {
+            {
         m_ai->SetIgnoreUpdateTime(3);
         return RETURN_CONTINUE;
-    }
+            }
     if (SHADOWFORM == 0 && SMITE > 0 && m_ai->In_Reach(pTarget,SMITE) && CastSpell(SMITE, pTarget))
         return RETURN_CONTINUE;
 
@@ -320,7 +320,7 @@ CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVE(Unit *pTarget)
 CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVP(Unit* pTarget)
 {
     switch (m_ai->GetScenarioType())
-    {
+{
         case PlayerbotAI::SCENARIO_PVP_DUEL:
             // TODO: spec tweaking
             if (m_ai->HasAura(SCREAM, *pTarget) && m_ai->GetHealthPercent() < 60 && HEAL && m_ai->In_Reach(pTarget,HEAL) && CastSpell(HEAL) & RETURN_ANY_OK)
@@ -361,7 +361,7 @@ CombatManeuverReturns PlayerbotPriestAI::HealPlayer(Player* target)
     if (!target->isAlive())
     {
         if (RESURRECTION && m_ai->In_Reach(target,RESURRECTION) && m_ai->CastSpell(RESURRECTION, *target))
-        {
+    {
             std::string msg = "Resurrecting ";
             msg += target->GetName();
             m_bot->Say(msg, LANG_UNIVERSAL);
@@ -380,7 +380,7 @@ CombatManeuverReturns PlayerbotPriestAI::HealPlayer(Player* target)
             if ((1 << holder->GetSpellProto()->Dispel) & dispelMask)
             {
                 if (holder->GetSpellProto()->Dispel == DISPEL_DISEASE)
-                {
+    {
                     m_ai->CastSpell(CURE_DISEASE, *target);
                     return RETURN_CONTINUE;
                 }
@@ -420,7 +420,7 @@ CombatManeuverReturns PlayerbotPriestAI::HealPlayer(Player* target)
 } // end HealTarget
 
 void PlayerbotPriestAI::DoNonCombatActions()
-{
+            {
     if (!m_ai)   return;
     if (!m_bot)  return;
 
@@ -430,11 +430,11 @@ void PlayerbotPriestAI::DoNonCombatActions()
 
     // selfbuff goes first
     if (m_ai->SelfBuff(INNER_FIRE))
-        return;
+                    return;
 
     // Revive
     if (HealPlayer(GetResurrectionTarget()) & RETURN_CONTINUE)
-        return;
+                    return;
 
     // After revive
     if (spec == PRIEST_SPEC_SHADOW && SHADOWFORM > 0)
@@ -444,37 +444,37 @@ void PlayerbotPriestAI::DoNonCombatActions()
 
     // Heal
     if (m_ai->IsHealer())
-    {
+                {
         if (HealPlayer(GetHealTarget()) & RETURN_CONTINUE)
             return;// RETURN_CONTINUE;
-    }
-    else
+                }
+                else
     {
         // Is this desirable? Debatable.
         // TODO: In a group/raid with a healer you'd want this bot to focus on DPS (it's not specced/geared for healing either)
         if (HealPlayer(m_bot) & RETURN_CONTINUE)
             return;// RETURN_CONTINUE;
-    }
+            }
 
     // Buff
     if (m_bot->GetGroup() && m_ai->HasSpellReagents(PRAYER_OF_FORTITUDE))
-    {
+            {
         if (Buff(&PlayerbotPriestAI::BuffHelper, PRAYER_OF_FORTITUDE) & RETURN_CONTINUE)
             return;
         if (Buff(&PlayerbotPriestAI::BuffHelper, PRAYER_OF_SPIRIT) & RETURN_CONTINUE)
-            return;
+                    return;
         if (m_ai->GetCombatOrder() & PlayerbotAI::ORDERS_RESIST_SHADOW && Buff(&PlayerbotPriestAI::BuffHelper, PRAYER_OF_SHADOW_PROTECTION) & RETURN_CONTINUE)
-            return;
-    }
+                    return;
+            }
     else
     {
         if (Buff(&PlayerbotPriestAI::BuffHelper, POWER_WORD_FORTITUDE) & RETURN_CONTINUE)
             return;
         if (Buff(&PlayerbotPriestAI::BuffHelper, DIVINE_SPIRIT, (JOB_ALL | JOB_MANAONLY)) & RETURN_CONTINUE)
-            return;
+                return;
         if (m_ai->GetCombatOrder() & PlayerbotAI::ORDERS_RESIST_SHADOW && Buff(&PlayerbotPriestAI::BuffHelper, SHADOW_PROTECTION, (JOB_TANK | JOB_HEAL)) & RETURN_CONTINUE)
-            return;
-    }
+                return;
+        }
     if (EatDrinkBandage())
         return;
 } // end DoNonCombatActions
@@ -489,7 +489,7 @@ bool PlayerbotPriestAI::BuffHelper(PlayerbotAI* ai, uint32 spellId, Unit *target
     Pet * pet = target->GetPet();
     if (pet && !pet->HasAuraType(SPELL_AURA_MOD_UNATTACKABLE) && ai->Buff(spellId, pet))
         return true;
-    
+
     if (ai->Buff(spellId, target))
         return true;
 
@@ -507,4 +507,9 @@ bool PlayerbotPriestAI::CastHoTOnTank()
         return (RETURN_CONTINUE & CastSpell(RENEW, m_ai->GetGroupTank()));
 
     return false;
+}
+
+bool PlayerbotPriestAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto)
+{
+	return false;
 }

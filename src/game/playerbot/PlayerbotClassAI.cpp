@@ -24,6 +24,8 @@ CombatManeuverReturns PlayerbotClassAI::DoNextCombatManeuverPVE(Unit *) { return
 CombatManeuverReturns PlayerbotClassAI::DoFirstCombatManeuverPVP(Unit *) { return RETURN_NO_ACTION_OK; }
 CombatManeuverReturns PlayerbotClassAI::DoNextCombatManeuverPVP(Unit *) { return RETURN_NO_ACTION_OK; }
 
+bool PlayerbotClassAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto) { return false; }
+
 void PlayerbotClassAI::DoNonCombatActions()
 {
     DEBUG_LOG("[PlayerbotAI]: Warning: Using PlayerbotClassAI::DoNonCombatActions() rather than class specific function");

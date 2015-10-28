@@ -107,18 +107,18 @@ CombatManeuverReturns PlayerbotWarriorAI::DoFirstCombatManeuver(Unit* pTarget)
                     // While everyone else is waiting 2 second, we need to build up aggro, so don't return
                 }
                 else
-                {
+    {
                     // TODO: add check if target is ranged
                     return RETURN_NO_ACTION_OK; // wait for target to get nearer
-                }
+    }
             }
             else
                 return RETURN_NO_ACTION_OK; // wait it out
         }
         else
-        {
+    {
             m_ai->ClearGroupCombatOrder(PlayerbotAI::ORDERS_TEMP_WAIT_TANKAGGRO);
-        }
+    }
     }
 
     if (m_ai->GetCombatOrder() & PlayerbotAI::ORDERS_TEMP_WAIT_OOC)
@@ -170,15 +170,15 @@ CombatManeuverReturns PlayerbotWarriorAI::DoFirstCombatManeuverPVE(Unit* pTarget
             return m_ai->CastSpell(BLOODRAGE) ? RETURN_FINISHED_FIRST_MOVES : RETURN_NO_ACTION_ERROR;
         if (INTERCEPT > 0 && m_bot->HasAura(BERSERKER_STANCE, EFFECT_INDEX_0))
         {
-            if (fTargetDist < 8.0f)
+        if (fTargetDist < 8.0f)
                 return RETURN_NO_ACTION_OK;
-            else if (fTargetDist > 25.0f)
+        else if (fTargetDist > 25.0f)
                 return RETURN_CONTINUE; // wait to come into range
             else if (INTERCEPT > 0 && m_ai->CastSpell(INTERCEPT, *pTarget))
-            {
-                float x, y, z;
-                pTarget->GetContactPoint(m_bot, x, y, z, 3.666666f);
-                m_bot->Relocate(x, y, z);
+        {
+            float x, y, z;
+            pTarget->GetContactPoint(m_bot, x, y, z, 3.666666f);
+            m_bot->Relocate(x, y, z);
                 return RETURN_FINISHED_FIRST_MOVES;
             }
         }
@@ -200,8 +200,8 @@ CombatManeuverReturns PlayerbotWarriorAI::DoFirstCombatManeuverPVE(Unit* pTarget
                 pTarget->GetContactPoint(m_bot, x, y, z, 3.666666f);
                 m_bot->Relocate(x, y, z);
                 return RETURN_FINISHED_FIRST_MOVES;
-            }
         }
+    }
     }
 
     return RETURN_NO_ACTION_OK;
@@ -332,7 +332,7 @@ CombatManeuverReturns PlayerbotWarriorAI::DoNextCombatManeuverPVE(Unit *pTarget)
             if (HEROIC_STRIKE > 0 && m_ai->CastSpell(HEROIC_STRIKE, *pTarget))
                 return RETURN_CONTINUE;
             if (SLAM > 0 && m_ai->CastSpell(SLAM, *pTarget))
-            {
+    {
                 m_ai->SetIgnoreUpdateTime(1.5); // TODO: SetIgnoreUpdateTime takes a uint8 - how will 1.5 work as a value?
                 return RETURN_CONTINUE;
             }
@@ -525,7 +525,7 @@ bool PlayerbotWarriorAI::Pull()
 
         // activate auto shot: Reworked to account for AUTO_SHOT being a triggered spell
         if (AUTO_SHOT && m_ai->GetCurrentSpellId() != AUTO_SHOT)
-        {
+    {
             m_bot->CastSpell(m_ai->GetCurrentTarget(), AUTO_SHOT, true);
             return true;
         }
@@ -537,4 +537,18 @@ bool PlayerbotWarriorAI::Pull()
     }
 
     return false;
+}
+
+bool PlayerbotWarriorAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto)
+{
+	// This is dependant on what spec we are in, for just use general stats
+	// ** CURRENTLY BASED ON FURY **
+	uint32 diffSTR = pNewProto->GetStatValue(ITEM_MOD_STRENGTH) - pCurrentProto->GetStatValue(ITEM_MOD_STRENGTH);
+	uint32 diffSTA = pNewProto->GetStatValue(ITEM_MOD_STAMINA) - pCurrentProto->GetStatValue(ITEM_MOD_STAMINA);
+	uint32 diffHealth = pNewProto->GetStatValue(ITEM_MOD_HEALTH) - pCurrentProto->GetStatValue(ITEM_MOD_HEALTH);
+	// Divide diffHealth by 10 because, 1 STAM = 10 HEALTH
+	// TODO: Take into account damage modifiers on the item
+	// TODO: Take into account spells on the item
+
+	return false;
 }
