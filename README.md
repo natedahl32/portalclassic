@@ -4,4 +4,14 @@ This project was created to try and give a completely standalone single payer ve
 
 Some current quality of life features that have already been implemented are:
 
-- 
+- You can have as many bots as you want across as many accounts as you want, the limit to only using bots from the account you are logged in to has been lifted from previous Portal versions.
+
+- Bots will automatically accept a guild invite if you are the guild master
+
+- Upon login, all bots that are on your guild will automatically be logged in when you log in to the game.
+
+- All bots currently logged in will level up with you and automatically gain new skills and all level appropriate spells. Bots will also randomly learn professions and level those up as well.
+
+- Bots will only be summoned to you if they are on you party.
+
+More features will be implemented as time goes on.
