@@ -31,13 +31,14 @@
 #include <map>
 #include <set>
 #include <list>
+#include <deque>
+#include <mutex>
 
 class Object;
 class ObjectGuid;
 class WorldPacket;
 class WorldSession;
 class Player;
-class SqlResultQueue;
 class QueryResult;
 class WorldSocket;
 
@@ -531,7 +532,7 @@ class World
         void ServerMaintenanceStart();
 
         void ProcessCliCommands();
-        void QueueCliCommand(CliCommandHolder* commandHolder) { cliCmdQueue.add(commandHolder); }
+        void QueueCliCommand(CliCommandHolder* commandHolder) { std::lock_guard<std::mutex> guard(m_cliCommandQueueLock); m_cliCommandQueue.push_back(commandHolder); }
 
         void UpdateResultQueue();
         void InitResultQueue();
@@ -593,7 +594,7 @@ class World
         uint32 mail_timer;
         uint32 mail_timer_expires;
 
-        typedef UNORDERED_MAP<uint32, WorldSession*> SessionMap;
+        typedef std::unordered_map<uint32, WorldSession*> SessionMap;
         SessionMap m_sessions;
         uint32 m_maxActiveSessionCount;
         uint32 m_maxQueuedSessionCount;
@@ -624,14 +625,17 @@ class World
         static uint32 m_relocation_ai_notify_delay;
 
         // CLI command holder to be thread safe
-        ACE_Based::LockedQueue<CliCommandHolder*> cliCmdQueue;
+        std::mutex m_cliCommandQueueLock;
+        std::deque<CliCommandHolder *> m_cliCommandQueue;
 
         // Player Queue
         Queue m_QueuedSessions;
 
         // sessions that are added async
         void AddSession_(WorldSession* s);
-        ACE_Based::LockedQueue<WorldSession*> addSessQueue;
+
+        std::mutex m_sessionAddQueueLock;
+        std::deque<WorldSession *> m_sessionAddQueue;
 
         // used versions
         std::string m_DBVersion;
