@@ -466,7 +466,7 @@ void PlayerbotMgr::HandleMasterIncomingPacket(const WorldPacket& packet)
             uint32 unk1;
             p >> guid >> quest;
 
-            DEBUG_LOG ("[PlayerbotMgr]: HandleMasterIncomingPacket - Received CMSG_QUESTGIVER_ACCEPT_QUEST npc = %s, quest = %u, unk1 = %u", guid.GetString().c_str(), quest, unk1);
+            DEBUG_LOG ("[PlayerbotMgr]: HandleMasterIncomingPacket - Received CMSG_QUESTGIVER_ACCEPT_QUEST npc = %s, quest = %u", guid.GetString().c_str(), quest);
 
             Quest const* qInfo = sObjectMgr.GetQuestTemplate(quest);
             if (qInfo)

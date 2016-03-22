@@ -150,6 +150,9 @@
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|X64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|X64'" />
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>D:\boost\boost_1_60_0;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
       <TypeLibraryName>.\..\..\bin\Release\mangosd.tlb</TypeLibraryName>
@@ -257,7 +260,7 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\..\dep\include\gsoap;..\..\dep\include;..\..\src\framework;..\..\src\shared;..\..\src\game;..\..\src\mangosd;..\..\dep\ACE_wrappers;$(BOOST_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>VERSION="0.17";WIN32;_DEBUG;MANGOS_DEBUG;_CONSOLE;ENABLE_CLI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-     <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -309,7 +312,7 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\..\dep\include\gsoap;..\..\dep\include;..\..\src\framework;..\..\src\shared;..\..\src\game;..\..\src\mangosd;..\..\dep\ACE_wrappers;$(BOOST_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>VERSION="0.17";WIN32;_DEBUG;MANGOS_DEBUG;_CONSOLE;ENABLE_CLI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-     <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -358,7 +361,7 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\..\dep\include\gsoap;..\..\dep\include;..\..\src\framework;..\..\src\shared;..\..\src\game;..\..\src\mangosd;..\..\dep\ACE_wrappers;$(BOOST_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>VERSION="0.17";WIN32;_DEBUG;MANGOS_DEBUG;_CONSOLE;ENABLE_CLI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-     <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug_NoPCH|Win32">
@@ -599,6 +599,7 @@
     <ClInclude Include="..\..\src\game\PetAI.h" />
     <ClInclude Include="..\..\src\game\Player.h" />
     <ClInclude Include="..\..\src\game\playerbot\PlayerbotAI.h" />
+    <ClInclude Include="..\..\src\game\playerbot\PlayerbotBehavior.h" />
     <ClInclude Include="..\..\src\game\playerbot\PlayerbotClassAI.h" />
     <ClInclude Include="..\..\src\game\playerbot\PlayerbotDruidAI.h" />
     <ClInclude Include="..\..\src\game\playerbot\PlayerbotHunterAI.h" />
@@ -606,6 +607,7 @@
     <ClInclude Include="..\..\src\game\playerbot\PlayerbotMgr.h" />
     <ClInclude Include="..\..\src\game\playerbot\PlayerbotPaladinAI.h" />
     <ClInclude Include="..\..\src\game\playerbot\PlayerbotPriestAI.h" />
+    <ClInclude Include="..\..\src\game\playerbot\PlayerbotRaidGroup.h" />
     <ClInclude Include="..\..\src\game\playerbot\PlayerbotRogueAI.h" />
     <ClInclude Include="..\..\src\game\playerbot\PlayerbotShamanAI.h" />
     <ClInclude Include="..\..\src\game\playerbot\PlayerbotWarlockAI.h" />
