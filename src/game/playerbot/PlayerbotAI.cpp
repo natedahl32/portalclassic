@@ -5483,6 +5483,10 @@ void PlayerbotAI::findNearbyCreature()
             itr = m_findNPC.erase(itr); // all done lets go home
             m_bot->GetMotionMaster()->Clear(false);
             m_bot->GetMotionMaster()->MoveIdle();
+			// This is a fix for when the iterator returned from FindNPC is the last. If it is the end we break the loop or else
+			// we might try to increment passed the last iteration. http://stackoverflow.com/questions/6167082/c-list-iterator-not-incrementable
+			if (itr == m_findNPC.end())
+				break;
         }
     }
 }
