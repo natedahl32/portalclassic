@@ -468,8 +468,10 @@ void PlayerbotWarlockAI::CheckDemon()
         demonOfChoice = DEMON_FELHUNTER;
     else if (spec == WARLOCK_SPEC_DEMONOLOGY)
         demonOfChoice = DEMON_SUCCUBUS;
-    else if (spec == WARLOCK_SPEC_DESTRUCTION)
-        demonOfChoice = DEMON_IMP;
+	else if (spec == WARLOCK_SPEC_DESTRUCTION)
+		demonOfChoice = DEMON_IMP;
+	else
+		demonOfChoice = DEMON_IMP; // Added for low level players below 10 that do not have a spec yet. Was throwing an error.
 
     // Summon demon
     if (!pet || m_isTempImp)

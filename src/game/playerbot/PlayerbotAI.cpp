@@ -747,7 +747,7 @@ bool PlayerbotAI::IsItemAnUpgrade(Item* pItem)
 
 	// Not a weapon or armor item
 	return false;
-        }
+}
 
 bool PlayerbotAI::IsItemAnUpgrade(ItemPrototype const *pProto)
 {
@@ -827,7 +827,7 @@ bool PlayerbotAI::IsItemAnUpgrade(ItemPrototype const *pProto)
 			if (pProto->Quality > pItemCurrentProto->Quality)
 				return true;
 			else if (pProto->Quality < pItemCurrentProto->Quality)
-    return false;
+				return false;
 
 			// If item is same quality and the level of the item is higher, we will assume the item is an upgrade. This isn't ALWAYS true, and isn't necessarily always close.
 			// Would be better to institue item lists instead but that's more work.
@@ -839,7 +839,7 @@ bool PlayerbotAI::IsItemAnUpgrade(ItemPrototype const *pProto)
 
 			// Check with class AI
 			return m_classAI->IsNewItemAnUpgrade(pProto, pItemCurrentProto);
-}
+		}
 		// No item currently equipped. It's an upgrade
 		else {
 			TellMaster("No item currently found in this slot! I can equip here!");
@@ -5505,7 +5505,7 @@ bool PlayerbotAI::IsElite(Unit* pTarget) const
     }
 
     return false;
-    }
+}
 
 // Check if bot target has one of the following auras: Sap, Polymorph, Shackle Undead, Banish, Seduction, Freezing Trap, Hibernate
 // This is used by the AI to prevent bots from attacking crowd control targets
