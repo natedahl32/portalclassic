@@ -340,6 +340,19 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recv_data)
                     return;
             }
 
+			// Playerbot mod: broadcast message to bot members
+			for (GroupReference* itr = group->GetFirstMember(); itr != nullptr; itr = itr->next())
+			{
+				Player* player = itr->getSource();
+				if (player && player->GetPlayerbotAI())
+				{
+					player->GetPlayerbotAI()->HandleCommand(msg, *GetPlayer());
+					GetPlayer()->m_speakTime = 0;
+					GetPlayer()->m_speakCount = 0;
+				}
+			}
+			// END Playerbot mod
+
             WorldPacket data;
             ChatHandler::BuildChatPacket(data, CHAT_MSG_RAID, msg.c_str(), Language(lang), _player->GetChatTag(), _player->GetObjectGuid(), _player->GetName());
             group->BroadcastPacket(&data, false);
@@ -369,6 +382,19 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recv_data)
                 if (!group || group->isBGGroup() || !group->isRaidGroup() || !group->IsLeader(_player->GetObjectGuid()))
                     return;
             }
+
+			// Playerbot mod: broadcast message to bot members
+			for (GroupReference* itr = group->GetFirstMember(); itr != nullptr; itr = itr->next())
+			{
+				Player* player = itr->getSource();
+				if (player && player->GetPlayerbotAI())
+				{
+					player->GetPlayerbotAI()->HandleCommand(msg, *GetPlayer());
+					GetPlayer()->m_speakTime = 0;
+					GetPlayer()->m_speakCount = 0;
+				}
+			}
+			// END Playerbot mod
 
             WorldPacket data;
             ChatHandler::BuildChatPacket(data, CHAT_MSG_RAID_LEADER, msg.c_str(), Language(lang), _player->GetChatTag(), _player->GetObjectGuid(), _player->GetName());
