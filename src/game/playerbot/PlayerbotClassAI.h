@@ -90,6 +90,9 @@ protected:
 
     // first aid
     uint32 RECENTLY_BANDAGED;
+
+	// stat weights
+	float m_statWeights[MAX_ITEM_MOD];
 };
 
 #endif

@@ -534,6 +534,16 @@ struct ItemPrototype
 
     bool IsPotion() const { return Class == ITEM_CLASS_CONSUMABLE && SubClass == ITEM_SUBCLASS_POTION; }
     bool IsConjuredConsumable() const { return Class == ITEM_CLASS_CONSUMABLE && (Flags & ITEM_FLAG_CONJURED); }
+
+	float getDPS() const
+	{
+		if (Delay == 0)
+			return 0;
+		float temp = 0;
+		for (int i = 0; i < MAX_ITEM_PROTO_DAMAGES; ++i)
+			temp += Damage[i].DamageMin + Damage[i].DamageMax;
+		return temp * 500 / Delay;
+	}
 };
 
 // GCC have alternative #pragma pack() syntax and old gcc version not support pack(pop), also any gcc version not support it at some platform

@@ -59,6 +59,38 @@ PlayerbotPriestAI::PlayerbotPriestAI(Player* const master, Player* const bot, Pl
     SHADOWMELD                    = m_ai->initSpell(SHADOWMELD_ALL);
     BERSERKING                    = m_ai->initSpell(BERSERKING_ALL); // troll
     WILL_OF_THE_FORSAKEN          = m_ai->initSpell(WILL_OF_THE_FORSAKEN_ALL); // undead
+
+	// Create stat weights for priest, not based on spec (no basis behind these, just guesstimates)
+	// Create stat weights for druid (no basis behind these, just guesstimates)
+	uint32 spec = m_bot->GetSpec();
+	if (spec == PRIEST_SPEC_DISCIPLINE || spec == PRIEST_SPEC_HOLY) {
+		m_statWeights[ITEM_MOD_STAMINA] = 0.45f;
+		m_statWeights[ITEM_MOD_SPIRIT] = 0.6f;
+		m_statWeights[ITEM_MOD_INTELLECT] = 0.9f;
+		m_statWeights[ITEM_MOD_STRENGTH] = 0.05f;
+		m_statWeights[ITEM_MOD_AGILITY] = 0.05f;
+		m_statWeights[ITEM_MOD_MANA] = 0.85f;
+		m_statWeights[ITEM_MOD_HEALTH] = 0.5f;
+}
+	else if (spec == PRIEST_SPEC_SHADOW) {
+		m_statWeights[ITEM_MOD_STAMINA] = 0.45f;
+		m_statWeights[ITEM_MOD_SPIRIT] = 0.35f;
+		m_statWeights[ITEM_MOD_INTELLECT] = 0.9f;
+		m_statWeights[ITEM_MOD_STRENGTH] = 0.05f;
+		m_statWeights[ITEM_MOD_AGILITY] = 0.05f;
+		m_statWeights[ITEM_MOD_MANA] = 0.55f;
+		m_statWeights[ITEM_MOD_HEALTH] = 0.5f;
+	}
+	// Catch all for no spec (pre level 10) or no talent points assigned
+	else {
+		m_statWeights[ITEM_MOD_STAMINA] = 0.45f;
+		m_statWeights[ITEM_MOD_SPIRIT] = 0.35f;
+		m_statWeights[ITEM_MOD_INTELLECT] = 0.9f;
+		m_statWeights[ITEM_MOD_STRENGTH] = 0.05f;
+		m_statWeights[ITEM_MOD_AGILITY] = 0.05f;
+		m_statWeights[ITEM_MOD_MANA] = 0.55f;
+		m_statWeights[ITEM_MOD_HEALTH] = 0.5f;
+	}
 }
 
 PlayerbotPriestAI::~PlayerbotPriestAI() {}
@@ -75,9 +107,9 @@ CombatManeuverReturns PlayerbotPriestAI::DoFirstCombatManeuver(Unit* pTarget)
                return HealPlayer(GetHealTarget());
             else
                 return RETURN_NO_ACTION_OK; // wait it out
-        }
+}
         else
-        {
+{
             m_ai->ClearGroupCombatOrder(PlayerbotAI::ORDERS_TEMP_WAIT_TANKAGGRO);
         }
     }
@@ -86,12 +118,12 @@ CombatManeuverReturns PlayerbotPriestAI::DoFirstCombatManeuver(Unit* pTarget)
     {
         if (m_WaitUntil > m_ai->CurrentTime() && !m_ai->IsGroupInCombat())
             return RETURN_NO_ACTION_OK; // wait it out
-        else
+    else
             m_ai->ClearGroupCombatOrder(PlayerbotAI::ORDERS_TEMP_WAIT_OOC);
     }
 
     switch (m_ai->GetScenarioType())
-    {
+{
         case PlayerbotAI::SCENARIO_PVP_DUEL:
         case PlayerbotAI::SCENARIO_PVP_BG:
         case PlayerbotAI::SCENARIO_PVP_ARENA:
@@ -106,7 +138,7 @@ CombatManeuverReturns PlayerbotPriestAI::DoFirstCombatManeuver(Unit* pTarget)
     }
 
     return RETURN_NO_ACTION_ERROR;
-}
+    }
 
 CombatManeuverReturns PlayerbotPriestAI::DoFirstCombatManeuverPVE(Unit* /*pTarget*/)
 {
@@ -120,21 +152,21 @@ CombatManeuverReturns PlayerbotPriestAI::DoFirstCombatManeuverPVE(Unit* /*pTarge
             return RETURN_FINISHED_FIRST_MOVES;
     }
     return RETURN_NO_ACTION_OK;
-}
+    }
 
 CombatManeuverReturns PlayerbotPriestAI::DoFirstCombatManeuverPVP(Unit* /*pTarget*/)
-{
+    {
     return RETURN_NO_ACTION_OK;
-}
+    }
 
 CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuver(Unit *pTarget)
-{
+    {
     // Face enemy, make sure bot is attacking
     if (!m_bot->HasInArc(M_PI_F, pTarget))
         m_bot->SetFacingTo(m_bot->GetAngle(pTarget));
 
     switch (m_ai->GetScenarioType())
-    {
+        {
         case PlayerbotAI::SCENARIO_PVP_DUEL:
         case PlayerbotAI::SCENARIO_PVP_BG:
         case PlayerbotAI::SCENARIO_PVP_ARENA:
@@ -149,7 +181,7 @@ CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuver(Unit *pTarget)
     }
 
     return RETURN_NO_ACTION_ERROR;
-}
+        }
 
 CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVE(Unit *pTarget)
 {
@@ -192,7 +224,7 @@ CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVE(Unit *pTarget)
     if (newTarget) // TODO: && party has a tank
     {
         if (FADE > 0 && !m_bot->HasAura(FADE, EFFECT_INDEX_0) && !m_bot->HasSpellCooldown(FADE))
-        {
+            {
             if (CastSpell(FADE, m_bot))
             {
                 m_ai->TellMaster("I'm casting fade.");
@@ -205,7 +237,7 @@ CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVE(Unit *pTarget)
         // Heal myself
         // TODO: move to HealTarget code
         if (m_ai->GetHealthPercent() < 35 && POWER_WORD_SHIELD > 0 && !m_bot->HasAura(POWER_WORD_SHIELD, EFFECT_INDEX_0) && !m_bot->HasAura(WEAKNED_SOUL, EFFECT_INDEX_0))
-        {
+            {
             if (CastSpell(POWER_WORD_SHIELD) & RETURN_CONTINUE)
             {
                 m_ai->TellMaster("I'm casting PW:S on myself.");
@@ -213,12 +245,12 @@ CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVE(Unit *pTarget)
             }
             else if (m_ai->IsHealer()) // Even if any other RETURN_ANY_OK - aside from RETURN_CONTINUE
                 m_ai->TellMaster("Your healer's about TO DIE. HELP ME.");
-        }
+            }
         if (m_ai->GetHealthPercent() < 35 && DESPERATE_PRAYER > 0 && m_ai->In_Reach(m_bot,DESPERATE_PRAYER) && CastSpell(DESPERATE_PRAYER, m_bot) & RETURN_CONTINUE)
-        {
+            {
             m_ai->TellMaster("I'm casting desperate prayer.");
             return RETURN_CONTINUE;
-        }
+            }
         // Night Elves priest bot can also cast Elune's Grace to improve his/her dodge rating
         if (ELUNES_GRACE && !m_bot->HasAura(ELUNES_GRACE, EFFECT_INDEX_0) && !m_bot->HasSpellCooldown(ELUNES_GRACE) && CastSpell(ELUNES_GRACE, m_bot))
             return RETURN_CONTINUE;
@@ -229,7 +261,7 @@ CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVE(Unit *pTarget)
 
         // Have threat, can't quickly lower it. 3 options remain: Stop attacking, lowlevel damage (wand), keep on keeping on.
         if (newTarget->GetHealthPercent() > 25)
-        {
+            {
             // If elite, do nothing and pray tank gets aggro off you
             if (m_ai->IsElite(newTarget))
                 return RETURN_NO_ACTION_OK;
@@ -237,27 +269,27 @@ CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVE(Unit *pTarget)
             // Not an elite. You could insert PSYCHIC SCREAM here but in any PvE situation that's 90-95% likely
             // to worsen the situation for the group. ... So please don't.
             return CastSpell(SHOOT, pTarget);
-        }
-    }
+            }
+            }
 
     // Heal
     if (m_ai->IsHealer())
-    {
+            {
         if (HealPlayer(GetHealTarget()) & RETURN_CONTINUE)
             return RETURN_CONTINUE;
-    }
+            }
     else
-    {
+            {
         // Is this desirable? Debatable.
         // ... Certainly could be very detrimental to a shadow priest
         // TODO: In a group/raid with a healer you'd want this bot to focus on DPS (it's not specced/geared for healing either)
         if (HealPlayer(m_bot) & RETURN_CONTINUE)
             return RETURN_CONTINUE;
-    }
+            }
 
     // Do damage tweaking for healers here
     if (m_ai->IsHealer())
-    {
+            {
         // If target is elite and not handled by MT: do nothing
         if (m_ai->IsElite(pTarget) && pMainTank && pMainTank->getVictim() != pTarget)
             return RETURN_NO_ACTION_OK;
@@ -268,7 +300,7 @@ CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVE(Unit *pTarget)
             return RETURN_CONTINUE;
         else // else shoot at it
         return CastSpell(SHOOT, pTarget);
-    }
+            }
 
     // Damage Spells
 
@@ -307,7 +339,7 @@ CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVE(Unit *pTarget)
             if (SMITE > 0 && m_ai->In_Reach(pTarget,SMITE) && CastSpell(SMITE, pTarget))
                 return RETURN_CONTINUE;
             break;
-    }
+            }
 
     // No spec due to low level OR no spell found yet
     if (MIND_BLAST > 0 && m_ai->In_Reach(pTarget,MIND_BLAST) && (!m_bot->HasSpellCooldown(MIND_BLAST)) && CastSpell(MIND_BLAST, pTarget))
@@ -315,10 +347,10 @@ CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVE(Unit *pTarget)
     if (SHADOW_WORD_PAIN > 0 && m_ai->In_Reach(pTarget,SHADOW_WORD_PAIN) && !pTarget->HasAura(SHADOW_WORD_PAIN, EFFECT_INDEX_0) && CastSpell(SHADOW_WORD_PAIN, pTarget))
         return RETURN_CONTINUE;
     if (MIND_FLAY > 0 && m_ai->In_Reach(pTarget,MIND_FLAY) && CastSpell(MIND_FLAY, pTarget))
-    {
+            {
         m_ai->SetIgnoreUpdateTime(3);
         return RETURN_CONTINUE;
-    }
+            }
     if (SHADOWFORM == 0 && SMITE > 0 && m_ai->In_Reach(pTarget,SMITE) && CastSpell(SMITE, pTarget))
         return RETURN_CONTINUE;
 
@@ -328,7 +360,7 @@ CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVE(Unit *pTarget)
 CombatManeuverReturns PlayerbotPriestAI::DoNextCombatManeuverPVP(Unit* pTarget)
 {
     switch (m_ai->GetScenarioType())
-    {
+{
         case PlayerbotAI::SCENARIO_PVP_DUEL:
             // TODO: spec tweaking
             if (m_ai->HasAura(SCREAM, *pTarget) && m_ai->GetHealthPercent() < 60 && HEAL && m_ai->In_Reach(pTarget,HEAL) && CastSpell(HEAL) & RETURN_ANY_OK)
@@ -369,7 +401,7 @@ CombatManeuverReturns PlayerbotPriestAI::HealPlayer(Player* target)
     if (!target->isAlive())
     {
         if (RESURRECTION && m_ai->In_Reach(target,RESURRECTION) && m_ai->CastSpell(RESURRECTION, *target))
-        {
+    {
             std::string msg = "Resurrecting ";
             msg += target->GetName();
             m_bot->Say(msg, LANG_UNIVERSAL);
@@ -399,7 +431,7 @@ CombatManeuverReturns PlayerbotPriestAI::HealPlayer(Player* target)
             {
                 // only remove negative effects
                 if ((holder->GetSpellProto()->Dispel == DISPEL_MAGIC) && !holder->IsPositive() && PRIEST_DISPEL_MAGIC > 0)
-                {
+    {
                     if (m_ai->CastSpell(PRIEST_DISPEL_MAGIC, *target))
                     return RETURN_CONTINUE;
                     return RETURN_NO_ACTION_ERROR;
@@ -451,7 +483,7 @@ CombatManeuverReturns PlayerbotPriestAI::HealPlayer(Player* target)
 } // end HealTarget
 
 void PlayerbotPriestAI::DoNonCombatActions()
-{
+            {
     if (!m_ai)   return;
     if (!m_bot)  return;
 
@@ -461,11 +493,11 @@ void PlayerbotPriestAI::DoNonCombatActions()
 
     // selfbuff goes first
     if (m_ai->SelfBuff(INNER_FIRE))
-        return;
+                    return;
 
     // Revive
     if (HealPlayer(GetResurrectionTarget()) & RETURN_CONTINUE)
-        return;
+                    return;
 
     // After revive
     if (spec == PRIEST_SPEC_SHADOW && SHADOWFORM > 0)
@@ -475,37 +507,37 @@ void PlayerbotPriestAI::DoNonCombatActions()
 
     // Heal
     if (m_ai->IsHealer())
-    {
+                {
         if (HealPlayer(GetHealTarget()) & RETURN_CONTINUE)
             return;// RETURN_CONTINUE;
-    }
-    else
+                }
+                else
     {
         // Is this desirable? Debatable.
         // TODO: In a group/raid with a healer you'd want this bot to focus on DPS (it's not specced/geared for healing either)
         if (HealPlayer(m_bot) & RETURN_CONTINUE)
             return;// RETURN_CONTINUE;
-    }
+            }
 
     // Buff
     if (m_bot->GetGroup() && m_ai->HasSpellReagents(PRAYER_OF_FORTITUDE))
-    {
+            {
         if (Buff(&PlayerbotPriestAI::BuffHelper, PRAYER_OF_FORTITUDE) & RETURN_CONTINUE)
             return;
         if (Buff(&PlayerbotPriestAI::BuffHelper, PRAYER_OF_SPIRIT) & RETURN_CONTINUE)
-            return;
+                    return;
         if (m_ai->GetCombatOrder() & PlayerbotAI::ORDERS_RESIST_SHADOW && Buff(&PlayerbotPriestAI::BuffHelper, PRAYER_OF_SHADOW_PROTECTION) & RETURN_CONTINUE)
-            return;
-    }
+                    return;
+            }
     else
     {
         if (Buff(&PlayerbotPriestAI::BuffHelper, POWER_WORD_FORTITUDE) & RETURN_CONTINUE)
             return;
         if (Buff(&PlayerbotPriestAI::BuffHelper, DIVINE_SPIRIT, (JOB_ALL | JOB_MANAONLY)) & RETURN_CONTINUE)
-            return;
+                return;
         if (m_ai->GetCombatOrder() & PlayerbotAI::ORDERS_RESIST_SHADOW && Buff(&PlayerbotPriestAI::BuffHelper, SHADOW_PROTECTION, (JOB_TANK | JOB_HEAL)) & RETURN_CONTINUE)
-            return;
-    }
+                return;
+        }
     if (EatDrinkBandage())
         return;
 } // end DoNonCombatActions
@@ -520,7 +552,7 @@ bool PlayerbotPriestAI::BuffHelper(PlayerbotAI* ai, uint32 spellId, Unit *target
     Pet * pet = target->GetPet();
     if (pet && !pet->HasAuraType(SPELL_AURA_MOD_UNATTACKABLE) && ai->Buff(spellId, pet))
         return true;
-    
+
     if (ai->Buff(spellId, target))
         return true;
 
@@ -563,5 +595,43 @@ uint32 PlayerbotPriestAI::Neutralize(uint8 creatureType)
 
 bool PlayerbotPriestAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto)
 {
-	return false;
+	float newScore = 0;
+	float currentScore = 0;
+
+	// TODO: Move this to a common method, it is the same for all classes
+	// Loop through all mods on the item and calculate score
+	for (int i = 0; i < MAX_ITEM_MOD; i++) {
+		// Get values of the items for this mod
+		uint32 newVal = pNewProto->GetStatValue((ItemModType)i);
+		uint32 currentVal = pCurrentProto->GetStatValue((ItemModType)i);
+
+		// If this is health, we need to divide by the units of health per stamina so we get an accurate value of the two. Otherwise health
+		// will be overvalued. Same for mana.
+		if (i == ITEM_MOD_HEALTH) {
+			newVal = newVal / 10;
+			currentVal = currentVal / 10;
+		}
+		else if (i == ITEM_MOD_MANA) {
+			newVal = newVal / 15;
+			currentVal = currentVal / 15;
+		}
+
+		// Calculate the score
+		newScore += (newVal * m_statWeights[i]);
+		currentScore += (newVal * m_statWeights[i]);
+	}
+
+	// TODO: Calculate spell effects on items, such as +crit% and spellpower.
+	// TODO: Calculate damage modifiers on items
+
+	// Calculate DPS of a weapon
+	if (pNewProto->Class == ITEM_CLASS_WEAPON && pCurrentProto->Class == ITEM_CLASS_WEAPON) {
+		// Only care about wands DPS, caster weapons are stat sticks
+		if (pNewProto->SubClass == ITEM_SUBCLASS_WEAPON_WAND && pCurrentProto->SubClass == ITEM_SUBCLASS_WEAPON_WAND) {
+			newScore += (pNewProto->getDPS() * 0.09f);
+			currentScore += (pNewProto->getDPS() * 0.09f);
+		}
+	}
+
+	return newScore > currentScore;
 }

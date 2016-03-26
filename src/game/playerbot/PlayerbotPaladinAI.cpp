@@ -65,6 +65,46 @@ PlayerbotPaladinAI::PlayerbotPaladinAI(Player* const master, Player* const bot, 
 
     //The check doesn't work for now
     //PRAYER_OF_SHADOW_PROTECTION   = m_ai->initSpell(PriestSpells::PRAYER_OF_SHADOW_PROTECTION_1);
+
+	// Create stat weights for paladin (no basis behind these, just guesstimates)
+	uint32 spec = m_bot->GetSpec();
+	if (spec == PALADIN_SPEC_HOLY) {
+		m_statWeights[ITEM_MOD_STAMINA] = 0.45f;
+		m_statWeights[ITEM_MOD_SPIRIT] = 0.35f;
+		m_statWeights[ITEM_MOD_INTELLECT] = 0.9f;
+		m_statWeights[ITEM_MOD_STRENGTH] = 0.05f;
+		m_statWeights[ITEM_MOD_AGILITY] = 0.05f;
+		m_statWeights[ITEM_MOD_MANA] = 0.85f;
+		m_statWeights[ITEM_MOD_HEALTH] = 0.5f;
+	}
+	else if (spec == PALADIN_SPEC_RETRIBUTION) {
+		m_statWeights[ITEM_MOD_STAMINA] = 0.6f;
+		m_statWeights[ITEM_MOD_SPIRIT] = 0.05f;
+		m_statWeights[ITEM_MOD_INTELLECT] = 0.3f;
+		m_statWeights[ITEM_MOD_STRENGTH] = 0.9f;
+		m_statWeights[ITEM_MOD_AGILITY] = 0.7f;
+		m_statWeights[ITEM_MOD_MANA] = 0.4f;
+		m_statWeights[ITEM_MOD_HEALTH] = 0.6f;
+	}
+	else if (spec == PALADIN_SPEC_PROTECTION) {
+		m_statWeights[ITEM_MOD_STAMINA] = 0.8f;
+		m_statWeights[ITEM_MOD_SPIRIT] = 0.05f;
+		m_statWeights[ITEM_MOD_INTELLECT] = 0.3f;
+		m_statWeights[ITEM_MOD_STRENGTH] = 0.9f;
+		m_statWeights[ITEM_MOD_AGILITY] = 0.7f;
+		m_statWeights[ITEM_MOD_MANA] = 0.5f;
+		m_statWeights[ITEM_MOD_HEALTH] = 0.8f;
+	}
+	// Catch all for no spec (pre level 10) or no talent points assigned
+	else {
+		m_statWeights[ITEM_MOD_STAMINA] = 0.6f;
+		m_statWeights[ITEM_MOD_SPIRIT] = 0.05f;
+		m_statWeights[ITEM_MOD_INTELLECT] = 0.3f;
+		m_statWeights[ITEM_MOD_STRENGTH] = 0.9f;
+		m_statWeights[ITEM_MOD_AGILITY] = 0.7f;
+		m_statWeights[ITEM_MOD_MANA] = 0.4f;
+		m_statWeights[ITEM_MOD_HEALTH] = 0.6f;
+}
 }
 
 PlayerbotPaladinAI::~PlayerbotPaladinAI() {}
@@ -89,7 +129,7 @@ CombatManeuverReturns PlayerbotPaladinAI::DoFirstCombatManeuver(Unit* pTarget)
                     m_ai->Attack(m_ai->GetCurrentTarget());
 
                     // While everyone else is waiting 2 second, we need to build up aggro, so don't return
-                }
+}
                 else
                 {
                     // TODO: add check if target is ranged
@@ -108,7 +148,7 @@ CombatManeuverReturns PlayerbotPaladinAI::DoFirstCombatManeuver(Unit* pTarget)
     }
 
     if (m_ai->GetCombatOrder() & PlayerbotAI::ORDERS_TEMP_WAIT_OOC)
-    {
+{
         if (m_WaitUntil > m_ai->CurrentTime() && !m_ai->IsGroupInCombat())
             return RETURN_NO_ACTION_OK; // wait it out
         else
@@ -210,12 +250,12 @@ CombatManeuverReturns PlayerbotPaladinAI::DoNextCombatManeuverPVE(Unit *pTarget)
             return RETURN_CONTINUE;
     }
     else
-    {
+        {
         // Is this desirable? Debatable.
         // TODO: In a group/raid with a healer you'd want this bot to focus on DPS (it's not specced/geared for healing either)
         if (HealPlayer(m_bot) & (RETURN_NO_ACTION_OK | RETURN_CONTINUE))
             return RETURN_CONTINUE;
-    }
+        }
 
     //Used to determine if this bot has highest threat
     Unit* newTarget = m_ai->FindAttacker((PlayerbotAI::ATTACKERINFOTYPE) (PlayerbotAI::AIT_VICTIMSELF | PlayerbotAI::AIT_HIGHESTTHREAT), m_bot);
@@ -300,33 +340,33 @@ CombatManeuverReturns PlayerbotPaladinAI::HealPlayer(Player* target)
     if (!target->isAlive())
     {
         if (REDEMPTION && m_ai->CastSpell(REDEMPTION, *target))
-        {
+            {
             std::string msg = "Resurrecting ";
             msg += target->GetName();
             m_bot->Say(msg, LANG_UNIVERSAL);
             return RETURN_CONTINUE;
-        }
+            }
         return RETURN_NO_ACTION_ERROR; // not error per se - possibly just OOM
-    }
+            }
 
     if (PURIFY > 0 && (m_ai->GetCombatOrder() & PlayerbotAI::ORDERS_NODISPEL) == 0)
-    {
+            {
         uint32 DISPEL = CLEANSE > 0 ? CLEANSE : PURIFY;
         uint32 dispelMask  = GetDispellMask(DISPEL_DISEASE);
         uint32 dispelMask2 = GetDispellMask(DISPEL_POISON);
         uint32 dispelMask3 = GetDispellMask(DISPEL_MAGIC);
         Unit::SpellAuraHolderMap const& auras = target->GetSpellAuraHolderMap();
         for(Unit::SpellAuraHolderMap::const_iterator itr = auras.begin(); itr != auras.end(); ++itr)
-        {
+            {
             SpellAuraHolder *holder = itr->second;
             if ((1 << holder->GetSpellProto()->Dispel) & dispelMask)
             {
                 if (holder->GetSpellProto()->Dispel == DISPEL_DISEASE)
-                {
+            {
                     if (m_ai->CastSpell(DISPEL, *target))
                         return RETURN_CONTINUE;
                     return RETURN_NO_ACTION_ERROR;
-                }
+            }
             }
             else if ((1 << holder->GetSpellProto()->Dispel) & dispelMask2)
             {
@@ -335,7 +375,7 @@ CombatManeuverReturns PlayerbotPaladinAI::HealPlayer(Player* target)
                     if (m_ai->CastSpell(DISPEL, *target))
                         return RETURN_CONTINUE;
                     return RETURN_NO_ACTION_ERROR;
-                }
+            }
             }
             else if ((1 << holder->GetSpellProto()->Dispel) & dispelMask3 & (DISPEL == CLEANSE))
             {
@@ -344,10 +384,10 @@ CombatManeuverReturns PlayerbotPaladinAI::HealPlayer(Player* target)
                     if (m_ai->CastSpell(DISPEL, *target))
                         return RETURN_CONTINUE;
                     return RETURN_NO_ACTION_ERROR;
-                }
             }
-        }
-    }
+            }
+            }
+            }
 
     // Define a tank bot will look at
     Unit* pMainTank = GetHealTarget(JOB_TANK);
@@ -398,7 +438,7 @@ CombatManeuverReturns PlayerbotPaladinAI::HealPlayer(Player* target)
 } // end HealTarget
 
 void PlayerbotPaladinAI::CheckAuras()
-{
+            {
     if (!m_ai)  return;
     if (!m_bot) return;
 
@@ -406,24 +446,24 @@ void PlayerbotPaladinAI::CheckAuras()
 
     // If we have resist orders, adjust accordingly
     if (m_ai->GetCombatOrder() & PlayerbotAI::ORDERS_RESIST_FROST)
-    {
+            {
         if (!m_bot->HasAura(FROST_RESISTANCE_AURA) && FROST_RESISTANCE_AURA > 0 && !m_bot->HasAura(FROST_RESISTANCE_AURA))
             m_ai->CastSpell(FROST_RESISTANCE_AURA);
         return;
-    }
+            }
     else if (m_ai->GetCombatOrder() & PlayerbotAI::ORDERS_RESIST_FIRE)
-    {
+            {
         if (!m_bot->HasAura(FIRE_RESISTANCE_AURA) && FIRE_RESISTANCE_AURA > 0 && !m_bot->HasAura(FIRE_RESISTANCE_AURA))
             m_ai->CastSpell(FIRE_RESISTANCE_AURA);
         return;
-    }
+            }
     else if (m_ai->GetCombatOrder() & PlayerbotAI::ORDERS_RESIST_SHADOW)
-    {
+            {
         // Shadow protection check is broken, they stack!
         if (!m_bot->HasAura(SHADOW_RESISTANCE_AURA) && SHADOW_RESISTANCE_AURA > 0 && !m_bot->HasAura(SHADOW_RESISTANCE_AURA)) // /*&& !m_bot->HasAura(PRAYER_OF_SHADOW_PROTECTION)*/ /*&& !m_bot->HasAura(PRAYER_OF_SHADOW_PROTECTION)*/
             m_ai->CastSpell(SHADOW_RESISTANCE_AURA);
         return;
-    }
+            }
 
     // if there is a tank in the group, use concentration aura
     bool tankInGroup = false;
@@ -437,20 +477,20 @@ void PlayerbotPaladinAI::CheckAuras()
                 continue;
 
             if (GetTargetJob(groupMember) & JOB_TANK)
-    {
+            {
                 tankInGroup = true;
                 break;
             }
         }
-    }
+            }
 
     // If we have no resist orders, adjust aura based on spec or tank
     if (spec == PALADIN_SPEC_PROTECTION || tankInGroup)
-    {
+            {
         if (DEVOTION_AURA > 0 && !m_bot->HasAura(DEVOTION_AURA))
             m_ai->CastSpell(DEVOTION_AURA);
         return;
-    }
+            }
     else if (spec == PALADIN_SPEC_HOLY)
     {
         if (CONCENTRATION_AURA > 0 && !m_bot->HasAura(CONCENTRATION_AURA))
@@ -458,7 +498,7 @@ void PlayerbotPaladinAI::CheckAuras()
         return;
     }
     else if (spec == PALADIN_SPEC_RETRIBUTION)
-    {
+            {
         if (RETRIBUTION_AURA > 0 && !m_bot->HasAura(RETRIBUTION_AURA))
             m_ai->CastSpell(RETRIBUTION_AURA);
         return;
@@ -566,10 +606,10 @@ bool PlayerbotPaladinAI::CheckSealAndJudgement(Unit* pTarget)
         return true;
 
     return false;
-}
+    }
 
 void PlayerbotPaladinAI::DoNonCombatActions()
-{
+        {
     if (!m_ai)   return;
     if (!m_bot)  return;
 
@@ -590,25 +630,25 @@ void PlayerbotPaladinAI::DoNonCombatActions()
 
     // Heal
     if (m_ai->IsHealer())
-    {
+                {
         if (HealPlayer(GetHealTarget()) & RETURN_CONTINUE)
             return;// RETURN_CONTINUE;
-    }
-    else
+                }
+                else
     {
         // Is this desirable? Debatable.
         // TODO: In a group/raid with a healer you'd want this bot to focus on DPS (it's not specced/geared for healing either)
         if (HealPlayer(m_bot) & RETURN_CONTINUE)
             return;// RETURN_CONTINUE;
-    }
+            }
 
     // buff group
     if (Buff(&PlayerbotPaladinAI::BuffHelper, 1) & RETURN_CONTINUE) // Paladin's BuffHelper takes care of choosing the specific Blessing so just pass along a non-zero value
-        return;
+                return;
 
     // hp/mana check
     if (EatDrinkBandage())
-        return;
+                    return;
     // m_ai->TellMaster("DoNonCombatActions() - 10. past EatDrinkBandage()"); // debug
 }
 
@@ -649,7 +689,7 @@ bool PlayerbotPaladinAI::BuffHelper(PlayerbotAI* ai, uint32 spellId, Unit *targe
                     {
                         spellId = c->BLESSING_OF_SANCTUARY;
                         if (!spellId)
-                            return false;
+                return false;
                     }
                 }
             }
@@ -675,7 +715,7 @@ bool PlayerbotPaladinAI::BuffHelper(PlayerbotAI* ai, uint32 spellId, Unit *targe
                 {
                     spellId = c->BLESSING_OF_SANCTUARY;
                     if (!spellId)
-                        return false;
+                return false;
                 }
             }
             break;
@@ -704,11 +744,11 @@ bool PlayerbotPaladinAI::BuffHelper(PlayerbotAI* ai, uint32 spellId, Unit *targe
                 {
                     spellId = c->BLESSING_OF_SANCTUARY;
                     if (!spellId)
-                        return false;
-                }
+                return false;
+    }
             }
             break;
-    }
+}
 
     if (petSpellId == c->BLESSING_OF_MIGHT)
         petBigSpellId = c->GREATER_BLESSING_OF_MIGHT;
@@ -733,32 +773,32 @@ bool PlayerbotPaladinAI::BuffHelper(PlayerbotAI* ai, uint32 spellId, Unit *targe
     if (ai->HasSpellReagents(bigSpellId) && ai->Buff(bigSpellId, target))
         return true;
     if ((pet && !pet->HasAuraType(SPELL_AURA_MOD_UNATTACKABLE) && ai->Buff(petSpellId, pet)) || ai->Buff(spellId, target))
-        return true;
+            return true;
     return false;
-}
+    }
 
 // Match up with "Pull()" below
 bool PlayerbotPaladinAI::CanPull()
-{
+    {
     if (HAND_OF_RECKONING && !m_bot->HasSpellCooldown(HAND_OF_RECKONING))
         return true;
     if (EXORCISM && !m_bot->HasSpellCooldown(EXORCISM))
-        return true;
+            return true;
 
     return false;
-}
+    }
 
 // Match up with "CanPull()" above
 bool PlayerbotPaladinAI::Pull()
-{
+    {
     if (EXORCISM && m_ai->CastSpell(EXORCISM))
-        return true;
+            return true;
 
     return false;
-}
+    }
 
 bool PlayerbotPaladinAI::CastHoTOnTank()
-{
+    {
     if (!m_ai) return false;
 
     if ((PlayerbotAI::ORDERS_HEAL & m_ai->GetCombatOrder()) == 0) return false;
@@ -772,5 +812,40 @@ bool PlayerbotPaladinAI::CastHoTOnTank()
 
 bool PlayerbotPaladinAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto)
 {
-	return false;
+	float newScore = 0;
+	float currentScore = 0;
+
+	// TODO: Move this to a common method, it is the same for all classes
+	// Loop through all mods on the item and calculate score
+	for (int i = 0; i < MAX_ITEM_MOD; i++) {
+		// Get values of the items for this mod
+		uint32 newVal = pNewProto->GetStatValue((ItemModType)i);
+		uint32 currentVal = pCurrentProto->GetStatValue((ItemModType)i);
+
+		// If this is health, we need to divide by the units of health per stamina so we get an accurate value of the two. Otherwise health
+		// will be overvalued. Same for mana.
+		if (i == ITEM_MOD_HEALTH) {
+			newVal = newVal / 10;
+			currentVal = currentVal / 10;
+		}
+		else if (i == ITEM_MOD_MANA) {
+			newVal = newVal / 15;
+			currentVal = currentVal / 15;
+		}
+
+		// Calculate the score
+		newScore += (newVal * m_statWeights[i]);
+		currentScore += (newVal * m_statWeights[i]);
+	}
+
+	// TODO: Calculate spell effects on items, such as +crit% and spellpower.
+	// TODO: Calculate damage modifiers on items
+
+	// Calculate DPS of a weapon
+	if (pNewProto->Class == ITEM_CLASS_WEAPON && pCurrentProto->Class == ITEM_CLASS_WEAPON) {
+		newScore += (pNewProto->getDPS() * 0.09f);
+		currentScore += (pNewProto->getDPS() * 0.09f);
+	}
+
+	return newScore > currentScore;
 }

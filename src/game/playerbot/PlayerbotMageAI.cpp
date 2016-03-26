@@ -47,6 +47,15 @@ PlayerbotMageAI::PlayerbotMageAI(Player* const master, Player* const bot, Player
     PERCEPTION              = m_ai->initSpell(PERCEPTION_ALL); // human
     BERSERKING              = m_ai->initSpell(BERSERKING_ALL); // troll
     WILL_OF_THE_FORSAKEN    = m_ai->initSpell(WILL_OF_THE_FORSAKEN_ALL); // undead
+
+	// Create stat weights for mage, not based on spec (no basis behind these, just guesstimates)
+	m_statWeights[ITEM_MOD_STAMINA] = 0.45f;
+	m_statWeights[ITEM_MOD_SPIRIT] = 0.3f;
+	m_statWeights[ITEM_MOD_INTELLECT] = 0.9f;
+	m_statWeights[ITEM_MOD_STRENGTH] = 0.05f;
+	m_statWeights[ITEM_MOD_AGILITY] = 0.05f;
+	m_statWeights[ITEM_MOD_MANA] = 0.6f;
+	m_statWeights[ITEM_MOD_HEALTH] = 0.45f;
 }
 
 PlayerbotMageAI::~PlayerbotMageAI() {}
@@ -56,27 +65,27 @@ CombatManeuverReturns PlayerbotMageAI::DoFirstCombatManeuver(Unit* pTarget)
     // There are NPCs in BGs and Open World PvP, so don't filter this on PvP scenarios (of course if PvP targets anyone but tank, all bets are off anyway)
     // Wait until the tank says so, until any non-tank gains aggro or X seconds - whichever is shortest
     if (m_ai->GetCombatOrder() & PlayerbotAI::ORDERS_TEMP_WAIT_TANKAGGRO)
-    {
+{
         if (m_WaitUntil > m_ai->CurrentTime() && m_ai->GroupTankHoldsAggro())
-        {
+    {
             return RETURN_NO_ACTION_OK; // wait it out
-        }
-        else
-        {
-            m_ai->ClearGroupCombatOrder(PlayerbotAI::ORDERS_TEMP_WAIT_TANKAGGRO);
-        }
     }
+        else
+    {
+            m_ai->ClearGroupCombatOrder(PlayerbotAI::ORDERS_TEMP_WAIT_TANKAGGRO);
+            }
+            }
 
     if (m_ai->GetCombatOrder() & PlayerbotAI::ORDERS_TEMP_WAIT_OOC)
-    {
+            {
         if (m_WaitUntil > m_ai->CurrentTime() && !m_ai->IsGroupInCombat())
             return RETURN_NO_ACTION_OK; // wait it out
         else
             m_ai->ClearGroupCombatOrder(PlayerbotAI::ORDERS_TEMP_WAIT_OOC);
-    }
+            }
 
     switch (m_ai->GetScenarioType())
-    {
+            {
         case PlayerbotAI::SCENARIO_PVP_DUEL:
         case PlayerbotAI::SCENARIO_PVP_BG:
         case PlayerbotAI::SCENARIO_PVP_ARENA:
@@ -87,30 +96,30 @@ CombatManeuverReturns PlayerbotMageAI::DoFirstCombatManeuver(Unit* pTarget)
         case PlayerbotAI::SCENARIO_PVE_RAID:
         default:
             return DoFirstCombatManeuverPVE(pTarget);
-            break;
-    }
+                break;
+            }
 
     return RETURN_NO_ACTION_ERROR;
-}
+            }
 
 CombatManeuverReturns PlayerbotMageAI::DoFirstCombatManeuverPVE(Unit* /*pTarget*/)
-{
+            {
     return RETURN_NO_ACTION_OK;
-}
+            }
 
 CombatManeuverReturns PlayerbotMageAI::DoFirstCombatManeuverPVP(Unit* /*pTarget*/)
-{
+            {
     return RETURN_NO_ACTION_OK;
-}
+            }
 
 CombatManeuverReturns PlayerbotMageAI::DoNextCombatManeuver(Unit *pTarget)
-{
+            {
     // Face enemy, make sure bot is attacking
     if (!m_bot->HasInArc(M_PI_F, pTarget))
         m_bot->SetFacingTo(m_bot->GetAngle(pTarget));
 
     switch (m_ai->GetScenarioType())
-    {
+            {
         case PlayerbotAI::SCENARIO_PVP_DUEL:
         case PlayerbotAI::SCENARIO_PVP_BG:
         case PlayerbotAI::SCENARIO_PVP_ARENA:
@@ -121,14 +130,14 @@ CombatManeuverReturns PlayerbotMageAI::DoNextCombatManeuver(Unit *pTarget)
         case PlayerbotAI::SCENARIO_PVE_RAID:
         default:
             return DoNextCombatManeuverPVE(pTarget);
-            break;
-    }
+                break;
+            }
 
     return RETURN_NO_ACTION_ERROR;
-}
+            }
 
 CombatManeuverReturns PlayerbotMageAI::DoNextCombatManeuverPVE(Unit *pTarget)
-{
+            {
     if (!m_ai)  return RETURN_NO_ACTION_ERROR;
     if (!m_bot) return RETURN_NO_ACTION_ERROR;
 
@@ -146,12 +155,12 @@ CombatManeuverReturns PlayerbotMageAI::DoNextCombatManeuverPVE(Unit *pTarget)
     //Used to determine if this bot is highest on threat
     Unit *newTarget = m_ai->FindAttacker((PlayerbotAI::ATTACKERINFOTYPE) (PlayerbotAI::AIT_VICTIMSELF | PlayerbotAI::AIT_HIGHESTTHREAT), m_bot);
     if (newTarget) // TODO: && party has a tank
-    {
+            {
         // Insert instant threat reducing spell (if a mage has one)
 
         // Have threat, can't quickly lower it. 3 options remain: Stop attacking, lowlevel damage (wand), keep on keeping on.
         if (newTarget->GetHealthPercent() > 25)
-        {
+            {
             // If elite, do nothing and pray tank gets aggro off you
             // TODO: Is there an IsElite function? If so, find it and insert.
             //if (newTarget->IsElite())
@@ -161,11 +170,11 @@ CombatManeuverReturns PlayerbotMageAI::DoNextCombatManeuverPVE(Unit *pTarget)
             // to worsen the situation for the group. ... So please don't.
             CastSpell(SHOOT, pTarget);
             return RETURN_CONTINUE;
-        }
-    }
+            }
+            }
 
     switch (spec)
-    {
+            {
         case MAGE_SPEC_FROST:
             if (ICE_BLOCK > 0 && m_ai->In_Reach(m_bot,ICE_BLOCK) && pVictim == m_bot && !m_bot->HasAura(ICE_BLOCK, EFFECT_INDEX_0) && CastSpell(ICE_BLOCK, m_bot))
                 return RETURN_CONTINUE;
@@ -189,7 +198,7 @@ CombatManeuverReturns PlayerbotMageAI::DoNextCombatManeuverPVE(Unit *pTarget)
 
             if (FROSTBOLT > 0 && m_ai->In_Reach(pTarget,FROSTBOLT))
                 return CastSpell(FROSTBOLT, pTarget);
-            break;
+                break;
 
         case MAGE_SPEC_FIRE:
             if (FIRE_WARD > 0 && m_ai->In_Reach(m_bot,FIRE_WARD) && !m_bot->HasAura(FIRE_WARD, EFFECT_INDEX_0) && CastSpell(FIRE_WARD, m_bot))
@@ -211,7 +220,7 @@ CombatManeuverReturns PlayerbotMageAI::DoNextCombatManeuverPVE(Unit *pTarget)
 
             if (FIREBALL > 0 && m_ai->In_Reach(pTarget,FIREBALL))
                 return CastSpell(FIREBALL, pTarget);
-            break;
+                break;
 
         case MAGE_SPEC_ARCANE:
             if (ARCANE_POWER > 0 && m_ai->In_Reach(pTarget,ARCANE_POWER) && CastSpell(ARCANE_POWER, pTarget))
@@ -232,8 +241,8 @@ CombatManeuverReturns PlayerbotMageAI::DoNextCombatManeuverPVE(Unit *pTarget)
 
             if (FIREBALL > 0 && m_ai->In_Reach(pTarget,FIREBALL))
                 return CastSpell(FIREBALL, pTarget);
-            break;
-    }
+                break;
+            }
 
     // No spec due to low level OR no spell found yet
     if (FROSTBOLT > 0 && m_ai->In_Reach(pTarget,FROSTBOLT) && !pTarget->HasAura(FROSTBOLT, EFFECT_INDEX_0))
@@ -245,12 +254,12 @@ CombatManeuverReturns PlayerbotMageAI::DoNextCombatManeuverPVE(Unit *pTarget)
 } // end DoNextCombatManeuver
 
 CombatManeuverReturns PlayerbotMageAI::DoNextCombatManeuverPVP(Unit* pTarget)
-{
+            {
     if (FIREBALL && m_ai->In_Reach(pTarget,FIREBALL) && m_ai->CastSpell(FIREBALL))
         return RETURN_CONTINUE;
 
     return DoNextCombatManeuverPVE(pTarget); // TODO: bad idea perhaps, but better than the alternative
-}
+    }
 
 void PlayerbotMageAI::DoNonCombatActions()
 {
@@ -272,11 +281,11 @@ void PlayerbotMageAI::DoNonCombatActions()
     }
     else if (FROST_ARMOR)
         if (m_ai->SelfBuff(FROST_ARMOR))
-            return;
+                return;
 
     // buff group
     if (m_bot->GetGroup() && m_ai->HasSpellReagents(ARCANE_BRILLIANCE) && Buff(&PlayerbotMageAI::BuffHelper, ARCANE_BRILLIANCE) & RETURN_CONTINUE)
-        return;
+            return;
     else if (Buff(&PlayerbotMageAI::BuffHelper, ARCANE_INTELLECT, JOB_MANAONLY) & RETURN_CONTINUE)
         return;
 
@@ -313,7 +322,7 @@ bool PlayerbotMageAI::BuffHelper(PlayerbotAI* ai, uint32 spellId, Unit *target)
     if (ai->Buff(spellId, target))
         return true;
 
-    return false;
+        return false;
 }
 
 // Return to UpdateAI the spellId usable to neutralize a target with creaturetype
@@ -339,5 +348,43 @@ uint32 PlayerbotMageAI::Neutralize(uint8 creatureType)
 
 bool PlayerbotMageAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto)
 {
-	return false;
+	float newScore = 0;
+	float currentScore = 0;
+
+	// TODO: Move this to a common method, it is the same for all classes
+	// Loop through all mods on the item and calculate score
+	for (int i = 0; i < MAX_ITEM_MOD; i++) {
+		// Get values of the items for this mod
+		uint32 newVal = pNewProto->GetStatValue((ItemModType)i);
+		uint32 currentVal = pCurrentProto->GetStatValue((ItemModType)i);
+
+		// If this is health, we need to divide by the units of health per stamina so we get an accurate value of the two. Otherwise health
+		// will be overvalued. Same for mana.
+		if (i == ITEM_MOD_HEALTH) {
+			newVal = newVal / 10;
+			currentVal = currentVal / 10;
+		}
+		else if (i == ITEM_MOD_MANA) {
+			newVal = newVal / 15;
+			currentVal = currentVal / 15;
+		}
+
+		// Calculate the score
+		newScore += (newVal * m_statWeights[i]);
+		currentScore += (newVal * m_statWeights[i]);
+	}
+
+	// TODO: Calculate spell effects on items, such as +crit% and spellpower.
+	// TODO: Calculate damage modifiers on items
+
+	// Calculate DPS of a weapon
+	if (pNewProto->Class == ITEM_CLASS_WEAPON && pCurrentProto->Class == ITEM_CLASS_WEAPON) {
+		// Only care about wands DPS, caster weapons are stat sticks
+		if (pNewProto->SubClass == ITEM_SUBCLASS_WEAPON_WAND && pCurrentProto->SubClass == ITEM_SUBCLASS_WEAPON_WAND) {
+			newScore += (pNewProto->getDPS() * 0.09f);
+			currentScore += (pNewProto->getDPS() * 0.09f);
+		}
+	}
+
+	return newScore > currentScore;
 }

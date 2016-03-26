@@ -67,6 +67,15 @@ PlayerbotHunterAI::PlayerbotHunterAI(Player* const master, Player* const bot, Pl
 
     m_petSummonFailed = false;
     m_rangedCombat = true;
+
+	// Create stat weights for hunter, not based on spec (no basis behind these, just guesstimates)
+	m_statWeights[ITEM_MOD_STAMINA] = 0.45f;
+	m_statWeights[ITEM_MOD_SPIRIT] = 0.1f;
+	m_statWeights[ITEM_MOD_INTELLECT] = 0.05f;
+	m_statWeights[ITEM_MOD_STRENGTH] = 0.6f;
+	m_statWeights[ITEM_MOD_AGILITY] = 0.9f;
+	m_statWeights[ITEM_MOD_MANA] = 0.35f;
+	m_statWeights[ITEM_MOD_HEALTH] = 0.45f;
 }
 
 PlayerbotHunterAI::~PlayerbotHunterAI() {}
@@ -417,5 +426,40 @@ void PlayerbotHunterAI::DoNonCombatActions()
 
 bool PlayerbotHunterAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto)
 {
-	return false;
+	float newScore = 0;
+	float currentScore = 0;
+
+	// TODO: Move this to a common method, it is the same for all classes
+	// Loop through all mods on the item and calculate score
+	for (int i = 0; i < MAX_ITEM_MOD; i++) {
+		// Get values of the items for this mod
+		uint32 newVal = pNewProto->GetStatValue((ItemModType)i);
+		uint32 currentVal = pCurrentProto->GetStatValue((ItemModType)i);
+
+		// If this is health, we need to divide by the units of health per stamina so we get an accurate value of the two. Otherwise health
+		// will be overvalued. Same for mana.
+		if (i == ITEM_MOD_HEALTH) {
+			newVal = newVal / 10;
+			currentVal = currentVal / 10;
+		}
+		else if (i == ITEM_MOD_MANA) {
+			newVal = newVal / 15;
+			currentVal = currentVal / 15;
+		}
+
+		// Calculate the score
+		newScore += (newVal * m_statWeights[i]);
+		currentScore += (newVal * m_statWeights[i]);
+	}
+
+	// TODO: Calculate spell effects on items, such as +crit% and spellpower.
+	// TODO: Calculate damage modifiers on items
+
+	// Calculate DPS of a weapon
+	if (pNewProto->Class == ITEM_CLASS_WEAPON && pCurrentProto->Class == ITEM_CLASS_WEAPON) {
+		newScore += (pNewProto->getDPS() * 0.09f);
+		currentScore += (pNewProto->getDPS() * 0.09f);
+	}
+
+	return newScore > currentScore;
 }
