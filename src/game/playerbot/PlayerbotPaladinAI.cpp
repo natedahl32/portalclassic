@@ -88,6 +88,46 @@ PlayerbotPaladinAI::PlayerbotPaladinAI(Player* const master, Player* const bot, 
 
     //The check doesn't work for now
     //PRAYER_OF_SHADOW_PROTECTION   = m_ai->initSpell(PriestSpells::PRAYER_OF_SHADOW_PROTECTION_1);
+
+	// Create stat weights for paladin (no basis behind these, just guesstimates)
+	uint32 spec = m_bot->GetSpec();
+	if (spec == PALADIN_SPEC_HOLY) {
+		m_statWeights[ITEM_MOD_STAMINA] = 0.45f;
+		m_statWeights[ITEM_MOD_SPIRIT] = 0.35f;
+		m_statWeights[ITEM_MOD_INTELLECT] = 0.9f;
+		m_statWeights[ITEM_MOD_STRENGTH] = 0.05f;
+		m_statWeights[ITEM_MOD_AGILITY] = 0.05f;
+		m_statWeights[ITEM_MOD_MANA] = 0.85f;
+		m_statWeights[ITEM_MOD_HEALTH] = 0.5f;
+	}
+	else if (spec == PALADIN_SPEC_RETRIBUTION) {
+		m_statWeights[ITEM_MOD_STAMINA] = 0.6f;
+		m_statWeights[ITEM_MOD_SPIRIT] = 0.05f;
+		m_statWeights[ITEM_MOD_INTELLECT] = 0.3f;
+		m_statWeights[ITEM_MOD_STRENGTH] = 0.9f;
+		m_statWeights[ITEM_MOD_AGILITY] = 0.7f;
+		m_statWeights[ITEM_MOD_MANA] = 0.4f;
+		m_statWeights[ITEM_MOD_HEALTH] = 0.6f;
+	}
+	else if (spec == PALADIN_SPEC_PROTECTION) {
+		m_statWeights[ITEM_MOD_STAMINA] = 0.8f;
+		m_statWeights[ITEM_MOD_SPIRIT] = 0.05f;
+		m_statWeights[ITEM_MOD_INTELLECT] = 0.3f;
+		m_statWeights[ITEM_MOD_STRENGTH] = 0.9f;
+		m_statWeights[ITEM_MOD_AGILITY] = 0.7f;
+		m_statWeights[ITEM_MOD_MANA] = 0.5f;
+		m_statWeights[ITEM_MOD_HEALTH] = 0.8f;
+	}
+	// Catch all for no spec (pre level 10) or no talent points assigned
+	else {
+		m_statWeights[ITEM_MOD_STAMINA] = 0.6f;
+		m_statWeights[ITEM_MOD_SPIRIT] = 0.05f;
+		m_statWeights[ITEM_MOD_INTELLECT] = 0.3f;
+		m_statWeights[ITEM_MOD_STRENGTH] = 0.9f;
+		m_statWeights[ITEM_MOD_AGILITY] = 0.7f;
+		m_statWeights[ITEM_MOD_MANA] = 0.4f;
+		m_statWeights[ITEM_MOD_HEALTH] = 0.6f;
+	}
 }
 
 PlayerbotPaladinAI::~PlayerbotPaladinAI() {}
@@ -667,5 +707,40 @@ bool PlayerbotPaladinAI::CastHoTOnTank()
 
 bool PlayerbotPaladinAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto)
 {
-	return false;
+	float newScore = 0;
+	float currentScore = 0;
+
+	// TODO: Move this to a common method, it is the same for all classes
+	// Loop through all mods on the item and calculate score
+	for (int i = 0; i < MAX_ITEM_MOD; i++) {
+		// Get values of the items for this mod
+		uint32 newVal = pNewProto->GetStatValue((ItemModType)i);
+		uint32 currentVal = pCurrentProto->GetStatValue((ItemModType)i);
+
+		// If this is health, we need to divide by the units of health per stamina so we get an accurate value of the two. Otherwise health
+		// will be overvalued. Same for mana.
+		if (i == ITEM_MOD_HEALTH) {
+			newVal = newVal / 10;
+			currentVal = currentVal / 10;
+		}
+		else if (i == ITEM_MOD_MANA) {
+			newVal = newVal / 15;
+			currentVal = currentVal / 15;
+		}
+
+		// Calculate the score
+		newScore += (newVal * m_statWeights[i]);
+		currentScore += (newVal * m_statWeights[i]);
+	}
+
+	// TODO: Calculate spell effects on items, such as +crit% and spellpower.
+	// TODO: Calculate damage modifiers on items
+
+	// Calculate DPS of a weapon
+	if (pNewProto->Class == ITEM_CLASS_WEAPON && pCurrentProto->Class == ITEM_CLASS_WEAPON) {
+		newScore += (pNewProto->getDPS() * 0.09f);
+		currentScore += (pNewProto->getDPS() * 0.09f);
+	}
+
+	return newScore > currentScore;
 }

@@ -823,19 +823,19 @@ bool PlayerbotAI::IsItemAnUpgrade(ItemPrototype const *pProto)
 		{
 			const ItemPrototype* const pItemCurrentProto = pItemCurrent->GetProto();
 
-			// If item quality is better, we will assume the item is an upgrade. This isn't ALWAYS true, but it should be pretty close
-			if (pProto->Quality > pItemCurrentProto->Quality)
-				return true;
-			else if (pProto->Quality < pItemCurrentProto->Quality)
-				return false;
-
-			// If item is same quality and the level of the item is higher, we will assume the item is an upgrade. This isn't ALWAYS true, and isn't necessarily always close.
-			// Would be better to institue item lists instead but that's more work.
-			// TODO: Create item lists based on class spec and use that to determines if items of same quality are better or not (probably only really care about Epic and above quality, maybe Rare too at max level)
-			if (pProto->ItemLevel > pItemCurrentProto->ItemLevel)
-				return true;
-			else if (pProto->ItemLevel < pItemCurrentProto->ItemLevel)
-				return false;
+			// If any of the items we are comparing are less than rare and we can decide quality strictly by quality and item level
+			if (pProto->Quality < ITEM_QUALITY_RARE || pItemCurrentProto->Quality < ITEM_QUALITY_RARE) {
+				if (pProto->Quality > pItemCurrentProto->Quality) {
+					// If the quality is better the new item can be up to 10 item levels less than the current item to be an upgrade
+					if (pProto->ItemLevel >= (pItemCurrentProto->ItemLevel - 10))
+						return true;
+				}
+				else if (pProto->Quality == pItemCurrentProto->Quality) {
+					// If quality is the same the item level must be better than current item. If item level is same we will fall through
+					if (pProto->ItemLevel > pItemCurrentProto->ItemLevel)
+						return true;
+				}
+			}
 
 			// Check with class AI
 			return m_classAI->IsNewItemAnUpgrade(pProto, pItemCurrentProto);

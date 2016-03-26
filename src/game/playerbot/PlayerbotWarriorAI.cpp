@@ -4,6 +4,7 @@
    Author  : Natsukawa
    Version : 0.39
  */
+#include "../ItemPrototype.h"
 #include "PlayerbotWarriorAI.h"
 #include "PlayerbotMgr.h"
 
@@ -82,6 +83,37 @@ PlayerbotWarriorAI::PlayerbotWarriorAI(Player* const master, Player* const bot, 
     BLOODSURGE              = m_ai->initSpell(BLOODSURGE_1);
     TASTE_FOR_BLOOD         = m_ai->initSpell(TASTE_FOR_BLOOD_1);
     SUDDEN_DEATH            = m_ai->initSpell(SUDDEN_DEATH_1);
+
+	// Create stat weights for paladin (no basis behind these, just guesstimates)
+	uint32 spec = m_bot->GetSpec();
+	if (spec == WARRIOR_SPEC_ARMS || WARRIOR_SPEC_FURY) {
+		m_statWeights[ITEM_MOD_STAMINA] = 0.55f;
+		m_statWeights[ITEM_MOD_SPIRIT] = 0.05f;
+		m_statWeights[ITEM_MOD_INTELLECT] = 0.05f;
+		m_statWeights[ITEM_MOD_STRENGTH] = 0.9f;
+		m_statWeights[ITEM_MOD_AGILITY] = 0.7f;
+		m_statWeights[ITEM_MOD_MANA] = 0.05f;
+		m_statWeights[ITEM_MOD_HEALTH] = 0.55f;
+	}
+	else if (spec == WARRIOR_SPEC_PROTECTION) {
+		m_statWeights[ITEM_MOD_STAMINA] = 0.85f;
+		m_statWeights[ITEM_MOD_SPIRIT] = 0.05f;
+		m_statWeights[ITEM_MOD_INTELLECT] = 0.05f;
+		m_statWeights[ITEM_MOD_STRENGTH] = 0.9f;
+		m_statWeights[ITEM_MOD_AGILITY] = 0.6f;
+		m_statWeights[ITEM_MOD_MANA] = 0.05f;
+		m_statWeights[ITEM_MOD_HEALTH] = 0.85f;
+	}
+	// Catch all for no spec (pre level 10) or no talent points assigned
+	else {
+		m_statWeights[ITEM_MOD_STAMINA] = 0.55f;
+		m_statWeights[ITEM_MOD_SPIRIT] = 0.05f;
+		m_statWeights[ITEM_MOD_INTELLECT] = 0.05f;
+		m_statWeights[ITEM_MOD_STRENGTH] = 0.9f;
+		m_statWeights[ITEM_MOD_AGILITY] = 0.7f;
+		m_statWeights[ITEM_MOD_MANA] = 0.05f;
+		m_statWeights[ITEM_MOD_HEALTH] = 0.55f;
+	}
 }
 PlayerbotWarriorAI::~PlayerbotWarriorAI() {}
 
@@ -541,14 +573,40 @@ bool PlayerbotWarriorAI::Pull()
 
 bool PlayerbotWarriorAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto)
 {
-	// This is dependant on what spec we are in, for just use general stats
-	// ** CURRENTLY BASED ON FURY **
-	uint32 diffSTR = pNewProto->GetStatValue(ITEM_MOD_STRENGTH) - pCurrentProto->GetStatValue(ITEM_MOD_STRENGTH);
-	uint32 diffSTA = pNewProto->GetStatValue(ITEM_MOD_STAMINA) - pCurrentProto->GetStatValue(ITEM_MOD_STAMINA);
-	uint32 diffHealth = pNewProto->GetStatValue(ITEM_MOD_HEALTH) - pCurrentProto->GetStatValue(ITEM_MOD_HEALTH);
-	// Divide diffHealth by 10 because, 1 STAM = 10 HEALTH
-	// TODO: Take into account damage modifiers on the item
-	// TODO: Take into account spells on the item
+	float newScore = 0;
+	float currentScore = 0;
 
-	return false;
+	// TODO: Move this to a common method, it is the same for all classes
+	// Loop through all mods on the item and calculate score
+	for (int i = 0; i < MAX_ITEM_MOD; i++) {
+		// Get values of the items for this mod
+		uint32 newVal = pNewProto->GetStatValue((ItemModType)i);
+		uint32 currentVal = pCurrentProto->GetStatValue((ItemModType)i);
+
+		// If this is health, we need to divide by the units of health per stamina so we get an accurate value of the two. Otherwise health
+		// will be overvalued. Same for mana.
+		if (i == ITEM_MOD_HEALTH) {
+			newVal = newVal / 10;
+			currentVal = currentVal / 10;
+		}
+		else if (i == ITEM_MOD_MANA) {
+			newVal = newVal / 15;
+			currentVal = currentVal / 15;
+		}
+
+		// Calculate the score
+		newScore += (newVal * m_statWeights[i]);
+		currentScore += (newVal * m_statWeights[i]);
+	}
+
+	// TODO: Calculate spell effects on items, such as +crit% and spellpower.
+	// TODO: Calculate damage modifiers on items
+
+	// Calculate DPS of a weapon
+	if (pNewProto->Class == ITEM_CLASS_WEAPON && pCurrentProto->Class == ITEM_CLASS_WEAPON) {
+		newScore += (pNewProto->getDPS() * 0.09f);
+		currentScore += (pNewProto->getDPS() * 0.09f);
+	}
+	
+	return newScore > currentScore;
 }
