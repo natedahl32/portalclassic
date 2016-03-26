@@ -1,8 +1,8 @@
-This project is a continuation of the amazing Blueboy Portal Project for Classic World of Warcraft. 
+This project is a continuation of the amazing Blueboy Portal Project for Classic World of Warcraft. This project is NOT meant to be hosted publicly as it removes some security restrictions surrounding bots. Namely that any player logged in to the server can summon a bot from any account. The purpose of this project is to provide a Single Player experience in World of Warcraft where you can do PVE activities such as raids and dungeons with intelligents bots.
 
-This project was created to try and give a completely standalone single payer version of World of Warcraft using only bots. The goal is to allow you to play the game with bots as though the bits were actual players. Currently, there is a lot of setup and understanding of how bots work (commands and such) to use the program. The goal is eliminate most of the setup and difficulty of using bots and give them AI to act as normal players.
+The short term goal for this project is to provide "Boss Strategies" where you can assign your bots raid/group roles and groups that affect how act in a given encounter. Right now this is still conceptual and more details will be provided as things progress.
 
-Some current quality of life features that have already been implemented are:
+The following are some changes/enhancements that were made to this project.
 
 - You can have as many bots as you want across as many accounts as you want, the limit to only using bots from the account you are logged in to has been lifted from previous Portal versions.
 

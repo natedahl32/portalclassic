@@ -109,7 +109,15 @@ struct PlayerSpell
     bool disabled          : 1;                             // first rank has been learned in result talent learn but currently talent unlearned, save max learned ranks
 };
 
+struct PlayerTalent
+{
+	TalentEntry const* talentEntry;
+	uint32 currentRank;
+	PlayerSpellState state;
+};
+
 typedef std::unordered_map<uint32, PlayerSpell> PlayerSpellMap;
+typedef std::unordered_map<uint32, PlayerTalent> PlayerTalentMap;
 
 // Spell modifier (used for modify other spells)
 struct SpellModifier
@@ -1411,6 +1419,9 @@ class MANGOS_DLL_SPEC Player : public Unit
 
         SpellCooldowns const& GetSpellCooldownMap() const { return m_spellCooldowns; }
 
+		PlayerTalent const* GetKnownTalentById(int32 talentId) const;
+		SpellEntry const* GetKnownTalentRankById(int32 talentId) const;
+
         void AddSpellMod(SpellModifier* mod, bool apply);
         bool IsAffectedBySpellmod(SpellEntry const* spellInfo, SpellModifier* mod, Spell const* spell = nullptr);
         template <class T> T ApplySpellMod(uint32 spellId, SpellModOp op, T& basevalue, Spell const* spell = nullptr);
@@ -2079,6 +2090,7 @@ class MANGOS_DLL_SPEC Player : public Unit
         PlayerbotMgr* GetPlayerbotMgr() { return m_playerbotMgr; }
         void SetBotDeathTimer() { m_deathTimer = 0; }
         bool IsInDuel() const { return duel && duel->startTime != 0; }
+		PlayerTalentMap GetTalents(uint8 spec) { return m_talents[spec]; }
 
     protected:
 
@@ -2200,7 +2212,11 @@ class MANGOS_DLL_SPEC Player : public Unit
 
         PlayerMails m_mail;
         PlayerSpellMap m_spells;
+		PlayerTalentMap m_talents[MAX_TALENT_SPEC_COUNT];
         SpellCooldowns m_spellCooldowns;
+
+		uint8 m_activeSpec;
+		uint8 m_specsCount;
 
         GlobalCooldownMgr m_GlobalCooldownMgr;
 

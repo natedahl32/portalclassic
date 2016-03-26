@@ -382,6 +382,9 @@ Player::Player(WorldSession* session): Unit(), m_mover(this), m_camera(this), m_
     m_playerbotAI = 0;
     m_playerbotMgr = 0;
 
+	m_activeSpec = 0;
+	m_specsCount = 1;
+
     m_speakTime = 0;
     m_speakCount = 0;
 
@@ -2920,6 +2923,28 @@ bool Player::addSpell(uint32 spell_id, bool active, bool learning, bool dependen
 
     if (talentPos)
     {
+		// update talent map
+		PlayerTalentMap::iterator iter = m_talents[m_activeSpec].find(talentPos->talent_id);
+		if (iter != m_talents[m_activeSpec].end())
+		{
+			// check if ranks different or removed
+			if ((*iter).second.state == PLAYERSPELL_REMOVED || talentPos->rank != (*iter).second.currentRank)
+			{
+				(*iter).second.currentRank = talentPos->rank;
+
+				if ((*iter).second.state != PLAYERSPELL_NEW)
+					(*iter).second.state = PLAYERSPELL_CHANGED;
+			}
+		}
+		else
+		{
+			PlayerTalent talent;
+			talent.currentRank = talentPos->rank;
+			talent.talentEntry = sTalentStore.LookupEntry(talentPos->talent_id);
+			talent.state = IsInWorld() ? PLAYERSPELL_NEW : PLAYERSPELL_UNCHANGED;
+			m_talents[m_activeSpec][talentPos->talent_id] = talent;
+		}
+
         // update used talent points count
         m_usedTalentCount += GetTalentSpellCost(talentPos);
         UpdateFreeTalentPoints(false);
@@ -18398,6 +18423,23 @@ void Player::HandleFall(MovementInfo const& movementInfo)
             DEBUG_LOG("FALLDAMAGE z=%f sz=%f pZ=%f FallTime=%d mZ=%f damage=%d SF=%d" , position->z, height, GetPositionZ(), movementInfo.GetFallTime(), height, damage, safe_fall);
         }
     }
+}
+
+PlayerTalent const* Player::GetKnownTalentById(int32 talentId) const
+{
+	PlayerTalentMap::const_iterator itr = m_talents[m_activeSpec].find(talentId);
+	if (itr != m_talents[m_activeSpec].end() && itr->second.state != PLAYERSPELL_REMOVED)
+		return &itr->second;
+	else
+		return nullptr;
+}
+
+SpellEntry const* Player::GetKnownTalentRankById(int32 talentId) const
+{
+	if (PlayerTalent const* talent = GetKnownTalentById(talentId))
+		return sSpellStore.LookupEntry(talent->talentEntry->RankID[talent->currentRank]);
+	else
+		return nullptr;
 }
 
 void Player::LearnTalent(uint32 talentId, uint32 talentRank)
