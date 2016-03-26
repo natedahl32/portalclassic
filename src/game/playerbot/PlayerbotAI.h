@@ -556,16 +556,6 @@ enum TalentsWarrior  // 0x001
 	WARRIOR_BLOODTHIRST = 167 // TabId = 164 Tab = 1 Row = 6 Column = 1
 };
 
-// TODO: replace this with mangos data... I mean this has GOT to be out there somewhere already
-//       and when you do, don't forget to change everywhere (including the sql file)
-// But in the meantime, value + 412 = TabId.
-enum ClassesCombatPets
-{
-	CLASS_PET_CUNNING = -1,
-	CLASS_PET_FEROCITY = -2,
-	CLASS_PET_TENACITY = -3
-};
-
 enum TalentSpecPurpose
 {
 	TSP_NONE = 0x00000000,  // should probably error out?
@@ -622,8 +612,6 @@ struct TalentSpec
 	short specClass;
 	TalentSpecPurpose specPurpose;
 	uint16 talentId[71];
-	uint16 glyphIdMajor[3];
-	uint16 glyphIdMinor[3];
 };
 
 enum NotableItems
@@ -686,6 +674,15 @@ enum CombatManeuverReturns
     RETURN_ANY_OK                       = 0x31, // All the OK values bitwise OR'ed
     RETURN_ANY_ACTION                   = 0x30, // All returns that result in action (which should also be 'OK')
     RETURN_ANY_ERROR                    = 0x4C  // All the ERROR values bitwise OR'ed
+};
+
+enum m_FollowAutoGo
+{
+	FOLLOWAUTOGO_OFF = 0,
+	FOLLOWAUTOGO_INIT = 1,
+	FOLLOWAUTOGO_SET = 2,
+	FOLLOWAUTOGO_RESET = 3,
+	FOLLOWAUTOGO_RUN = 4
 };
 
 class MANGOS_DLL_SPEC PlayerbotAI
@@ -1090,6 +1087,25 @@ public:
 
 	void Levelup();
 
+	// Error check the TS DB. Should only be used when admins want to verify their new TS input
+	uint32 TalentSpecDBContainsError();
+
+	// Get talent specs or counts thereof
+	uint32 GetTalentSpecsAmount();
+	uint32 GetTalentSpecsAmount(long specClass);
+	std::list<TalentSpec> GetTalentSpecs(long specClass);
+	TalentSpec GetTalentSpec(long specClass, long choice);
+	TalentSpec GetActiveTalentSpec() { return m_activeTalentSpec; }
+	void ClearActiveTalentSpec() { m_activeTalentSpec.specName = ""; m_activeTalentSpec.specClass = 0; m_activeTalentSpec.specPurpose = TSP_NONE; for (int i = 0; i < 51; i++) m_activeTalentSpec.talentId[i] = 0; }
+	void SetActiveTalentSpec(TalentSpec ts) { m_activeTalentSpec = ts; }
+	bool ApplyActiveTalentSpec();
+
+	// added from 3.3.5 version
+	void FollowAutoReset();
+
+protected:
+	bool ValidateTalent(uint16 talent, long charClass);
+
 private:
     bool ExtractCommand(const std::string sLookingFor, std::string &text, bool bUseShort = false);
     // outsource commands for code clarity
@@ -1117,6 +1133,7 @@ private:
     void _HandleCommandSkill(std::string &text, Player &fromPlayer);
     void _HandleCommandStats(std::string &text, Player &fromPlayer);
     void _HandleCommandHelp(std::string &text, Player &fromPlayer);
+	void _HandleCommandTalent(std::string &text, Player &fromPlayer);
     void _HandleCommandHelp(const char* szText, Player &fromPlayer) { std::string text = szText; _HandleCommandHelp(text, fromPlayer); }
     std::string _HandleCommandHelpHelper(std::string sCommand, std::string sExplain, HELPERLINKABLES reqLink = HL_NONE, bool bReqLinkMultiples = false, bool bCommandShort = false);
 
@@ -1150,6 +1167,8 @@ private:
     CombatStyle m_combatStyle;
     CombatOrderType m_combatOrder;
     MovementOrderType m_movementOrder;
+
+	TalentSpec m_activeTalentSpec;
 
     ScenarioType m_ScenarioType;
 
@@ -1215,6 +1234,8 @@ private:
     SpellRanges m_spellRangeMap;
 
     float m_destX, m_destY, m_destZ; // latest coordinates for chase and point movement types
+
+	uint8 m_FollowAutoGo;
 };
 
 #endif

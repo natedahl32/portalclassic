@@ -111,6 +111,8 @@ enum ReputationRank
     REP_EXALTED     = 7
 };
 
+#define MAX_TALENT_SPEC_COUNT   1
+
 #define MIN_REPUTATION_RANK (REP_HATED)
 #define MAX_REPUTATION_RANK 8
 
