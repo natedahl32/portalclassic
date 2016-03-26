@@ -630,36 +630,36 @@ enum NotableItems
     ELEMENTAL_SEAFORIUM_CHARGE = 23819
 };
 
-enum MainSpec
-{
-    MAGE_SPEC_FIRE              = 41,
-    MAGE_SPEC_FROST             = 61,
-    MAGE_SPEC_ARCANE            = 81,
-    WARRIOR_SPEC_ARMS           = 161,
-    WARRIOR_SPEC_PROTECTION     = 163,
-    WARRIOR_SPEC_FURY           = 164,
-    ROGUE_SPEC_COMBAT           = 181,
-    ROGUE_SPEC_ASSASSINATION    = 182,
-    ROGUE_SPEC_SUBTELTY         = 183,
-    PRIEST_SPEC_DISCIPLINE      = 201,
-    PRIEST_SPEC_HOLY            = 202,
-    PRIEST_SPEC_SHADOW          = 203,
-    SHAMAN_SPEC_ELEMENTAL       = 261,
-    SHAMAN_SPEC_RESTORATION     = 262,
-    SHAMAN_SPEC_ENHANCEMENT     = 263,
-    DRUID_SPEC_FERAL            = 281,
-    DRUID_SPEC_RESTORATION      = 282,
-    DRUID_SPEC_BALANCE          = 283,
-    WARLOCK_SPEC_DESTRUCTION    = 301,
-    WARLOCK_SPEC_AFFLICTION     = 302,
-    WARLOCK_SPEC_DEMONOLOGY     = 303,
-    HUNTER_SPEC_BEASTMASTERY    = 361,
-    HUNTER_SPEC_SURVIVAL        = 362,
-    HUNTER_SPEC_MARKSMANSHIP    = 363,
-    PALADIN_SPEC_RETRIBUTION    = 381,
-    PALADIN_SPEC_HOLY           = 382,
-    PALADIN_SPEC_PROTECTION     = 383
-};
+//enum MainSpec
+//{
+//    MAGE_SPEC_FIRE              = 41,
+//    MAGE_SPEC_FROST             = 61,
+//    MAGE_SPEC_ARCANE            = 81,
+//    WARRIOR_SPEC_ARMS           = 161,
+//    WARRIOR_SPEC_PROTECTION     = 163,
+//    WARRIOR_SPEC_FURY           = 164,
+//    ROGUE_SPEC_COMBAT           = 181,
+//    ROGUE_SPEC_ASSASSINATION    = 182,
+//    ROGUE_SPEC_SUBTELTY         = 183,
+//    PRIEST_SPEC_DISCIPLINE      = 201,
+//    PRIEST_SPEC_HOLY            = 202,
+//    PRIEST_SPEC_SHADOW          = 203,
+//    SHAMAN_SPEC_ELEMENTAL       = 261,
+//    SHAMAN_SPEC_RESTORATION     = 262,
+//    SHAMAN_SPEC_ENHANCEMENT     = 263,
+//    DRUID_SPEC_FERAL            = 281,
+//    DRUID_SPEC_RESTORATION      = 282,
+//    DRUID_SPEC_BALANCE          = 283,
+//    WARLOCK_SPEC_DESTRUCTION    = 301,
+//    WARLOCK_SPEC_AFFLICTION     = 302,
+//    WARLOCK_SPEC_DEMONOLOGY     = 303,
+//    HUNTER_SPEC_BEASTMASTERY    = 361,
+//    HUNTER_SPEC_SURVIVAL        = 362,
+//    HUNTER_SPEC_MARKSMANSHIP    = 363,
+//    PALADIN_SPEC_RETRIBUTION    = 381,
+//    PALADIN_SPEC_HOLY           = 382,
+//    PALADIN_SPEC_PROTECTION     = 383
+//};
 
 enum CombatManeuverReturns
 {
@@ -1086,7 +1086,7 @@ public:
     void BankBalance();
 
 	void Levelup();
-
+	
 	// Error check the TS DB. Should only be used when admins want to verify their new TS input
 	uint32 TalentSpecDBContainsError();
 

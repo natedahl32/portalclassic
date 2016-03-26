@@ -127,7 +127,7 @@ PlayerbotPaladinAI::PlayerbotPaladinAI(Player* const master, Player* const bot, 
 		m_statWeights[ITEM_MOD_AGILITY] = 0.7f;
 		m_statWeights[ITEM_MOD_MANA] = 0.4f;
 		m_statWeights[ITEM_MOD_HEALTH] = 0.6f;
-	}
+}
 }
 
 PlayerbotPaladinAI::~PlayerbotPaladinAI() {}

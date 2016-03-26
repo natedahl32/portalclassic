@@ -828,12 +828,12 @@ bool PlayerbotAI::IsItemAnUpgrade(ItemPrototype const *pProto)
 				if (pProto->Quality > pItemCurrentProto->Quality) {
 					// If the quality is better the new item can be up to 10 item levels less than the current item to be an upgrade
 					if (pProto->ItemLevel >= (pItemCurrentProto->ItemLevel - 10))
-						return true;
+				return true;
 				}
 				else if (pProto->Quality == pItemCurrentProto->Quality) {
 					// If quality is the same the item level must be better than current item. If item level is same we will fall through
-					if (pProto->ItemLevel > pItemCurrentProto->ItemLevel)
-						return true;
+			if (pProto->ItemLevel > pItemCurrentProto->ItemLevel)
+				return true;
 				}
 			}
 
@@ -1549,52 +1549,70 @@ void PlayerbotAI::HandleBotOutgoingPacket(const WorldPacket& packet)
             WorldPacket p(packet); // (8+1+4+1+1+4+4+4+4+4+1)
             ObjectGuid guid;
             uint8 loot_type;
-            uint32 gold;
-            uint8 items;
 
             p >> guid;      // 8 corpse guid
             p >> loot_type; // 1 loot type
-            p >> gold;      // 4 money on corpse
-            p >> items;     // 1 number of items on corpse
 
-            if (gold > 0)
+            // Create the loot object and check it exists
+            Loot* loot = sLootMgr.GetLoot(m_bot, guid);
+            if (!loot)
             {
-                WorldPacket* const packet = new WorldPacket(CMSG_LOOT_MONEY, 0);
-                m_bot->GetSession()->QueuePacket(packet);
+                sLog.outError("PLAYERBOT Debug Error cannot get loot object info in SMSG_LOOT_RESPONSE!");
+                return;
             }
-            for (uint8 i = 0; i < items; ++i)
+
+            // Pickup money
+            if (loot->GetGoldAmount())
+                loot->SendGold(m_bot);
+
+            // Pick up the items
+            // Get the list of items first and iterate it
+            LootItemList lootList;
+            loot->GetLootItemsListFor(m_bot, lootList);
+
+            for (LootItemList::const_iterator lootItr = lootList.begin(); lootItr != lootList.end(); ++lootItr)
             {
-                uint32 itemid;
-                uint32 itemcount;
-                uint8 lootslot_type;
-                uint8 itemindex;
+                LootItem* lootItem = *lootItr;
 
-                p >> itemindex;         // 1 counter
-                p >> itemid;            // 4 itemid
-                p >> itemcount;         // 4 item stack count
-                p.read_skip<uint32>();  // 4 item model
-                p.read_skip<uint32>();  // 4 randomSuffix
-                p.read_skip<uint32>();  // 4 randomPropertyId
-                p >> lootslot_type;     // 1 LootSlotType
-
-                if (lootslot_type != LOOT_SLOT_NORMAL)
+                // Skip non lootable items
+                if (lootItem->GetSlotTypeForSharedLoot(m_bot, loot) != LOOT_SLOT_NORMAL)
                     continue;
 
-                // skinning or collect loot flag = just auto loot everything for getting object
-                // corpse = run checks
-                if (loot_type == LOOT_SKINNING || HasCollectFlag(COLLECT_FLAG_LOOT) ||
-                    (loot_type == LOOT_CORPSE && (IsInQuestItemList(itemid) || IsItemUseful(itemid))))
+                // If bot is skinning or has collect all orders: autostore all items
+                // else bot has order to only loot quest or useful items
+                if (loot_type == LOOT_SKINNING || HasCollectFlag(COLLECT_FLAG_LOOT) || (loot_type == LOOT_CORPSE && (IsInQuestItemList(lootItem->itemId) || IsItemUseful(lootItem->itemId))))
                 {
-                    WorldPacket* const packet = new WorldPacket(CMSG_AUTOSTORE_LOOT_ITEM, 1);
-                    *packet << itemindex;
-                    m_bot->GetSession()->QueuePacket(packet);
+                    // item may be blocked by roll system or already looted or another cheating possibility
+                    if (lootItem->isBlocked || lootItem->GetSlotTypeForSharedLoot(m_bot, loot) == MAX_LOOT_SLOT_TYPE)
+                    {
+                        sLog.outError("PLAYERBOT debug Bot %s have no right to loot itemId(%u)", m_bot->GetGuidStr().c_str(), lootItem->itemId);
+                    continue;
+                    }
+
+                    // Try to send the item to bot
+                    InventoryResult result = loot->SendItem(m_bot, lootItem);
+
+                    // If inventory is full: release loot
+                    if (result == EQUIP_ERR_INVENTORY_FULL)
+                    {
+                        loot->Release(m_bot);
+                        return;
+                    }
+
+                    ObjectGuid const& lguid = loot->GetLootGuid();
+
+                    // Check that bot has either equiped or received the item
+                    // then change item's loot state
+                    if (result == EQUIP_ERR_OK && lguid.IsItem())
+                {
+                        if (Item* item = m_bot->GetItemByGuid(lguid))
+                            item->SetLootState(ITEM_LOOT_CHANGED);
+                    }
                 }
             }
 
             // release loot
-            WorldPacket* const packet = new WorldPacket(CMSG_LOOT_RELEASE, 8);
-            *packet << guid;
-            m_bot->GetSession()->QueuePacket(packet);
+            loot->Release(m_bot);
 
             return;
         }
@@ -3318,6 +3336,9 @@ void PlayerbotAI::Levelup()
 
 	// Increase skills to max for current level
 	m_bot->UpdateSkillsToMaxSkillsForLevel();
+
+	// Apply all active talent spec for the bot
+	ApplyActiveTalentSpec();
 }
 
 void PlayerbotAI::UpgradeProfession(uint32 profId, uint32 upgrades[3])
@@ -3730,7 +3751,7 @@ Unit* PlayerbotAI::FindAttacker(ATTACKERINFOTYPE ait, Unit* victim)
 */
 void PlayerbotAI::BotDataRestore()
 {
-    QueryResult* result = CharacterDatabase.PQuery("SELECT combat_delay FROM playerbot_saved_data WHERE guid = '%u'", m_bot->GetGUIDLow());
+    QueryResult* result = CharacterDatabase.PQuery("SELECT combat_delay, active_spec FROM playerbot_saved_data WHERE guid = '%u'", m_bot->GetGUIDLow());
 
     if (!result)
     {
@@ -3743,6 +3764,9 @@ void PlayerbotAI::BotDataRestore()
     {
         Field* fields = result->Fetch();
         m_DelayAttack = fields[0].GetUInt8();
+		uint32 spec = fields[1].GetUInt32();
+		if (spec > 0)
+			SetActiveTalentSpec(GetTalentSpec((long)m_bot->getClass(), spec));
         delete result;
     }
 }
@@ -6471,6 +6495,9 @@ void PlayerbotAI::HandleCommand(const std::string& text, Player& fromPlayer)
     else if (ExtractCommand("bank", input))
         _HandleCommandBank(input, fromPlayer);
 
+	else if (ExtractCommand("talent", input))
+		_HandleCommandTalent(input, fromPlayer);
+
     else if (ExtractCommand("use", input, true)) // true -> "use" OR "u"
         _HandleCommandUse(input, fromPlayer);
 
@@ -6666,7 +6693,7 @@ void PlayerbotAI::_HandleCommandOrders(std::string &text, Player &fromPlayer)
 
         QueryResult *resultlvl = CharacterDatabase.PQuery("SELECT guid FROM playerbot_saved_data WHERE guid = '%u'", m_bot->GetObjectGuid().GetCounter());
         if (!resultlvl)
-            CharacterDatabase.DirectPExecute("INSERT INTO playerbot_saved_data (guid,combat_order,primary_target,secondary_target,pname,sname,combat_delay) VALUES ('%u',0,0,0,'','',0)", m_bot->GetObjectGuid().GetCounter());
+            CharacterDatabase.DirectPExecute("INSERT INTO playerbot_saved_data (guid,combat_order,primary_target,secondary_target,pname,sname,combat_delay,active_spec) VALUES ('%u',0,0,0,'','',0,0)", m_bot->GetObjectGuid().GetCounter());
         else
             delete resultlvl;
 
@@ -7656,7 +7683,11 @@ void PlayerbotAI::_HandleCommandSkill(std::string &text, Player &fromPlayer)
                     if (!trainer_spell)
                         trainer_spell = tSpells->Find(spellId);
 
-                if (!trainer_spell || !trainer_spell->learnedSpell)
+                if (!trainer_spell)
+                        continue;
+
+                TrainerSpellState state = m_bot->GetTrainerSpellState(trainer_spell, trainer_spell->reqLevel);
+                if (state != TRAINER_SPELL_GREEN)
                         continue;
 
                     // apply reputation discount
@@ -8779,7 +8810,7 @@ TalentSpec PlayerbotAI::GetTalentSpec(long specClass, long choice)
 			ts.specPurpose = (TalentSpecPurpose)fields[3].GetUInt32();
 
 			// check all talents
-			for (uint8 i = 0; i < 71; i++)
+			for (uint8 i = 0; i < 51; i++)
 			{
 				ts.talentId[i] = fields[i + 4].GetUInt16();
 			}
@@ -8974,7 +9005,8 @@ void PlayerbotAI::_HandleCommandTalent(std::string &text, Player &fromPlayer)
 			m_bot->LearnTalent(talentid, ++rank);
 			// TOOD: Need this?
 			//m_bot->SendTalentsInfoData(false);
-			InspectUpdate();
+			// Can't inspect talents in classic so we don't need to update it
+			//InspectUpdate();
 		}
 
 		SendWhisper(out.str(), fromPlayer);
@@ -8987,6 +9019,14 @@ void PlayerbotAI::_HandleCommandTalent(std::string &text, Player &fromPlayer)
 	}
 	else if (ExtractCommand("spec", text))
 	{
+		// If no playerbot_saved_data record, add one now
+		QueryResult *resultlvl = CharacterDatabase.PQuery("SELECT guid FROM playerbot_saved_data WHERE guid = '%u'", m_bot->GetObjectGuid().GetCounter());
+		if (!resultlvl)
+			CharacterDatabase.DirectPExecute("INSERT INTO playerbot_saved_data (guid,combat_order,primary_target,secondary_target,pname,sname,combat_delay,active_spec) VALUES ('%u',0,0,0,'','',0,0)", m_bot->GetObjectGuid().GetCounter());
+		else
+			delete resultlvl;
+
+
 		if (0 == GetTalentSpecsAmount())
 		{
 			SendWhisper("Database does not contain any Talent Specs (for any classes).", fromPlayer);
@@ -9023,6 +9063,7 @@ void PlayerbotAI::_HandleCommandTalent(std::string &text, Player &fromPlayer)
 			{
 				ClearActiveTalentSpec();
 				SendWhisper("The talent spec has been cleared.", fromPlayer);
+				CharacterDatabase.DirectPExecute("UPDATE playerbot_saved_data SET active_spec = 0 WHERE guid = '%u'", m_bot->GetGUIDLow());
 			}
 			else if (chosenSpec > GetTalentSpecsAmount((long)m_bot->getClass()))
 				SendWhisper("The talent spec you have chosen is invalid. Please select one from the valid range (reply 'talent spec' for options).", fromPlayer);
@@ -9041,7 +9082,11 @@ void PlayerbotAI::_HandleCommandTalent(std::string &text, Player &fromPlayer)
 						SendWhisper("The talent spec has been set active but could not be applied. It appears something has gone awry.", fromPlayer);
 						DEBUG_LOG("[PlayerbotAI]: Could set TalentSpec but could not apply it - 'talent spec #': Class: %u; chosenSpec: %u", m_bot->getClass(), chosenSpec);
 					}
-					InspectUpdate();
+					// Can't inspect talents in classic so we don't need to update it
+					//InspectUpdate();
+
+					// Update saved spec for the bot
+					CharacterDatabase.DirectPExecute("UPDATE playerbot_saved_data SET active_spec = '%u' WHERE guid = '%u'", chosenSpec, m_bot->GetGUIDLow());
 				}
 				else
 				{

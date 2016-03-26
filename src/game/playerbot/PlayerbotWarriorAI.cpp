@@ -94,7 +94,7 @@ PlayerbotWarriorAI::PlayerbotWarriorAI(Player* const master, Player* const bot, 
 		m_statWeights[ITEM_MOD_AGILITY] = 0.7f;
 		m_statWeights[ITEM_MOD_MANA] = 0.05f;
 		m_statWeights[ITEM_MOD_HEALTH] = 0.55f;
-	}
+}
 	else if (spec == WARRIOR_SPEC_PROTECTION) {
 		m_statWeights[ITEM_MOD_STAMINA] = 0.85f;
 		m_statWeights[ITEM_MOD_SPIRIT] = 0.05f;
@@ -607,6 +607,6 @@ bool PlayerbotWarriorAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, Item
 		newScore += (pNewProto->getDPS() * 0.09f);
 		currentScore += (pNewProto->getDPS() * 0.09f);
 	}
-	
+
 	return newScore > currentScore;
 }

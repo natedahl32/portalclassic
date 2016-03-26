@@ -133,7 +133,7 @@ PlayerbotShamanAI::PlayerbotShamanAI(Player* const master, Player* const bot, Pl
 		m_statWeights[ITEM_MOD_AGILITY] = 0.9f;
 		m_statWeights[ITEM_MOD_MANA] = 0.35f;
 		m_statWeights[ITEM_MOD_HEALTH] = 0.5f;
-	}
+}
 }
 
 PlayerbotShamanAI::~PlayerbotShamanAI() {}
