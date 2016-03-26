@@ -56,9 +56,13 @@ enum WarriorSpells
     SWEEPING_STRIKES_1              = 12328,
     TAUNT_1                         = 355,
     THUNDER_CLAP_1                  = 6343,
-    WHIRLWIND_1                     = 1680
+    WHIRLWIND_1                     = 1680,
 
-    //Procs
+	//Procs
+	SLAM_PROC_1						= 46916,
+	BLOODSURGE_1					= 46915,
+	TASTE_FOR_BLOOD_1				= 56638,
+	SUDDEN_DEATH_1					= 52437
 };
 
 //class Player;
@@ -101,7 +105,9 @@ private:
         MOCKING_BLOW,
         RETALIATION,
         SWEEPING_STRIKES,
-        MORTAL_STRIKE;
+		MORTAL_STRIKE,
+		TASTE_FOR_BLOOD,
+		SUDDEN_DEATH;
 
     // PROTECTION
     uint32 DEFENSIVE_STANCE,
@@ -134,7 +140,9 @@ private:
         PUMMEL,
         BLOODTHIRST,
         RECKLESSNESS,
-        PIERCING_HOWL;
+        PIERCING_HOWL,
+		SLAM_PROC,
+		BLOODSURGE;
 
     // racial
     uint32 STONEFORM,

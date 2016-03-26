@@ -57,7 +57,12 @@ enum DruidSpells
     TIGERS_FURY_1                   = 5217,
     TRANQUILITY_1                   = 740,
     TRAVEL_FORM_1                   = 783,
-    WRATH_1                         = 5176
+    WRATH_1                         = 5176,
+	ECLIPSE_1						= 48525,
+
+	//Procs
+	ECLIPSE_SOLAR_1					= 48517,
+	ECLIPSE_LUNAR_1					= 48518
 };
 
 //class Player;
@@ -177,6 +182,11 @@ private:
            WAR_STOMP,
            BERSERKING,
            WILL_OF_THE_FORSAKEN;
+
+	// procs
+	uint32 ECLIPSE,
+		ECLIPSE_SOLAR,
+		ECLIPSE_LUNAR;
 
     uint32 SpellSequence, DruidSpellCombat;
 };
