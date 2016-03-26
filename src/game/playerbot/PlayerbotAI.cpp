@@ -3336,6 +3336,9 @@ void PlayerbotAI::Levelup()
 
 	// Increase skills to max for current level
 	m_bot->UpdateSkillsToMaxSkillsForLevel();
+
+	// Apply all active talent spec for the bot
+	ApplyActiveTalentSpec();
 }
 
 void PlayerbotAI::UpgradeProfession(uint32 profId, uint32 upgrades[3])
@@ -3748,7 +3751,7 @@ Unit* PlayerbotAI::FindAttacker(ATTACKERINFOTYPE ait, Unit* victim)
 */
 void PlayerbotAI::BotDataRestore()
 {
-    QueryResult* result = CharacterDatabase.PQuery("SELECT combat_delay FROM playerbot_saved_data WHERE guid = '%u'", m_bot->GetGUIDLow());
+    QueryResult* result = CharacterDatabase.PQuery("SELECT combat_delay, active_spec FROM playerbot_saved_data WHERE guid = '%u'", m_bot->GetGUIDLow());
 
     if (!result)
     {
@@ -3761,6 +3764,9 @@ void PlayerbotAI::BotDataRestore()
     {
         Field* fields = result->Fetch();
         m_DelayAttack = fields[0].GetUInt8();
+		uint32 spec = fields[1].GetUInt32();
+		if (spec > 0)
+			SetActiveTalentSpec(GetTalentSpec((long)m_bot->getClass(), spec));
         delete result;
     }
 }
@@ -6486,8 +6492,11 @@ void PlayerbotAI::HandleCommand(const std::string& text, Player& fromPlayer)
     else if (ExtractCommand("auction", input))
         _HandleCommandAuction(input, fromPlayer);
 
-    else if (ExtractCommand("bank", input))
-        _HandleCommandBank(input, fromPlayer);
+	else if (ExtractCommand("bank", input))
+		_HandleCommandBank(input, fromPlayer);
+
+	else if (ExtractCommand("talent", input))
+		_HandleCommandTalent(input, fromPlayer);
 
     else if (ExtractCommand("use", input, true)) // true -> "use" OR "u"
         _HandleCommandUse(input, fromPlayer);
@@ -6684,7 +6693,7 @@ void PlayerbotAI::_HandleCommandOrders(std::string &text, Player &fromPlayer)
 
         QueryResult *resultlvl = CharacterDatabase.PQuery("SELECT guid FROM playerbot_saved_data WHERE guid = '%u'", m_bot->GetObjectGuid().GetCounter());
         if (!resultlvl)
-            CharacterDatabase.DirectPExecute("INSERT INTO playerbot_saved_data (guid,combat_order,primary_target,secondary_target,pname,sname,combat_delay) VALUES ('%u',0,0,0,'','',0)", m_bot->GetObjectGuid().GetCounter());
+            CharacterDatabase.DirectPExecute("INSERT INTO playerbot_saved_data (guid,combat_order,primary_target,secondary_target,pname,sname,combat_delay,active_spec) VALUES ('%u',0,0,0,'','',0,0)", m_bot->GetObjectGuid().GetCounter());
         else
             delete resultlvl;
 
@@ -8801,7 +8810,7 @@ TalentSpec PlayerbotAI::GetTalentSpec(long specClass, long choice)
 			ts.specPurpose = (TalentSpecPurpose)fields[3].GetUInt32();
 
 			// check all talents
-			for (uint8 i = 0; i < 71; i++)
+			for (uint8 i = 0; i < 51; i++)
 			{
 				ts.talentId[i] = fields[i + 4].GetUInt16();
 			}
@@ -8996,7 +9005,8 @@ void PlayerbotAI::_HandleCommandTalent(std::string &text, Player &fromPlayer)
 			m_bot->LearnTalent(talentid, ++rank);
 			// TOOD: Need this?
 			//m_bot->SendTalentsInfoData(false);
-			InspectUpdate();
+			// Can't inspect talents in classic so we don't need to update it
+			//InspectUpdate();
 		}
 
 		SendWhisper(out.str(), fromPlayer);
@@ -9009,6 +9019,14 @@ void PlayerbotAI::_HandleCommandTalent(std::string &text, Player &fromPlayer)
 	}
 	else if (ExtractCommand("spec", text))
 	{
+		// If no playerbot_saved_data record, add one now
+		QueryResult *resultlvl = CharacterDatabase.PQuery("SELECT guid FROM playerbot_saved_data WHERE guid = '%u'", m_bot->GetObjectGuid().GetCounter());
+		if (!resultlvl)
+			CharacterDatabase.DirectPExecute("INSERT INTO playerbot_saved_data (guid,combat_order,primary_target,secondary_target,pname,sname,combat_delay,active_spec) VALUES ('%u',0,0,0,'','',0,0)", m_bot->GetObjectGuid().GetCounter());
+		else
+			delete resultlvl;
+
+
 		if (0 == GetTalentSpecsAmount())
 		{
 			SendWhisper("Database does not contain any Talent Specs (for any classes).", fromPlayer);
@@ -9045,6 +9063,7 @@ void PlayerbotAI::_HandleCommandTalent(std::string &text, Player &fromPlayer)
 			{
 				ClearActiveTalentSpec();
 				SendWhisper("The talent spec has been cleared.", fromPlayer);
+				CharacterDatabase.DirectPExecute("UPDATE playerbot_saved_data SET active_spec = 0 WHERE guid = '%u'", m_bot->GetGUIDLow());
 			}
 			else if (chosenSpec > GetTalentSpecsAmount((long)m_bot->getClass()))
 				SendWhisper("The talent spec you have chosen is invalid. Please select one from the valid range (reply 'talent spec' for options).", fromPlayer);
@@ -9063,7 +9082,11 @@ void PlayerbotAI::_HandleCommandTalent(std::string &text, Player &fromPlayer)
 						SendWhisper("The talent spec has been set active but could not be applied. It appears something has gone awry.", fromPlayer);
 						DEBUG_LOG("[PlayerbotAI]: Could set TalentSpec but could not apply it - 'talent spec #': Class: %u; chosenSpec: %u", m_bot->getClass(), chosenSpec);
 					}
-					InspectUpdate();
+					// Can't inspect talents in classic so we don't need to update it
+					//InspectUpdate();
+
+					// Update saved spec for the bot
+					CharacterDatabase.DirectPExecute("UPDATE playerbot_saved_data SET active_spec = '%u' WHERE guid = '%u'", chosenSpec, m_bot->GetGUIDLow());
 				}
 				else
 				{

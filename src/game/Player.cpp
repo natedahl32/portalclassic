@@ -2346,7 +2346,7 @@ void Player::GiveLevel(uint32 level)
 	if (m_playerbotMgr)
 		m_playerbotMgr->OnMasterLevelUp();
 
-	// if this is a bot, handle automatically adding spells (not talents)
+	// if this is a bot, handle automatically adding spells (not talents, those are handled in the bots LevelUp method and are given according to spec)
 	if (m_playerbotAI)
 	{
 		m_playerbotAI->TellMaster("I am leveling up! Yay!");
