@@ -561,17 +561,22 @@ bool PlayerbotShamanAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemP
 
 		// Calculate the score
 		newScore += (newVal * m_statWeights[i]);
-		currentScore += (newVal * m_statWeights[i]);
+		currentScore += (currentVal * m_statWeights[i]);
 	}
 
 	// TODO: Calculate spell effects on items, such as +crit% and spellpower.
 	// TODO: Calculate damage modifiers on items
 
 	// Calculate DPS of a weapon
+	uint32 spec = m_bot->GetSpec();
+	if (spec == SHAMAN_SPEC_ENHANCEMENT) {
 	if (pNewProto->Class == ITEM_CLASS_WEAPON && pCurrentProto->Class == ITEM_CLASS_WEAPON) {
-		newScore += (pNewProto->getDPS() * 0.09f);
-		currentScore += (pNewProto->getDPS() * 0.09f);
+			// TOOD: Calculate slow vs fast on mainhand/offhand weapons
+			newScore += (pNewProto->getDPS() * 0.9f);
+			currentScore += (pCurrentProto->getDPS() * 0.9f);
+		}
 	}
+
 
 	return newScore > currentScore;
 }

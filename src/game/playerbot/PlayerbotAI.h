@@ -998,7 +998,9 @@ public:
     bool IsInQuestCreatureList(uint32 id) { return m_needCreatureOrGOList.find(id) != m_needCreatureOrGOList.end(); };
     bool IsItemUseful(uint32 itemid);
 	bool IsItemAnUpgrade(Item* pItem);
-	
+	std::list<const ItemPrototype*> GetExistingItemsInSlot(ItemPrototype const *pNewItem);
+	void SendUpgradingItems(ItemPrototype const *newItem);
+
     void SendOrders(Player& player);
     bool DoTeleport(WorldObject &obj);
     void DoLoot();
@@ -1108,6 +1110,7 @@ private:
     void _HandleCommandBank(std::string &text, Player &fromPlayer);
     void _HandleCommandUse(std::string &text, Player &fromPlayer);
     void _HandleCommandEquip(std::string &text, Player &fromPlayer);
+	void _HandleCommandGear(std::string &text, Player &fromPlayer);
     void _HandleCommandFind(std::string &text, Player &fromPlayer);
     void _HandleCommandGet(std::string &text, Player &fromPlayer);
     void _HandleCommandCollect(std::string &text, Player &fromPlayer);

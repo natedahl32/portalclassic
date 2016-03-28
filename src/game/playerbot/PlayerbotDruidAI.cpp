@@ -107,7 +107,7 @@ PlayerbotDruidAI::PlayerbotDruidAI(Player* const master, Player* const bot, Play
 		m_statWeights[ITEM_MOD_AGILITY] = 0.5f;
 		m_statWeights[ITEM_MOD_MANA] = 0.15f;
 		m_statWeights[ITEM_MOD_HEALTH] = 0.85f;
-	}
+}
 }
 
 PlayerbotDruidAI::~PlayerbotDruidAI() {}
@@ -839,16 +839,19 @@ bool PlayerbotDruidAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPr
 
 		// Calculate the score
 		newScore += (newVal * m_statWeights[i]);
-		currentScore += (newVal * m_statWeights[i]);
+		currentScore += (currentVal * m_statWeights[i]);
 	}
 
 	// TODO: Calculate spell effects on items, such as +crit% and spellpower.
 	// TODO: Calculate damage modifiers on items
 
 	// Calculate DPS of a weapon
-	if (pNewProto->Class == ITEM_CLASS_WEAPON && pCurrentProto->Class == ITEM_CLASS_WEAPON) {
-		newScore += (pNewProto->getDPS() * 0.09f);
-		currentScore += (pNewProto->getDPS() * 0.09f);
+	uint32 spec = m_bot->GetSpec();
+	if (spec == DRUID_SPEC_FERAL) {
+		if (pNewProto->Class == ITEM_CLASS_WEAPON && pCurrentProto->Class == ITEM_CLASS_WEAPON) {
+			newScore += (pNewProto->getDPS() * 0.9f);
+			currentScore += (pNewProto->getDPS() * 0.9f);
+		}
 	}
 
 	return newScore > currentScore;

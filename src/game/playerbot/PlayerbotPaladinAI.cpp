@@ -835,7 +835,7 @@ bool PlayerbotPaladinAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, Item
 
 		// Calculate the score
 		newScore += (newVal * m_statWeights[i]);
-		currentScore += (newVal * m_statWeights[i]);
+		currentScore += (currentVal * m_statWeights[i]);
 	}
 
 	// TODO: Calculate spell effects on items, such as +crit% and spellpower.
@@ -843,8 +843,16 @@ bool PlayerbotPaladinAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, Item
 
 	// Calculate DPS of a weapon
 	if (pNewProto->Class == ITEM_CLASS_WEAPON && pCurrentProto->Class == ITEM_CLASS_WEAPON) {
-		newScore += (pNewProto->getDPS() * 0.09f);
-		currentScore += (pNewProto->getDPS() * 0.09f);
+		newScore += (pNewProto->getDPS() * 0.9f);
+		currentScore += (pCurrentProto->getDPS() * 0.9f);
+	}
+	else {
+		// If we are in Protection spec, armor is important to us. Handle that in gear score as well.
+		uint32 spec = m_bot->GetSpec();
+		if (spec == PALADIN_SPEC_PROTECTION) {
+			newScore += (pNewProto->Armor * 0.9f);
+			currentScore += (pCurrentProto->Armor * 0.9f);
+		}
 	}
 
 	return newScore > currentScore;
