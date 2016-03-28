@@ -517,6 +517,31 @@ void PlayerbotAI::SendNotEquipList(Player& /*player*/)
     }
 }
 
+/*
+* Send a list of equipment that is the bot currently has equipped and would be upgrading with
+* the new item passed in.
+*/
+
+void PlayerbotAI::SendUpgradingItems(ItemPrototype const *newItem)
+{
+	// Get the items we would be upgrading and link them back to our master
+	std::list<const ItemPrototype*> existing = GetExistingItemsInSlot(newItem);
+
+	std::ostringstream out;
+	ChatHandler ch(GetMaster());
+	for (std::list<const ItemPrototype*>::const_iterator iterator = existing.begin(), end = existing.end(); iterator != end; ++iterator) {
+		const ItemPrototype* const pItemProto = *iterator;
+
+		std::string itemName = pItemProto->Name1;
+		ItemLocalization(itemName, pItemProto->ItemId);
+
+		out << " |cffffffff|Hitem:" << pItemProto->ItemId
+			<< ":0:0:0:0:0:0:0" << "|h[" << itemName
+			<< "]|h|r";
+	}
+	ch.SendSysMessage(out.str().c_str());
+}
+
 void PlayerbotAI::SendQuestNeedList()
 {
     std::ostringstream out;
@@ -560,103 +585,6 @@ void PlayerbotAI::SendQuestNeedList()
     TellMaster("Here's a list of all things needed for quests:");
     if (!out.str().empty())
         TellMaster(out.str().c_str());
-}
-
-void PlayerbotAI::AutoUpgradeEquipment() // test for autoequip
-{
-	// No toggle, always auto equip
-	/*if (!m_AutoEquipToggle)
-		return;*/
-
-	ChatHandler ch(GetMaster());
-	std::ostringstream out;
-	std::ostringstream msg;
-
-	// Find equippable items in main backpack one at a time
-	for (uint8 slot = INVENTORY_SLOT_ITEM_START; slot < INVENTORY_SLOT_ITEM_END; slot++)
-	{
-		Item* const pItem = m_bot->GetItemByPos(INVENTORY_SLOT_BAG_0, slot);
-
-		if (!pItem)
-			continue;
-
-		uint32 spellId = 0;
-
-		for (uint8 i = 0; i < MAX_ITEM_PROTO_SPELLS; ++i)
-		{
-			if (pItem->GetProto()->Spells[i].SpellId > 0)
-			{
-				spellId = pItem->GetProto()->Spells[i].SpellId;
-				break;
-			}
-		}
-
-		if (pItem->GetProto()->Flags & ITEM_FLAG_LOOTABLE && spellId == 0)
-		{
-			// TODO: std::string oops = "Opening " + [ITEM] + " to see what's inside.";
-			std::string oops = "Oh... Look! Theres something inside!!!";
-			m_bot->Say(oops, LANG_UNIVERSAL);
-			UseItem(pItem);
-			continue;
-		}
-
-		if (uint32 questid = pItem->GetProto()->StartQuest)
-		{
-			// TODO: if quest failed, auto-drop and auto-pickup
-			//if (m_bot->GetQuestStatus(questid) == QUEST_STATUS_FAILED)
-			if (m_bot->GetQuestStatus(questid) == QUEST_STATUS_COMPLETE
-				|| m_bot->GetQuestStatus(questid) == QUEST_STATUS_UNAVAILABLE)
-				continue;
-			else
-			{
-				Quest const* qInfo = sObjectMgr.GetQuestTemplate(questid);
-				if (!m_bot->CanTakeQuest(qInfo, false))
-				{
-					// TODO: make clear which item should be thrown away
-					std::string oops = "Great, more junk... Can I get rid of this please?";
-					m_bot->Say(oops, LANG_UNIVERSAL);
-					continue;
-				}
-			}
-			UseItem(pItem);
-		}
-
-		uint16 equipSlot;
-		InventoryResult msg = m_bot->CanEquipItem(NULL_SLOT, equipSlot, pItem, !pItem->IsBag());
-		if (msg != EQUIP_ERR_OK)
-			continue;
-
-		// Check if the item is an upgrade, if it is, equip it
-		if (IsItemAnUpgrade(pItem)) {
-			EquipItem(pItem);
-			continue;
-		}
-	}
-
-	// list out items in other removable backpacks
-	for (uint8 bag = INVENTORY_SLOT_BAG_START; bag < INVENTORY_SLOT_BAG_END; ++bag)
-	{
-		const Bag* const pBag = (Bag *)m_bot->GetItemByPos(INVENTORY_SLOT_BAG_0, bag);
-		if (pBag)
-			for (uint8 slot = 0; slot < pBag->GetBagSize(); ++slot)
-			{
-				Item* const pItem = m_bot->GetItemByPos(bag, slot);
-				if (!pItem)
-					continue;
-
-				uint16 dest;
-				InventoryResult msg = m_bot->CanEquipItem(NULL_SLOT, dest, pItem, !pItem->IsBag());
-				if (msg != EQUIP_ERR_OK)
-					continue;
-
-				// Check if the item is an upgrade, if it is, equip it
-				if (IsItemAnUpgrade(pItem)) {
-					EquipItem(pItem);
-					continue;
-				}
-			}
-	}
-	InspectUpdate();
 }
 
 bool PlayerbotAI::IsItemUseful(uint32 itemid)
@@ -887,26 +815,15 @@ std::list<const ItemPrototype*> PlayerbotAI::GetExistingItemsInSlot(ItemPrototyp
 
 bool PlayerbotAI::IsItemAnUpgrade(Item* pItem)
 {
+	return IsItemAnUpgrade(pItem->GetProto());
+}
+
+bool PlayerbotAI::IsItemAnUpgrade(ItemPrototype const *pProto)
+{
 	// If the item is not useful, it is not an upgrade
-	if (!IsItemUseful(pItem->GetProto()->ItemId))
-		return false;		
+	if (!IsItemUseful(pProto->ItemId))
+		return false;
 
-	const static uint32 item_weapon_skills[MAX_ITEM_SUBCLASS_WEAPON] =
-	{
-		SKILL_AXES, SKILL_2H_AXES, SKILL_BOWS, SKILL_GUNS, SKILL_MACES,
-		SKILL_2H_MACES, SKILL_POLEARMS, SKILL_SWORDS, SKILL_2H_SWORDS, 0,
-		SKILL_STAVES, 0, 0, SKILL_UNARMED, 0,
-		SKILL_DAGGERS, SKILL_THROWN, SKILL_ASSASSINATION, SKILL_CROSSBOWS, SKILL_WANDS,
-		SKILL_FISHING
-	};
-
-	const static uint32 item_armor_skills[MAX_ITEM_SUBCLASS_ARMOR] =
-	{
-		0, SKILL_CLOTH, SKILL_LEATHER, SKILL_MAIL, SKILL_PLATE_MAIL, 0, SKILL_SHIELD, 0, 0, 0
-	};
-
-	// We've already established the item is useful to us. So get the item prototype
-	ItemPrototype const *pProto = pItem->GetProto();
 	// If the item is not armor or a weapon, we can't consider it as an upgrade
 	switch (pProto->Class)
 	{
@@ -918,12 +835,6 @@ bool PlayerbotAI::IsItemAnUpgrade(Item* pItem)
 			break;
 	}
 
-	// Not a weapon or armor item
-	return false;
-}
-
-bool PlayerbotAI::IsItemAnUpgrade(ItemPrototype const *pProto)
-{
 	// Get the current items to compare
 	std::list<const ItemPrototype*> currentItems = GetExistingItemsInSlot(pProto);
 
@@ -1521,7 +1432,6 @@ void PlayerbotAI::HandleBotOutgoingPacket(const WorldPacket& packet)
             {
                 m_bot->GetSession()->HandleAcceptTradeOpcode(p);  // packet not used
                 SetQuestNeedItems();
-				AutoUpgradeEquipment();
             }
 
             //1 == TRADE_STATUS_BEGIN_TRADE
@@ -2916,7 +2826,6 @@ void PlayerbotAI::DoLoot()
         SetState(BOTSTATE_NORMAL);
         m_bot->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_LOOTING);
         m_inventory_full = false;
-		AutoUpgradeEquipment();
         return;
     }
 
@@ -3629,7 +3538,6 @@ void PlayerbotAI::TurnInQuests(WorldObject *questgiver)
             if (!out.str().empty())
                 TellMaster(out.str());
         }
-		AutoUpgradeEquipment();
     //}
 }
 
@@ -5630,7 +5538,7 @@ void PlayerbotAI::findNearbyCreature()
                         default:
                             break;
                     }
-					AutoUpgradeEquipment();
+
                     m_bot->HandleEmoteCommand(EMOTE_ONESHOT_TALK);
                 }
             }
@@ -6628,6 +6536,9 @@ void PlayerbotAI::HandleCommand(const std::string& text, Player& fromPlayer)
     else if (ExtractCommand("equip", input, true)) // true -> "equip" OR "e"
         _HandleCommandEquip(input, fromPlayer);
 
+	else if (ExtractCommand("gear", input, true)) // true -> "equip" OR "e"
+		_HandleCommandGear(input, fromPlayer);
+
     // find project: 20:50 02/12/10 rev.4 item in world and wait until ordered to follow
     else if (ExtractCommand("find", input, true)) // true -> "find" OR "f"
         _HandleCommandFind(input, fromPlayer);
@@ -7197,25 +7108,47 @@ void PlayerbotAI::_HandleCommandUse(std::string &text, Player &fromPlayer)
     }
 
 void PlayerbotAI::_HandleCommandEquip(std::string &text, Player& /*fromPlayer*/)
-    {
-        std::list<uint32> itemIds;
-        std::list<Item*> itemList;
-    extractItemIds(text, itemIds);
-        findItemsInInv(itemIds, itemList);
+{
+    std::list<uint32> itemIds;
+    std::list<Item*> itemList;
+	extractItemIds(text, itemIds);
+    findItemsInInv(itemIds, itemList);
 
-		// if we found items then handle them specifically
-		if (itemList.size() > 0) {
-			for (std::list<Item*>::iterator it = itemList.begin(); it != itemList.end(); ++it)
-				EquipItem(*it);
-		}
-		// No item passed, just auto equip anything that is an upgrade in inventory
-		else {
-			TellMaster("Finding upgrades in my inventory and equipping them.");
-			AutoUpgradeEquipment();
-		}
+	for (std::list<Item*>::iterator it = itemList.begin(); it != itemList.end(); ++it)
+		EquipItem(*it);
         
-        SendNotEquipList(*m_bot);
-    }
+    SendNotEquipList(*m_bot);
+}
+
+/// new command for gear checks. issued in group or raid and bots will link to you the items they would upgrade.
+/// COMMAND: gear check [linked_item]
+void PlayerbotAI::_HandleCommandGear(std::string &text, Player& /*fromPlayer*/)
+{
+	if (ExtractCommand("check", text))
+	{
+		std::list<uint32> itemIds;
+		extractItemIds(text, itemIds);
+		// If no items were linked return
+		if (itemIds.size() == 0)
+			return;
+		// If more than one item was found, tell master to send only one so we know which one they are asking about
+		if (itemIds.size() > 1) {
+			TellMaster("Please link only one item for a gear check.");
+			return;
+		}
+
+		for (std::list<uint32>::iterator it = itemIds.begin(); it != itemIds.end(); ++it) {
+			const ItemPrototype* pProto = ObjectMgr::GetItemPrototype(*it);
+			if (IsItemAnUpgrade(pProto)){
+				SendUpgradingItems(pProto);
+				return;
+			}
+		}
+
+		// Not an upgrade
+		TellMaster("That item is not an upgrade for me.");
+	}
+}
 
 void PlayerbotAI::_HandleCommandFind(std::string &text, Player& /*fromPlayer*/)
         {
