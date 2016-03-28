@@ -604,8 +604,10 @@ bool PlayerbotAI::IsItemUseful(uint32 itemid)
     };
 
     ItemPrototype const *pProto = ObjectMgr::GetItemPrototype(itemid);
-    if (!pProto || pProto->Quality < ITEM_QUALITY_NORMAL)
-        return false;
+
+	// Not true, if we are low enough level and have nothing equipped it can be useful. And if nothing else it's useful for selling.
+    /*if (!pProto || pProto->Quality < ITEM_QUALITY_NORMAL)
+        return false;*/
 
     // do we already have the max allowed of item if more than zero?
     if (pProto->MaxCount > 0 && m_bot->HasItemCount(itemid, pProto->MaxCount, true))
@@ -627,7 +629,7 @@ bool PlayerbotAI::IsItemUseful(uint32 itemid)
             if (pProto->SubClass >= MAX_ITEM_SUBCLASS_ARMOR)
                 return false;
             else
-                return (m_bot->HasSkill(item_armor_skills[pProto->SubClass]) && !m_bot->HasSkill(item_armor_skills[pProto->SubClass+1]));
+                return (m_bot->HasSkill(item_armor_skills[pProto->SubClass]));
                 break;
         case ITEM_CLASS_QUEST:
             if (!HasCollectFlag(COLLECT_FLAG_QUEST))
@@ -739,7 +741,7 @@ bool PlayerbotAI::IsItemUseful(uint32 itemid)
 
 // Gets any existing items that are currently equipped in the same slot as the new item
 std::list<const ItemPrototype*> PlayerbotAI::GetExistingItemsInSlot(ItemPrototype const *pNewItem)
-	{
+{
 	std::list<EquipmentSlots> slots;
 	switch (pNewItem->InventoryType)
 	{
@@ -807,7 +809,8 @@ std::list<const ItemPrototype*> PlayerbotAI::GetExistingItemsInSlot(ItemPrototyp
 
 		// Get current item in this slot
 		Item* pItemCurrent = m_bot->GetItemByPos(INVENTORY_SLOT_BAG_0, slot); // EquipmentSlots
-		items.push_back(pItemCurrent->GetProto());
+		if (pItemCurrent)
+			items.push_back(pItemCurrent->GetProto());
 	}
 
 	return items;
@@ -821,17 +824,19 @@ bool PlayerbotAI::IsItemAnUpgrade(Item* pItem)
 bool PlayerbotAI::IsItemAnUpgrade(ItemPrototype const *pProto)
 {
 	// If the item is not useful, it is not an upgrade
-	if (!IsItemUseful(pProto->ItemId))
+	if (!IsItemUseful(pProto->ItemId)) {
+		DEBUG_LOG("Item is not useful to me.");
 		return false;
+	}
 
 	// If the item is not armor or a weapon, we can't consider it as an upgrade
 	switch (pProto->Class)
 	{
 		case ITEM_CLASS_WEAPON:
 		case ITEM_CLASS_ARMOR:
-			return IsItemAnUpgrade(pProto);
 			break;
 		default:
+			return false;
 			break;
 	}
 

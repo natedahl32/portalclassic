@@ -9689,8 +9689,16 @@ void Player::MoveItemToInventory(ItemPosCountVec const& dest, Item* pItem, bool 
 
 	// Playerbot code
 	// Check if item is an upgrade. If it is equip it.
-	if (m_playerbotAI && m_playerbotAI->IsItemAnUpgrade(pLastItem))
-		m_playerbotAI->EquipItem(pLastItem);
+	if (m_playerbotAI) {
+		DEBUG_LOG("Checking if item moved to inventory is an upgrade.");
+		if (m_playerbotAI->IsItemAnUpgrade(pLastItem)) {
+			DEBUG_LOG("Item is an upgrade. Equipping the item now.");
+			m_playerbotAI->EquipItem(pLastItem);
+		}
+		else {
+			DEBUG_LOG("Item was determined to NOT be an upgrade.");
+		}
+	}
 }
 
 void Player::DestroyItem(uint8 bag, uint8 slot, bool update)
