@@ -848,7 +848,7 @@ bool PlayerbotDruidAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPr
 
 		// Calculate the score
 		newScore += (newVal * m_statWeights[i]);
-		currentScore += (newVal * m_statWeights[i]);
+		currentScore += (currentVal * m_statWeights[i]);
 	}
 
 	// TODO: Calculate spell effects on items, such as +crit% and spellpower.
@@ -856,8 +856,8 @@ bool PlayerbotDruidAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPr
 
 	// Calculate DPS of a weapon
 	if (pNewProto->Class == ITEM_CLASS_WEAPON && pCurrentProto->Class == ITEM_CLASS_WEAPON) {
-		newScore += (pNewProto->getDPS() * 0.09f);
-		currentScore += (pNewProto->getDPS() * 0.09f);
+		newScore += (pNewProto->getDPS() * 0.9f);
+		currentScore += (pNewProto->getDPS() * 0.9f);
 	}
 
 	return newScore > currentScore;

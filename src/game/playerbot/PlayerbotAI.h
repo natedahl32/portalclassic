@@ -1015,7 +1015,9 @@ public:
     bool IsInQuestCreatureList(uint32 id) { return m_needCreatureOrGOList.find(id) != m_needCreatureOrGOList.end(); };
     bool IsItemUseful(uint32 itemid);
 	bool IsItemAnUpgrade(Item* pItem);
-	
+	std::list<const ItemPrototype*> GetExistingItemsInSlot(ItemPrototype const *pNewItem);
+	void AutoUpgradeEquipment();
+
     void SendOrders(Player& player);
     bool DoTeleport(WorldObject &obj);
     void DoLoot();

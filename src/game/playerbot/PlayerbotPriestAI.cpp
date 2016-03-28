@@ -566,7 +566,7 @@ bool PlayerbotPriestAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemP
 
 		// Calculate the score
 		newScore += (newVal * m_statWeights[i]);
-		currentScore += (newVal * m_statWeights[i]);
+		currentScore += (currentVal * m_statWeights[i]);
 	}
 
 	// TODO: Calculate spell effects on items, such as +crit% and spellpower.
@@ -576,8 +576,8 @@ bool PlayerbotPriestAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemP
 	if (pNewProto->Class == ITEM_CLASS_WEAPON && pCurrentProto->Class == ITEM_CLASS_WEAPON) {
 		// Only care about wands DPS, caster weapons are stat sticks
 		if (pNewProto->SubClass == ITEM_SUBCLASS_WEAPON_WAND && pCurrentProto->SubClass == ITEM_SUBCLASS_WEAPON_WAND) {
-			newScore += (pNewProto->getDPS() * 0.09f);
-			currentScore += (pNewProto->getDPS() * 0.09f);
+			newScore += (pNewProto->getDPS() * 0.9f);
+			currentScore += (pCurrentProto->getDPS() * 0.9f);
 		}
 	}
 
