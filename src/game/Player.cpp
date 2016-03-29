@@ -9690,13 +9690,8 @@ void Player::MoveItemToInventory(ItemPosCountVec const& dest, Item* pItem, bool 
 	// Playerbot code
 	// Check if item is an upgrade. If it is equip it.
 	if (m_playerbotAI) {
-		DEBUG_LOG("Checking if item moved to inventory is an upgrade.");
 		if (m_playerbotAI->IsItemAnUpgrade(pLastItem)) {
-			DEBUG_LOG("Item is an upgrade. Equipping the item now.");
 			m_playerbotAI->EquipItem(pLastItem);
-		}
-		else {
-			DEBUG_LOG("Item was determined to NOT be an upgrade.");
 		}
 	}
 }
@@ -11905,6 +11900,14 @@ void Player::RewardQuest(Quest const* pQuest, uint32 reward, Object* questGiver,
             {
                 Item* item = StoreNewItem(dest, itemId, true, Item::GenerateItemRandomPropertyId(itemId));
                 SendNewItem(item, pQuest->RewChoiceItemCount[reward], true, false);
+
+				// Playerbot code
+				// Check if item is an upgrade. If it is equip it.
+				if (m_playerbotAI) {
+					if (m_playerbotAI->IsItemAnUpgrade(item)) {
+						m_playerbotAI->EquipItem(item);
+					}
+				}
             }
         }
     }
@@ -11920,6 +11923,14 @@ void Player::RewardQuest(Quest const* pQuest, uint32 reward, Object* questGiver,
                 {
                     Item* item = StoreNewItem(dest, itemId, true, Item::GenerateItemRandomPropertyId(itemId));
                     SendNewItem(item, pQuest->RewItemCount[i], true, false);
+
+					// Playerbot code
+					// Check if item is an upgrade. If it is equip it.
+					if (m_playerbotAI) {
+						if (m_playerbotAI->IsItemAnUpgrade(item)) {
+							m_playerbotAI->EquipItem(item);
+						}
+					}
                 }
             }
         }
@@ -11997,6 +12008,8 @@ void Player::RewardQuest(Quest const* pQuest, uint32 reward, Object* questGiver,
     saBounds = sSpellMgr.GetSpellAreaForAreaMapBounds(0);
     for (SpellAreaForAreaMap::const_iterator itr = saBounds.first; itr != saBounds.second; ++itr)
         itr->second->ApplyOrRemoveSpellIfCan(this, zone, area, false);
+
+
 }
 
 void Player::FailQuest(uint32 questId)

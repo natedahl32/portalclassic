@@ -527,8 +527,14 @@ void PlayerbotAI::SendUpgradingItems(ItemPrototype const *newItem)
 	// Get the items we would be upgrading and link them back to our master
 	std::list<const ItemPrototype*> existing = GetExistingItemsInSlot(newItem);
 
-	std::ostringstream out;
 	ChatHandler ch(GetMaster());
+	std::ostringstream out;
+	// Check if nothing is currently equipped
+	if (existing.size() == 0) {
+		TellMaster("Upgrade for me. I have nothing equipped currently!");
+		return;
+	}
+		
 	for (std::list<const ItemPrototype*>::const_iterator iterator = existing.begin(), end = existing.end(); iterator != end; ++iterator) {
 		const ItemPrototype* const pItemProto = *iterator;
 
@@ -539,6 +545,7 @@ void PlayerbotAI::SendUpgradingItems(ItemPrototype const *newItem)
 			<< ":0:0:0:0:0:0:0" << "|h[" << itemName
 			<< "]|h|r";
 	}
+	TellMaster("Upgrades the following items:");
 	ch.SendSysMessage(out.str().c_str());
 }
 
@@ -3457,7 +3464,7 @@ void PlayerbotAI::TurnInQuests(WorldObject *questgiver)
                                 << pRewardItem->ItemId << ":0:0:0:0:0:0:0" << "|h[" << itemName << "]|h|r";*/
                     }
 
-                    // else multiple rewards - let master pick
+                    // else multiple rewards - auto pick based on whether or not an item is an upgrade
                     else
                     {
 						// TODO: Auto pick reward based on IsAnUpgrade method
@@ -7234,8 +7241,7 @@ void PlayerbotAI::_HandleCommandGear(std::string &text, Player& /*fromPlayer*/)
 			}
 		}
 
-		// Not an upgrade
-		TellMaster("That item is not an upgrade for me.");
+		// Not an upgrade - don't say anything
 	}
 }
 

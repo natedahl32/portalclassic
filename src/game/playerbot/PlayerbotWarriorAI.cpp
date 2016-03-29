@@ -645,8 +645,13 @@ bool PlayerbotWarriorAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, Item
 		// If we are in Protection spec, armor is important to us. Handle that in gear score as well.
 		uint32 spec = m_bot->GetSpec();
 		if (spec == WARRIOR_SPEC_PROTECTION) {
-			newScore += (pNewProto->Armor * 0.9f);
-			currentScore += (pCurrentProto->Armor * 0.9f);
+			// TODO: Make this configurable
+			// Do the same thing with armor that we do for health or else it becomes extremely overvalued compared to other stats;
+			float newArmor = pNewProto->Armor / 20;
+			float currentArmor = pCurrentProto->Armor / 20;
+
+			newScore += (newArmor * 0.9f);
+			currentScore += (currentArmor * 0.9f);
 		}
 	}
 
