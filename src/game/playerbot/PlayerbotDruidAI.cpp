@@ -752,12 +752,29 @@ void PlayerbotDruidAI::DoNonCombatActions()
     // Return to fighting form AFTER reviving, healing, buffing
     CheckForms();
 
+	//creat water
+	if (m_ai->FindDrink() == nullptr && m_bot->getLevel() == 60)
+	{
+		if (Item* pItem = m_bot->StoreNewItemInInventorySlot(CRYSTAL_WATER, 20))
+			m_bot->SendNewItem(pItem, 20, true, false);
+
+		return;
+	}
+
     // hp/mana check
     if (EatDrinkBandage())
         return;
 
-    if (INNERVATE && m_ai->In_Reach(m_bot,INNERVATE) && !m_bot->HasAura(INNERVATE) && m_ai->GetManaPercent() <= 20 && CastSpell(INNERVATE, m_bot))
-        return;
+	//creat Wild_Thornroot
+	if (!m_ai->HasSpellReagents(GIFT_OF_THE_WILD) && m_bot->getLevel() == 60)
+	{
+		if (Item* pItem = m_bot->StoreNewItemInInventorySlot(Wild_Thornroot, 20))
+			m_bot->SendNewItem(pItem, 20, true, false);
+		return;
+	}
+
+    /*if (INNERVATE && m_ai->In_Reach(m_bot,INNERVATE) && !m_bot->HasAura(INNERVATE) && m_ai->GetManaPercent() <= 20 && CastSpell(INNERVATE, m_bot))
+        return;*/
 } // end DoNonCombatActions
 
 bool PlayerbotDruidAI::BuffHelper(PlayerbotAI* ai, uint32 spellId, Unit* target)

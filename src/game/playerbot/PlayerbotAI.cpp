@@ -2436,7 +2436,7 @@ void PlayerbotAI::GetCombatTarget(Unit* forcedTarget)
     }
 
     m_bot->SetSelectionGuid((m_targetCombat->GetObjectGuid()));
-    SetIgnoreUpdateTime(1);
+    //SetIgnoreUpdateTime(1);
 
     if (m_bot->getStandState() != UNIT_STAND_STATE_STAND)
         m_bot->SetStandState(UNIT_STAND_STATE_STAND);
@@ -2469,6 +2469,15 @@ void PlayerbotAI::DoNextCombatManeuver()
         GetDuelTarget(GetMaster()); // TODO: Wow... wait... what? So not right.
     else
         Attack();
+
+	//when mob use some spell invisibility the bot action
+	if (m_targetCombat->HasAuraType(SPELL_AURA_MOD_INVISIBILITY) && !(m_combatOrder & ORDERS_HEAL))
+	{
+		m_bot->AttackStop();
+		m_bot->SetSelectionGuid(ObjectGuid());
+		m_bot->InterruptNonMeleeSpells(true);
+		return;
+	}
 
     // clear orders if current target for attacks doesn't make sense anymore
     if (!m_targetCombat || m_targetCombat->isDead() || !m_targetCombat->IsInWorld() || !m_bot->IsHostileTo(m_targetCombat) || !m_bot->IsInMap(m_targetCombat))

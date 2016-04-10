@@ -506,9 +506,28 @@ void PlayerbotPriestAI::DoNonCombatActions()
                 return;
         if (m_ai->GetCombatOrder() & PlayerbotAI::ORDERS_RESIST_SHADOW && Buff(&PlayerbotPriestAI::BuffHelper, SHADOW_PROTECTION, (JOB_TANK | JOB_HEAL)) & RETURN_CONTINUE)
                 return;
-        }
+    }
+
+	//create water
+	if (m_ai->FindDrink() == nullptr && m_bot->getLevel() == 60)
+	{
+		if (Item* pItem = m_bot->StoreNewItemInInventorySlot(CRYSTAL_WATER, 20))
+			m_bot->SendNewItem(pItem, 20, true, false);
+
+		return;
+	}
+
     if (EatDrinkBandage())
         return;
+
+	//creat SacredCandle
+	if (!m_ai->HasSpellReagents(PRAYER_OF_FORTITUDE) && m_bot->getLevel() == 60)
+	{
+		if (Item* pItem = m_bot->StoreNewItemInInventorySlot(SacredCandle, 20))
+			m_bot->SendNewItem(pItem, 20, true, false);
+		
+		return;
+	}
 } // end DoNonCombatActions
 
 // TODO: this and mage's BuffHelper are identical and thus could probably go in PlayerbotClassAI.cpp somewhere

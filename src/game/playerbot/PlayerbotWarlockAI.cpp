@@ -556,6 +556,15 @@ void PlayerbotWarlockAI::DoNonCombatActions()
         if (m_ai->CastSpell(LIFE_TAP, *m_bot))
             return;
 
+	//create water
+	if (m_ai->FindDrink() == nullptr && m_bot->getLevel() == 60)
+	{
+		if (Item* pItem = m_bot->StoreNewItemInInventorySlot(CRYSTAL_WATER, 20))
+			m_bot->SendNewItem(pItem, 20, true, false);
+		
+		return;
+	}
+
     if (EatDrinkBandage())
         return;
 

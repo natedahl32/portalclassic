@@ -3,6 +3,9 @@
 
 #include "PlayerbotClassAI.h"
 
+#define CRYSTAL_WATER 8079
+#define Wild_Thornroot 17026
+
 enum DruidSpells
 {
     ABOLISH_POISON_1                = 2893,
