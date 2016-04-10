@@ -46,7 +46,8 @@ enum CanCastResult
     CAST_FAIL_TOO_CLOSE         = 4,
     CAST_FAIL_POWER             = 5,
     CAST_FAIL_STATE             = 6,
-    CAST_FAIL_TARGET_AURA       = 7
+    CAST_FAIL_TARGET_AURA       = 7,
+    CAST_FAIL_NOT_IN_LOS        = 8
 };
 
 enum CastFlags
@@ -70,10 +71,14 @@ enum AIEventType
     AI_EVENT_CUSTOM_EVENTAI_A   = 5,                        // Sender = Npc that throws custom event, Invoker = TARGET_T_ACTION_INVOKER (if exists)
     AI_EVENT_CUSTOM_EVENTAI_B   = 6,                        // Sender = Npc that throws custom event, Invoker = TARGET_T_ACTION_INVOKER (if exists)
     AI_EVENT_GOT_CCED           = 7,                        // Sender = CCed Npc, Invoker = Caster that CCed
-    MAXIMAL_AI_EVENT_EVENTAI    = 8,
+    AI_EVENT_CUSTOM_EVENTAI_C   = 8,                        // Sender = Npc that throws custom event, Invoker = TARGET_T_ACTION_INVOKER (if exists)
+    AI_EVENT_CUSTOM_EVENTAI_D   = 9,                        // Sender = Npc that throws custom event, Invoker = TARGET_T_ACTION_INVOKER (if exists)
+    AI_EVENT_CUSTOM_EVENTAI_E   = 10,                       // Sender = Npc that throws custom event, Invoker = TARGET_T_ACTION_INVOKER (if exists)
+    AI_EVENT_CUSTOM_EVENTAI_F   = 11,                       // Sender = Npc that throws custom event, Invoker = TARGET_T_ACTION_INVOKER (if exists)
+    MAXIMAL_AI_EVENT_EVENTAI    = 12,
 
     // Internal Use
-    AI_EVENT_CALL_ASSISTANCE    = 10,                       // Sender = Attacked Npc, Invoker = Enemy
+    AI_EVENT_CALL_ASSISTANCE    = 13,                       // Sender = Attacked Npc, Invoker = Enemy
 
     // Predefined for SD2
     AI_EVENT_START_ESCORT       = 100,                      // Invoker = Escorting Player
@@ -124,7 +129,7 @@ class MANGOS_DLL_SPEC CreatureAI
 
         /**
          * Called for reaction at enter to combat if not in combat yet
-         * @param pEnemy Unit* of whom the Creature enters combat with, can be NULL
+         * @param pEnemy Unit* of whom the Creature enters combat with, can be nullptr
          */
         virtual void EnterCombat(Unit* /*pEnemy*/) {}
 

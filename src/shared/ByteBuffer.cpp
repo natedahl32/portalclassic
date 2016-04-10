@@ -23,12 +23,8 @@ void ByteBufferException::PrintPosError() const
 {
     char const* traceStr;
 
-#ifdef HAVE_ACE_STACK_TRACE_H
     ACE_Stack_Trace trace;
     traceStr = trace.c_str();
-#else
-    traceStr = NULL;
-#endif
 
     sLog.outError(
         "Attempted to %s in ByteBuffer (pos: " SIZEFMTD " size: " SIZEFMTD ") "
@@ -51,7 +47,7 @@ void ByteBuffer::print_storage() const
     for (size_t i = 0; i < size(); ++i)
         ss << uint32(read<uint8>(i)) << " - ";
 
-    sLog.outDebug(ss.str().c_str());
+    sLog.outDebug("%s", ss.str().c_str());
 }
 
 void ByteBuffer::textlike() const
@@ -68,7 +64,7 @@ void ByteBuffer::textlike() const
     for (size_t i = 0; i < size(); ++i)
         ss << read<uint8>(i);
 
-    sLog.outDebug(ss.str().c_str());
+    sLog.outDebug("%s", ss.str().c_str());
 }
 
 void ByteBuffer::hexlike() const
@@ -107,5 +103,5 @@ void ByteBuffer::hexlike() const
         ss << buf << " ";
     }
 
-    sLog.outDebug(ss.str().c_str());
+    sLog.outDebug("%s", ss.str().c_str());
 }

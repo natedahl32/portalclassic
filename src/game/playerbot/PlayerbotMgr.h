@@ -10,7 +10,7 @@ class Object;
 class Item;
 class PlayerbotClassAI;
 
-typedef UNORDERED_MAP<ObjectGuid, Player*> PlayerBotMap;
+typedef std::unordered_map<ObjectGuid, Player*> PlayerBotMap;
 
 class MANGOS_DLL_SPEC PlayerbotMgr
 {
@@ -34,6 +34,7 @@ public:
     void HandleMasterOutgoingPacket(const WorldPacket& packet);
 
     void LoginPlayerBot(ObjectGuid guid);
+	void LoginPlayerBot(ObjectGuid guid, uint32 masterAccountId);
     void LogoutPlayerBot(ObjectGuid guid);
     Player* GetPlayerBot (ObjectGuid guid) const;
     Player* GetMaster() const { return m_master; };
@@ -43,6 +44,7 @@ public:
     void LogoutAllBots();
     void RemoveAllBotsFromGroup();
     void OnBotLogin(Player * const bot);
+	void OnMasterLevelUp();
     void Stay();
 
 public:

@@ -44,6 +44,7 @@ public:
     virtual CombatManeuverReturns DoFirstCombatManeuver(Unit*);
     virtual CombatManeuverReturns DoNextCombatManeuver(Unit*);
     bool Pull() { DEBUG_LOG("[PlayerbotAI]: Warning: Using PlayerbotClassAI::Pull() rather than class specific function"); return false; }
+    bool Neutralize() { DEBUG_LOG("[PlayerbotAI]: Warning: Using PlayerbotClassAI::Neutralize() rather than class specific function"); return false; }
 
     // all non combat actions go here, ex buffs, heals, rezzes
     virtual void DoNonCombatActions();
@@ -58,6 +59,7 @@ public:
     time_t GetWaitUntil() { return m_WaitUntil; }
     void SetWait(uint8 t) { m_WaitUntil = m_ai->CurrentTime() + t; }
     void ClearWait() { m_WaitUntil = 0; }
+	virtual bool IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto);
     //void SetWaitUntil(time_t t) { m_WaitUntil = t; }
 
 protected:
@@ -88,6 +90,9 @@ protected:
 
     // first aid
     uint32 RECENTLY_BANDAGED;
+
+	// stat weights
+	float m_statWeights[MAX_ITEM_MOD];
 };
 
 #endif

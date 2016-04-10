@@ -54,6 +54,9 @@ CanCastResult CreatureAI::CanCastSpell(Unit* pTarget, const SpellEntry* pSpell, 
         // Check for power (also done by Spell::CheckCast())
         if (m_creature->GetPower((Powers)pSpell->powerType) < Spell::CalculatePowerCost(pSpell, m_creature))
             return CAST_FAIL_POWER;
+
+        if (!m_creature->IsWithinLOSInMap(pTarget) && m_creature != pTarget)
+            return CAST_FAIL_NOT_IN_LOS;
     }
 
     if (const SpellRangeEntry* pSpellRange = sSpellRangeStore.LookupEntry(pSpell->rangeIndex))
@@ -110,7 +113,10 @@ CanCastResult CreatureAI::DoCastSpellIfCan(Unit* pTarget, uint32 uiSpell, uint32
             if (uiCastFlags & CAST_INTERRUPT_PREVIOUS && pCaster->IsNonMeleeSpellCasted(false))
                 pCaster->InterruptNonMeleeSpells(false);
 
-            pCaster->CastSpell(pTarget, pSpell, uiCastFlags & CAST_TRIGGERED, NULL, NULL, uiOriginalCasterGUID);
+            // Creature should always stop before it will cast a new spell
+            pCaster->StopMoving();
+
+            pCaster->CastSpell(pTarget, pSpell, uiCastFlags & CAST_TRIGGERED, nullptr, nullptr, uiOriginalCasterGUID);
             return CAST_OK;
         }
         else
@@ -219,7 +225,7 @@ void CreatureAI::SendAIEventAround(AIEventType eventType, Unit* pInvoker, uint32
         std::list<Creature*> receiverList;
 
         // Allow sending custom AI events to all units in range
-        if (eventType == AI_EVENT_CUSTOM_EVENTAI_A || eventType == AI_EVENT_CUSTOM_EVENTAI_B)
+        if (eventType >= AI_EVENT_CUSTOM_EVENTAI_A && eventType <= AI_EVENT_CUSTOM_EVENTAI_F && eventType != AI_EVENT_GOT_CCED)
         {
             MaNGOS::AnyUnitInObjectRangeCheck u_check(m_creature, fRadius);
             MaNGOS::CreatureListSearcher<MaNGOS::AnyUnitInObjectRangeCheck> searcher(receiverList, u_check);
@@ -228,7 +234,7 @@ void CreatureAI::SendAIEventAround(AIEventType eventType, Unit* pInvoker, uint32
         else
         {
             // Use this check here to collect only assitable creatures in case of CALL_ASSISTANCE, else be less strict
-            MaNGOS::AnyAssistCreatureInRangeCheck u_check(m_creature, eventType == AI_EVENT_CALL_ASSISTANCE ? pInvoker : NULL, fRadius);
+            MaNGOS::AnyAssistCreatureInRangeCheck u_check(m_creature, eventType == AI_EVENT_CALL_ASSISTANCE ? pInvoker : nullptr, fRadius);
             MaNGOS::CreatureListSearcher<MaNGOS::AnyAssistCreatureInRangeCheck> searcher(receiverList, u_check);
             Cell::VisitGridObjects(m_creature, searcher, fRadius);
         }

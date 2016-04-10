@@ -29,7 +29,6 @@
 #include "AuthSocket.h"
 #include "SystemConfig.h"
 #include "revision.h"
-#include "revision_nr.h"
 #include "revision_sql.h"
 #include "Util.h"
 #include <openssl/opensslv.h>
@@ -41,6 +40,8 @@
 #include <ace/ACE.h>
 #include <ace/Acceptor.h>
 #include <ace/SOCK_Acceptor.h>
+
+#include <boost/version.hpp>
 
 #ifdef WIN32
 #include "ServiceWin32.h"
@@ -107,7 +108,8 @@ extern int main(int argc, char** argv)
                 cfg_file = cmd_opts.opt_arg();
                 break;
             case 'v':
-                printf("%s\n", _FULLVERSION(REVISION_DATE, REVISION_TIME, REVISION_NR, REVISION_ID));
+                printf("%s\n", _FULLVERSION(REVISION_DATE, REVISION_TIME, REVISION_ID));
+                printf("Boost version %u.%u.%u\n", (BOOST_VERSION / 100000), ((BOOST_VERSION / 100) % 1000), (BOOST_VERSION % 100));
                 return 0;
 
             case 's':
@@ -185,7 +187,7 @@ extern int main(int argc, char** argv)
 
     sLog.Initialize();
 
-    sLog.outString("%s [realm-daemon]", _FULLVERSION(REVISION_DATE, REVISION_TIME, REVISION_NR, REVISION_ID));
+    sLog.outString("%s [realm-daemon]", _FULLVERSION(REVISION_DATE, REVISION_TIME, REVISION_ID));
     sLog.outString("<Ctrl-C> to stop.\n");
     sLog.outString("Using configuration file %s.", cfg_file);
 

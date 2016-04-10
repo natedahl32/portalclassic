@@ -24,6 +24,8 @@ CombatManeuverReturns PlayerbotClassAI::DoNextCombatManeuverPVE(Unit *) { return
 CombatManeuverReturns PlayerbotClassAI::DoFirstCombatManeuverPVP(Unit *) { return RETURN_NO_ACTION_OK; }
 CombatManeuverReturns PlayerbotClassAI::DoNextCombatManeuverPVP(Unit *) { return RETURN_NO_ACTION_OK; }
 
+bool PlayerbotClassAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto) { return false; }
+
 void PlayerbotClassAI::DoNonCombatActions()
 {
     DEBUG_LOG("[PlayerbotAI]: Warning: Using PlayerbotClassAI::DoNonCombatActions() rather than class specific function");
@@ -31,8 +33,8 @@ void PlayerbotClassAI::DoNonCombatActions()
 
 bool PlayerbotClassAI::EatDrinkBandage(bool bMana, unsigned char foodPercent, unsigned char drinkPercent, unsigned char bandagePercent)
 {
-    Item* drinkItem = NULL;
-    Item* foodItem = NULL;
+    Item* drinkItem = nullptr;
+    Item* foodItem = nullptr;
     if (bMana && m_ai->GetManaPercent() < drinkPercent)
         drinkItem = m_ai->FindDrink();
     if (m_ai->GetHealthPercent() < foodPercent)
@@ -142,9 +144,9 @@ CombatManeuverReturns PlayerbotClassAI::Buff(bool (*BuffHelper)(PlayerbotAI*, ui
  */
 Player* PlayerbotClassAI::GetHealTarget(JOB_TYPE type)
 {
-    if (!m_ai)  return NULL;
-    if (!m_bot) return NULL;
-    if (!m_bot->isAlive() || m_bot->IsInDuel()) return NULL;
+    if (!m_ai)  return nullptr;
+    if (!m_bot) return nullptr;
+    if (!m_bot->isAlive() || m_bot->IsInDuel()) return nullptr;
 
     // define seperately for sorting purposes - DO NOT CHANGE ORDER!
     std::vector<heal_priority> targets;
@@ -251,15 +253,15 @@ Player* PlayerbotClassAI::GetHealTarget(JOB_TYPE type)
     }
     if (x > -1) return targets.at(x).p;
 
-    return NULL;
+    return nullptr;
 }
 
 Player* PlayerbotClassAI::GetResurrectionTarget(JOB_TYPE type, bool bMustBeOOC)
 {
-    if (!m_ai)  return NULL;
-    if (!m_bot) return NULL;
-    if (!m_bot->isAlive() || m_bot->IsInDuel()) return NULL;
-    if (bMustBeOOC && m_bot->isInCombat()) return NULL;
+    if (!m_ai)  return nullptr;
+    if (!m_bot) return nullptr;
+    if (!m_bot->isAlive() || m_bot->IsInDuel()) return nullptr;
+    if (bMustBeOOC && m_bot->isInCombat()) return nullptr;
 
     // First, fill the list of targets
     if (m_bot->GetGroup())
@@ -287,7 +289,7 @@ Player* PlayerbotClassAI::GetResurrectionTarget(JOB_TYPE type, bool bMustBeOOC)
     else if (!m_master->isAlive())
         return m_master;
 
-    return NULL;
+    return nullptr;
 }
 
 JOB_TYPE PlayerbotClassAI::GetTargetJob(Player* target)
@@ -349,7 +351,7 @@ CombatManeuverReturns PlayerbotClassAI::CastSpellNoRanged(uint32 nextAction, Uni
     if (nextAction == 0)
         return RETURN_NO_ACTION_OK; // Asked to do nothing so... yeh... Dooone.
 
-    if (pTarget != NULL)
+    if (pTarget != nullptr)
         return (m_ai->CastSpell(nextAction, *pTarget) ? RETURN_CONTINUE : RETURN_NO_ACTION_ERROR);
     else
         return (m_ai->CastSpell(nextAction) ? RETURN_CONTINUE : RETURN_NO_ACTION_ERROR);
@@ -384,7 +386,7 @@ CombatManeuverReturns PlayerbotClassAI::CastSpellWand(uint32 nextAction, Unit *p
             return RETURN_NO_ACTION_UNKNOWN; // We're asked to shoot and aren't.
     }
 
-    if (pTarget != NULL)
+    if (pTarget != nullptr)
         return (m_ai->CastSpell(nextAction, *pTarget) ? RETURN_CONTINUE : RETURN_NO_ACTION_ERROR);
     else
         return (m_ai->CastSpell(nextAction) ? RETURN_CONTINUE : RETURN_NO_ACTION_ERROR);

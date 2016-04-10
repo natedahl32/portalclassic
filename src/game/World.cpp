@@ -64,6 +64,9 @@
 #include "CreatureLinkingMgr.h"
 #include "Weather.h"
 
+#include <algorithm>
+#include <mutex>
+
 INSTANTIATE_SINGLETON_1(World);
 
 extern void LoadGameObjectModelList();
@@ -90,7 +93,7 @@ World::World()
     m_allowMovement = true;
     m_ShutdownMask = 0;
     m_ShutdownTimer = 0;
-    m_gameTime = time(NULL);
+    m_gameTime = time(nullptr);
     m_startTime = m_gameTime;
     m_maxActiveSessionCount = 0;
     m_maxQueuedSessionCount = 0;
@@ -110,30 +113,28 @@ World::World()
     for (int i = 0; i < CONFIG_BOOL_VALUE_COUNT; ++i)
         m_configBoolValues[i] = false;
 
-    m_configForceLoadMapIds = NULL;
+    m_configForceLoadMapIds = nullptr;
 }
 
 /// World destructor
 World::~World()
 {
-    ///- Empty the kicked session set
-    while (!m_sessions.empty())
-    {
-        // not remove from queue, prevent loading new sessions
-        delete m_sessions.begin()->second;
-        m_sessions.erase(m_sessions.begin());
-    }
+    // it is assumed that no other thread is accessing this data when the destructor is called.  therefore, no locks are necessary
 
-    CliCommandHolder* command = NULL;
-    while (cliCmdQueue.next(command))
-        delete command;
+    ///- Empty the kicked session set
+    std::for_each(m_sessions.begin(), m_sessions.end(), [](const SessionMap::value_type &p) { delete p.second; });
+    m_sessions.clear();
+
+    std::for_each(m_cliCommandQueue.begin(), m_cliCommandQueue.end(), [](const CliCommandHolder *p) { delete p; });
+    m_cliCommandQueue.clear();
+
+    std::for_each(m_sessionAddQueue.begin(), m_sessionAddQueue.end(), [](const WorldSession *s) { delete s; });
+    m_sessionAddQueue.clear();
 
     VMAP::VMapFactory::clear();
     MMAP::MMapFactory::clear();
 
     delete m_configForceLoadMapIds;
-
-    // TODO free addSessQueue
 }
 
 /// Cleanups before world stop
@@ -150,9 +151,9 @@ WorldSession* World::FindSession(uint32 id) const
     SessionMap::const_iterator itr = m_sessions.find(id);
 
     if (itr != m_sessions.end())
-        return itr->second;                                 // also can return NULL for kicked session
+        return itr->second;                                 // also can return nullptr for kicked session
     else
-        return NULL;
+        return nullptr;
 }
 
 /// Remove a given session
@@ -173,7 +174,9 @@ bool World::RemoveSession(uint32 id)
 
 void World::AddSession(WorldSession* s)
 {
-    addSessQueue.add(s);
+    std::lock_guard<std::mutex> guard(m_sessionAddQueueLock);
+
+    m_sessionAddQueue.push_back(s);
 }
 
 void
@@ -795,7 +798,7 @@ void World::LoadConfigSettings(bool reload)
 void World::SetInitialWorldSettings()
 {
     ///- Initialize the random number generator
-    srand((unsigned int)time(NULL));
+    srand((unsigned int)time(nullptr));
 
     ///- Time server startup
     uint32 uStartTime = WorldTimer::getMSTime();
@@ -1181,7 +1184,7 @@ void World::SetInitialWorldSettings()
 
     ///- Initialize game time and timers
     sLog.outString("Initialize game time and timers");
-    m_gameTime = time(NULL);
+    m_gameTime = time(nullptr);
     m_startTime = m_gameTime;
 
     tm local;
@@ -1249,7 +1252,7 @@ void World::SetInitialWorldSettings()
     sLog.outString();
 
     sLog.outString("Loading grids for active creatures or transports...");
-    sObjectMgr.LoadActiveEntities(NULL);
+    sObjectMgr.LoadActiveEntities(nullptr);
     sLog.outString();
 
     // Delete all characters which have been deleted X days before
@@ -1437,7 +1440,7 @@ namespace MaNGOS
     {
         public:
             typedef std::vector<WorldPacket*> WorldPacketList;
-            explicit WorldWorldTextBuilder(int32 textId, va_list* args = NULL) : i_textId(textId), i_args(args) {}
+            explicit WorldWorldTextBuilder(int32 textId, va_list* args = nullptr) : i_textId(textId), i_args(args) {}
             void operator()(WorldPacketList& data_list, int32 loc_idx)
             {
                 char const* text = sObjectMgr.GetMangosString(i_textId, loc_idx);
@@ -1458,7 +1461,7 @@ namespace MaNGOS
                     do_helper(data_list, (char*)text);
             }
         private:
-            char* lineFromMessage(char*& pos) { char* start = strtok(pos, "\n"); pos = NULL; return start; }
+            char* lineFromMessage(char*& pos) { char* start = strtok(pos, "\n"); pos = nullptr; return start; }
             void do_helper(WorldPacketList& data_list, char* text)
             {
                 char* pos = text;
@@ -1512,7 +1515,7 @@ void World::SendGlobalMessage(WorldPacket* packet)
 }
 
 /// Sends a server message to the specified or all players
-void World::SendServerMessage(ServerMessageType type, const char* text /*=""*/, Player* player /*= NULL*/)
+void World::SendServerMessage(ServerMessageType type, const char* text /*=""*/, Player* player /*= nullptr*/)
 {
     WorldPacket data(SMSG_SERVER_MESSAGE, 50);              // guess size
     data << uint32(type);
@@ -1592,7 +1595,7 @@ BanReturn World::BanAccount(BanMode mode, std::string nameOrIP, uint32 duration_
     std::string safe_author = author;
     LoginDatabase.escape_string(safe_author);
 
-    QueryResult* resultAccounts = NULL;                     // used for kicking
+    QueryResult* resultAccounts = nullptr;                     // used for kicking
 
     ///- Update the database with ban information
     switch (mode)
@@ -1674,7 +1677,7 @@ bool World::RemoveBanAccount(BanMode mode, std::string nameOrIP)
 void World::_UpdateGameTime()
 {
     ///- update the time
-    time_t thisTime = time(NULL);
+    time_t thisTime = time(nullptr);
     uint32 elapsed = uint32(thisTime - m_gameTime);
     m_gameTime = thisTime;
 
@@ -1726,7 +1729,7 @@ void World::ShutdownServ(uint32 time, uint32 options, uint8 exitcode)
 }
 
 /// Display a shutdown message to the user(s)
-void World::ShutdownMsg(bool show /*= false*/, Player* player /*= NULL*/)
+void World::ShutdownMsg(bool show /*= false*/, Player* player /*= nullptr*/)
 {
     // not show messages for idle shutdown mode
     if (m_ShutdownMask & SHUTDOWN_MASK_IDLE)
@@ -1769,9 +1772,13 @@ void World::ShutdownCancel()
 void World::UpdateSessions(uint32 /*diff*/)
 {
     ///- Add new sessions
-    WorldSession* sess;
-    while (addSessQueue.next(sess))
-        AddSession_(sess);
+    {
+        std::lock_guard<std::mutex> guard(m_sessionAddQueueLock);
+
+        std::for_each(m_sessionAddQueue.begin(), m_sessionAddQueue.end(), [&](WorldSession *session) { AddSession_(session); });
+
+        m_sessionAddQueue.clear();
+    }
 
     ///- Then send an update signal to remaining ones
     for (SessionMap::iterator itr = m_sessions.begin(), next; itr != m_sessions.end(); itr = next)
@@ -1807,7 +1814,7 @@ void World::ServerMaintenanceStart()
         if (itr->second->GetPlayer() && itr->second->GetPlayer()->IsInWorld())
             itr->second->GetPlayer()->SaveToDB();
 
-    CharacterDatabase.PExecute("UPDATE saved_variables SET NextMaintenanceDate = '"UI64FMTD"'", uint64(m_NextMaintenanceDate));
+    CharacterDatabase.PExecute("UPDATE saved_variables SET NextMaintenanceDate = '" UI64FMTD "'", uint64(m_NextMaintenanceDate));
 }
 
 void World::InitServerMaintenanceCheck()
@@ -1818,7 +1825,7 @@ void World::InitServerMaintenanceCheck()
         DEBUG_LOG("Maintenance date not found in SavedVariables, reseting it now.");
         uint32 mDate = GetDateLastMaintenanceDay();
         m_NextMaintenanceDate = mDate == GetDateToday() ?  mDate : mDate + 7;
-        CharacterDatabase.PExecute("INSERT INTO saved_variables (NextMaintenanceDate) VALUES ('"UI64FMTD"')", uint64(m_NextMaintenanceDate));
+        CharacterDatabase.PExecute("INSERT INTO saved_variables (NextMaintenanceDate) VALUES ('" UI64FMTD "')", uint64(m_NextMaintenanceDate));
     }
     else
     {
@@ -1835,9 +1842,13 @@ void World::InitServerMaintenanceCheck()
 // This handles the issued and queued CLI/RA commands
 void World::ProcessCliCommands()
 {
-    CliCommandHolder* command;
-    while (cliCmdQueue.next(command))
+    std::lock_guard<std::mutex> guard(m_cliCommandQueueLock);
+
+    while (!m_cliCommandQueue.empty())
     {
+        CliCommandHolder* command = m_cliCommandQueue.front();
+        m_cliCommandQueue.pop_front();
+
         DEBUG_LOG("CLI command under processing...");
         CliCommandHolder::Print* zprint = command->m_print;
         void* callbackArg = command->m_callbackArg;

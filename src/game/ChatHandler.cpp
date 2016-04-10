@@ -138,7 +138,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recv_data)
         {
             if (!_player->CanSpeak())
             {
-                std::string timeStr = secsToTimeString(m_muteTime - time(NULL));
+                std::string timeStr = secsToTimeString(m_muteTime - time(nullptr));
                 SendNotification(GetMangosString(LANG_WAIT_BEFORE_SPEAKING), timeStr.c_str());
                 return;
             }
@@ -250,7 +250,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recv_data)
             }
 
             // Playerbot mod: broadcast message to bot members
-            for(GroupReference* itr = group->GetFirstMember(); itr != NULL; itr=itr->next())
+            for(GroupReference* itr = group->GetFirstMember(); itr != nullptr; itr=itr->next())
             {
                 Player* player = itr->getSource();
                 if (player && player->GetPlayerbotAI())
@@ -340,6 +340,19 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recv_data)
                     return;
             }
 
+			// Playerbot mod: broadcast message to bot members
+			for (GroupReference* itr = group->GetFirstMember(); itr != nullptr; itr = itr->next())
+			{
+				Player* player = itr->getSource();
+				if (player && player->GetPlayerbotAI())
+				{
+					player->GetPlayerbotAI()->HandleCommand(msg, *GetPlayer());
+					GetPlayer()->m_speakTime = 0;
+					GetPlayer()->m_speakCount = 0;
+				}
+			}
+			// END Playerbot mod
+
             WorldPacket data;
             ChatHandler::BuildChatPacket(data, CHAT_MSG_RAID, msg.c_str(), Language(lang), _player->GetChatTag(), _player->GetObjectGuid(), _player->GetName());
             group->BroadcastPacket(&data, false);
@@ -369,6 +382,19 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recv_data)
                 if (!group || group->isBGGroup() || !group->isRaidGroup() || !group->IsLeader(_player->GetObjectGuid()))
                     return;
             }
+
+			// Playerbot mod: broadcast message to bot members
+			for (GroupReference* itr = group->GetFirstMember(); itr != nullptr; itr = itr->next())
+			{
+				Player* player = itr->getSource();
+				if (player && player->GetPlayerbotAI())
+				{
+					player->GetPlayerbotAI()->HandleCommand(msg, *GetPlayer());
+					GetPlayer()->m_speakTime = 0;
+					GetPlayer()->m_speakCount = 0;
+				}
+			}
+			// END Playerbot mod
 
             WorldPacket data;
             ChatHandler::BuildChatPacket(data, CHAT_MSG_RAID_LEADER, msg.c_str(), Language(lang), _player->GetChatTag(), _player->GetObjectGuid(), _player->GetName());
@@ -532,7 +558,7 @@ namespace MaNGOS
 
             void operator()(WorldPacket& data, int32 loc_idx)
             {
-                char const* nam = i_target ? i_target->GetNameForLocaleIdx(loc_idx) : NULL;
+                char const* nam = i_target ? i_target->GetNameForLocaleIdx(loc_idx) : nullptr;
                 uint32 namlen = (nam ? strlen(nam) : 0) + 1;
 
                 data.Initialize(SMSG_TEXT_EMOTE, (20 + namlen));
@@ -561,7 +587,7 @@ void WorldSession::HandleTextEmoteOpcode(WorldPacket& recv_data)
 
     if (!GetPlayer()->CanSpeak())
     {
-        std::string timeStr = secsToTimeString(m_muteTime - time(NULL));
+        std::string timeStr = secsToTimeString(m_muteTime - time(nullptr));
         SendNotification(GetMangosString(LANG_WAIT_BEFORE_SPEAKING), timeStr.c_str());
         return;
     }

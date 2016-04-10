@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
 
 set(LIBRARY_NAME framework)
 
@@ -54,7 +55,6 @@ set(SRC_GRP_UTIL
     Utilities/EventProcessor.h
     Utilities/LinkedList.h
     Utilities/TypeList.h
-    Utilities/UnorderedMapSet.h
 )
 
 set(SRC_GRP_LINKED_REFERENCE
@@ -110,7 +110,7 @@ add_library(${LIBRARY_NAME} STATIC
   ${LIBRARY_SRCS}
 )
 
-if(NOT TBB_USE_EXTERNAL)
+if(NOT TBB_USE_EXTERNAL AND NOT USE_STD_MALLOC)
   add_dependencies(${LIBRARY_NAME} TBB_Project)
 endif()
 if(NOT ACE_USE_EXTERNAL)

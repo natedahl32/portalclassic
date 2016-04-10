@@ -19,39 +19,6 @@
 #ifndef MANGOSSERVER_COMMON_H
 #define MANGOSSERVER_COMMON_H
 
-// config.h needs to be included 1st
-#ifdef HAVE_CONFIG_H
-#ifdef PACKAGE
-#undef PACKAGE
-#endif // PACKAGE
-#ifdef PACKAGE_BUGREPORT
-#undef PACKAGE_BUGREPORT
-#endif // PACKAGE_BUGREPORT
-#ifdef PACKAGE_NAME
-#undef PACKAGE_NAME
-#endif // PACKAGE_NAME
-#ifdef PACKAGE_STRING
-#undef PACKAGE_STRING
-#endif // PACKAGE_STRING
-#ifdef PACKAGE_TARNAME
-#undef PACKAGE_TARNAME
-#endif // PACKAGE_TARNAME
-#ifdef PACKAGE_VERSION
-#undef PACKAGE_VERSION
-#endif // PACKAGE_VERSION
-#ifdef VERSION
-#undef VERSION
-#endif // VERSION
-# include "config.h"
-#undef PACKAGE
-#undef PACKAGE_BUGREPORT
-#undef PACKAGE_NAME
-#undef PACKAGE_STRING
-#undef PACKAGE_TARNAME
-#undef PACKAGE_VERSION
-#undef VERSION
-#endif // HAVE_CONFIG_H
-
 #include "Platform/Define.h"
 
 #if COMPILER == COMPILER_MICROSOFT
@@ -62,12 +29,11 @@
 #endif                                                      // __SHOW_STUPID_WARNINGS__
 #endif                                                      // __GNUC__
 
-#include "Utilities/UnorderedMapSet.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <math.h>
+#include <cmath>
 #include <errno.h>
 #include <signal.h>
 #include <assert.h>
@@ -83,15 +49,12 @@
 #include <queue>
 #include <sstream>
 #include <algorithm>
+#include <unordered_map>
+#include <unordered_set>
 
 #include "Errors.h"
-#include "LockedQueue.h"
 #include "Threading.h"
 
-#include <ace/Basic_Types.h>
-#include <ace/Guard_T.h>
-#include <ace/RW_Thread_Mutex.h>
-#include <ace/Thread_Mutex.h>
 #include <ace/OS_NS_arpa_inet.h>
 
 // Old ACE versions (pre-ACE-5.5.4) not have this type (add for allow use at Unix side external old ACE versions)
@@ -148,9 +111,7 @@ typedef off_t ACE_OFF_T;
 
 #define SIZEFMTD ACE_SIZE_T_FORMAT_SPECIFIER
 
-inline float finiteAlways(float f) { return finite(f) ? f : 0.0f; }
-
-#define atol(a) strtoul( a, NULL, 10)
+inline float finiteAlways(float f) { return std::isfinite(f) ? f : 0.0f; }
 
 #define STRINGIZE(a) #a
 

@@ -1,95 +1,21 @@
-# C(ontinued)-MaNGOS -- README [![Build Status](https://travis-ci.org/cmangos/mangos-classic.svg?branch=master)](https://travis-ci.org/cmangos/mangos-classic)
+This project is a continuation of the amazing Blueboy Portal Project for Classic World of Warcraft. This project is NOT meant to be hosted publicly as it removes some security restrictions surrounding bots. Namely that any player logged in to the server can summon a bot from any account. The purpose of this project is to provide a Single Player experience in World of Warcraft where you can do PVE activities such as raids and dungeons with intelligents bots.
 
-This file is part of the CMaNGOS Project. See [AUTHORS](AUTHORS.md) file for Copyright information
+The short term goal for this project is to provide "Boss Strategies" where you can assign your bots raid/group roles that affect how the bots act in a given encounter. Right now this is still conceptual and more details will be provided as things progress.
 
-## Welcome to C(ontinued)-MaNGOS
+The following are some changes/enhancements that were made to this project.
 
-C(ontinued)-MaNGOS is a free project with the following goal:
+- You can have as many bots as you want across as many accounts as you want, the limit to only using bots from the account you are logged in to has been lifted from previous Portal versions.
 
-  **Doing WoW-Emulation Right!**
+- Bots will automatically accept a guild invite if you are the guild master
 
-This means, we want to focus on:
+- Upon login, all bots that are on your guild will automatically be logged in when you log in to the game. Bots will not automatically follow you when they login, you must invite them to a group to have them follow you.
 
-* WoW-Emulation
-    This project is about developing a server software that is able to
-    emulate a well known MMORPG service.
+- All bots currently logged in will level up with you and automatically gain new skills and all level appropriate spells. Bots will also randomly learn professions and level those up as well.
 
-* Doing
-  * This project is focused on developing content!
-  * Also there are many other aspects that need to be done and are
-    considered equally important.
-  * Anyone who wants to do stuff is very welcome to do so!
+- Bots will only be summoned to you if they are on you party.
 
-* Right
-  * Our goal must always be to provide the best code that we can.
-  * Being 'right' is defined by the behavior of the system
-    we want to emulate.
-  * Developing things right also includes documenting and discussing
-    _how_ to do things better, hence...
-  * Learning and Teaching are very important in our view, and must
-    always be part of what we do.
+- Bots have talent specs that you can assign them and they will automatically learn new talents in their specified spec as they level up.
 
-To be able to accomplish these goals, we support and promote:
+- Bots have custom stat weights for items that allow them to intelligently determine if an item is an upgrade to their current item.
 
-* Freedom
-  * of our work: Our work - including our code - is released under the GPL
-    So everbody is free to use and contribute to this open source project
-  * for our developers and contributers on things that interest them.
-    No one here is telling anybody _what_ to do.
-    If you want somebody to do something for you, pay him,
-    but we are here to enjoy.
-  * to have FUN with developing.
-
-* A friendly environment
-  * We try to let personal issues behind us.
-  * We only argue about content, and not about thin air!
-  * We follow the [Netiquette](http://tools.ietf.org/html/rfc1855).
-
--- The C(ontinued)-MaNGOS Team!
-
-## Further information
-
-  You can find further information about CMaNGOS at the following places:
-  * [CMaNGOS Forum](http://cmangos.net/)
-  * CMaNGOS IRC channel: #cmangos on irc.rizon.net
-  * [GitHub repositories](https://github.com/cmangos/)
-  * [Issue tracker](https://github.com/cmangos/issues/issues)
-  * [Pull Requests](https://github.com/cmangos/mangos-classic/pulls)
-  * [Current build status on Travis CI](https://travis-ci.org/cmangos/mangos-classic/)
-  * [Wiki](https://github.com/cmangos/issues/wiki) with additional information on installation
-  * [Contributing Guidelines](CONTRIBUTING.md)
-  * Documentation can be found in the doc/ subdirectory and on the github wiki
-
-## License
-
-  CMaNGOS is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2 of the License, or
-  (at your option) any later version.
-
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-
-  You can find the full license text in the file [COPYING](COPYING) delivered with this package.
-
-### Exceptions to GPL
-
-  Some third-party libraries CMaNGOS uses have other licenses, that must be
-  uphold.  These libraries are located within the dep/ directory
-
-  In addition, as a special exception, the CMaNGOS project
-  gives permission to link the code of its release of MaNGOS with the
-  OpenSSL project's "OpenSSL" library (or with modified versions of it
-  that use the same license as the "OpenSSL" library), and distribute
-  the linked executables.  You must obey the GNU General Public License
-  in all respects for all of the code used other than "OpenSSL".  If you
-  modify this file, you may extend this exception to your version of the
-  file, but you are not obligated to do so.  If you do not wish to do
-  so, delete this exception statement from your version.
+More features will be implemented as time goes on.

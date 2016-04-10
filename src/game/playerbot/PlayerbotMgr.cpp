@@ -10,6 +10,7 @@
 #include "../Chat.h"
 #include "../Language.h"
 #include "../WaypointMovementGenerator.h"
+#include "../LootMgr.h"
 
 class LoginQueryHolder;
 class CharacterHandler;
@@ -322,14 +323,7 @@ void PlayerbotMgr::HandleMasterIncomingPacket(const WorldPacket& packet)
 
                 case TEXTEMOTE_EAT:
                 case TEXTEMOTE_DRINK:
-                {
-                    for (PlayerBotMap::const_iterator it = GetPlayerBotsBegin(); it != GetPlayerBotsEnd(); ++it)
-                    {
-                        Player* const bot = it->second;
-                        bot->GetPlayerbotAI()->Feast();
-                    }
                     return;
-                }
 
                 // emote to attack selected target
                 case TEXTEMOTE_POINT:
@@ -347,8 +341,11 @@ void PlayerbotMgr::HandleMasterIncomingPacket(const WorldPacket& packet)
                         bot = itr->second;
                         if (!bot->IsFriendlyTo(thingToAttack))
                         {
-                            if (!bot->IsWithinLOSInMap(thingToAttack))
-                                bot->GetPlayerbotAI()->DoTeleport(*m_master);
+							if (!bot->IsWithinLOSInMap(thingToAttack))
+							{
+								bot->GetPlayerbotAI()->TellMaster("Trying to attack something, but I'm too far away!");
+								bot->GetPlayerbotAI()->DoTeleport(*m_master);
+							}
                             if (bot->IsWithinLOSInMap(thingToAttack))
                                 bot->GetPlayerbotAI()->Attack(thingToAttack);
                         }
@@ -462,7 +459,7 @@ void PlayerbotMgr::HandleMasterIncomingPacket(const WorldPacket& packet)
             uint32 unk1;
             p >> guid >> quest;
 
-            DEBUG_LOG ("[PlayerbotMgr]: HandleMasterIncomingPacket - Received CMSG_QUESTGIVER_ACCEPT_QUEST npc = %s, quest = %u, unk1 = %u", guid.GetString().c_str(), quest, unk1);
+            DEBUG_LOG ("[PlayerbotMgr]: HandleMasterIncomingPacket - Received CMSG_QUESTGIVER_ACCEPT_QUEST npc = %s, quest = %u", guid.GetString().c_str(), quest);
 
             Quest const* qInfo = sObjectMgr.GetQuestTemplate(quest);
             if (qInfo)
@@ -549,25 +546,15 @@ void PlayerbotMgr::HandleMasterIncomingPacket(const WorldPacket& packet)
 
         case CMSG_LOOT_ROLL:
         {
-            WorldPacket p(packet);    //WorldPacket packet for CMSG_LOOT_ROLL, (8+4+1)
+            WorldPacket p(packet);  //WorldPacket packet for CMSG_LOOT_ROLL, (8+4+1)
             ObjectGuid Guid;
             uint32 itemSlot;
             uint8 rollType;
-            Loot *loot = NULL;
 
-            p.rpos(0);        //reset packet pointer
-            p >> Guid;        //guid of the lootable target
-            p >> itemSlot;    //loot index
-            p >> rollType;    //need,greed or pass on roll
-
-            if (Creature* c = m_master->GetMap()->GetCreature(Guid))
-                loot = &c->loot;
-            else if (GameObject* go = m_master->GetMap()->GetGameObject(Guid))
-                loot = &go->loot;
-            else
-                return;
-
-            LootItem& lootItem = loot->items[itemSlot];
+            p.rpos(0);              //reset packet pointer
+            p >> Guid;              //guid of the lootable target
+            p >> itemSlot;          //loot index
+            p >> rollType;          //need,greed or pass on roll
 
             for (PlayerBotMap::const_iterator it = GetPlayerBotsBegin(); it != GetPlayerBotsEnd(); ++it)
             {
@@ -581,23 +568,35 @@ void PlayerbotMgr::HandleMasterIncomingPacket(const WorldPacket& packet)
                 if (!group)
                     return;
 
-                ItemPrototype const *pProto = ObjectMgr::GetItemPrototype(lootItem.itemid);
+                // check that the bot did not already vote
+                if (rollType >= ROLL_NOT_EMITED_YET)
+                    return;
+
+                Loot* loot = sLootMgr.GetLoot(bot, Guid);
+
+                if (!loot)
+                {
+                    sLog.outError("LootMgr::PlayerVote> Error cannot get loot object info!");
+                    return;
+                }
+
+                LootItem* lootItem = loot->GetLootItemInSlot(itemSlot);
+
+                ItemPrototype const *pProto = lootItem->itemProto;
                 if (!pProto)
                     return;
 
                 if (bot->GetPlayerbotAI()->CanStore())
                 {
-                    if (bot->CanUseItem(pProto) == EQUIP_ERR_OK && bot->GetPlayerbotAI()->IsItemUseful(lootItem.itemid))
+                    if (bot->CanUseItem(pProto) == EQUIP_ERR_OK && bot->GetPlayerbotAI()->IsItemUseful(lootItem->itemId))
                         choice = 1; // Need
-                    else if (bot->HasSkill(SKILL_ENCHANTING))
-                        choice = 3; // Disenchant
                     else
                         choice = 2; // Greed
                 }
                 else
-                    choice = 0; // Pass
+                    choice = 0;     // Pass
 
-                group->CountRollVote(bot, Guid, itemSlot, RollVote(choice));
+                sLootMgr.PlayerVote(bot, Guid, itemSlot, RollVote(choice));
             }
             return;
         }
@@ -754,6 +753,20 @@ void PlayerbotMgr::HandleMasterIncomingPacket(const WorldPacket& packet)
     }
 }
 
+void PlayerbotMgr::OnMasterLevelUp() 
+{
+	// give all bots the same level as the master so they stay current
+	for (PlayerBotMap::const_iterator it = GetPlayerBotsBegin(); it != GetPlayerBotsEnd(); ++it)
+	{
+		Player* const bot = it->second;
+		if (bot->getLevel() < m_master->getLevel())
+		{
+			bot->GiveLevel(m_master->getLevel());
+			bot->GetPlayerbotAI()->Levelup();
+		}
+	}
+}
+
 void PlayerbotMgr::HandleMasterOutgoingPacket(const WorldPacket& /*packet*/)
 {
     /*
@@ -841,7 +854,7 @@ void PlayerbotMgr::OnBotLogin(Player * const bot)
     // if bot is in a group and master is not in group then
     // have bot leave their group
     if (bot->GetGroup() &&
-        (m_master->GetGroup() == NULL ||
+        (m_master->GetGroup() == nullptr ||
          m_master->GetGroup()->IsMember(bot->GetObjectGuid()) == false))
         bot->RemoveFromGroup();
 
@@ -886,14 +899,14 @@ void Creature::LoadBotMenu(Player *pPlayer)
             // create the manager if it doesn't already exist
             if (!pPlayer->GetPlayerbotMgr())
                 pPlayer->SetPlayerbotMgr(new PlayerbotMgr(pPlayer));
-            if (pPlayer->GetPlayerbotMgr()->GetPlayerBot(guidlo) == NULL) // add (if not already in game)
+            if (pPlayer->GetPlayerbotMgr()->GetPlayerBot(guidlo) == nullptr) // add (if not already in game)
             {
                 word += "Recruit ";
                 word += name;
                 word += " as a Bot.";
                 pPlayer->PlayerTalkClass->GetGossipMenu().AddMenuItem((uint8) 9, word, guidlo, GOSSIP_OPTION_BOT, word, false);
             }
-            else if (pPlayer->GetPlayerbotMgr()->GetPlayerBot(guidlo) != NULL) // remove (if in game)
+            else if (pPlayer->GetPlayerbotMgr()->GetPlayerBot(guidlo) != nullptr) // remove (if in game)
             {
                 word += "Dismiss ";
                 word += name;
@@ -961,7 +974,7 @@ bool Player::getNextQuestId(const std::string& pString, unsigned int& pStartPos,
 
 bool Player::requiredQuests(const char* pQuestIdString)
 {
-    if (pQuestIdString != NULL)
+    if (pQuestIdString != nullptr)
     {
         unsigned int pos = 0;
         unsigned int id;
@@ -995,7 +1008,7 @@ uint32 Player::GetSpec()
 
         if (!talentTabInfo)
             continue;
-            
+
         if ((classMask & talentTabInfo->ClassMask) == 0)
             continue;
 
@@ -1006,7 +1019,7 @@ uint32 Player::GetSpec()
             {
                 if (row == 0 && spec == 0)
                     spec = talentInfo->TalentTab;
-                    
+
                 if (talentInfo->Row > row)
                 {
                     row = talentInfo->Row;
@@ -1045,7 +1058,7 @@ bool ChatHandler::HandlePlayerbotCommand(char* args)
     }
 
     char *cmd = strtok ((char *) args, " ");
-    char *charname = strtok (NULL, " ");
+    char *charname = strtok (nullptr, " ");
 
     if (!cmd || !charname)
     {
@@ -1068,13 +1081,14 @@ bool ChatHandler::HandlePlayerbotCommand(char* args)
         return false;
     }
 
-    uint32 accountId = sObjectMgr.GetPlayerAccountIdByGUID(guid);
+	// Removed this restriction to accomodate 40 man raids teams of bots in vanilla
+    /*uint32 accountId = sObjectMgr.GetPlayerAccountIdByGUID(guid);
     if (accountId != m_session->GetAccountId())
     {
         PSendSysMessage("|cffff0000You may only add bots from the same account.");
         SetSentErrorMessage(true);
         return false;
-    }
+    }*/
 
     // create the playerbot manager if it doesn't already exist
     PlayerbotMgr* mgr = m_session->GetPlayer()->GetPlayerbotMgr();
@@ -1128,7 +1142,8 @@ bool ChatHandler::HandlePlayerbotCommand(char* args)
             return false;
         }
         CharacterDatabase.DirectPExecute("UPDATE characters SET online = 1 WHERE guid = '%u'", guid.GetCounter());
-        mgr->LoginPlayerBot(guid);
+		// Modified to allow bot to originate from an account not on the masters account
+        mgr->LoginPlayerBot(guid, mgr->GetMaster()->GetSession()->GetAccountId());
         PSendSysMessage("Bot added successfully.");
     }
     else if (cmdStr == "remove" || cmdStr == "logout")
@@ -1145,8 +1160,8 @@ bool ChatHandler::HandlePlayerbotCommand(char* args)
     }
     else if (cmdStr == "co" || cmdStr == "combatorder")
     {
-        Unit *target = NULL;
-        char *orderChar = strtok(NULL, " ");
+        Unit *target = nullptr;
+        char *orderChar = strtok(nullptr, " ");
         if (!orderChar)
         {
             PSendSysMessage("|cffff0000Syntax error:|cffffffff .bot co <botName> <order=reset|tank|assist|heal|protect> [targetPlayer]");
