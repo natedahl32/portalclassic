@@ -11246,15 +11246,19 @@ void Player::OnGossipSelect(WorldObject* pSource, uint32 gossipListId)
         }
     }
 
-    GossipMenuItemData pMenuData = gossipmenu.GetItemData(gossipListId);
+	// check to make sure menu item exists
+	if (gossipListId >= 0 && gossipListId < gossipmenu.MenuItemCount())
+	{
+		GossipMenuItemData pMenuData = gossipmenu.GetItemData(gossipListId);
 
-    if (pMenuData.m_gAction_script)
-    {
-        if (pSource->GetTypeId() == TYPEID_UNIT)
-            GetMap()->ScriptsStart(sGossipScripts, pMenuData.m_gAction_script, pSource, this, Map::SCRIPT_EXEC_PARAM_UNIQUE_BY_SOURCE);
-        else if (pSource->GetTypeId() == TYPEID_GAMEOBJECT)
-            GetMap()->ScriptsStart(sGossipScripts, pMenuData.m_gAction_script, this, pSource, Map::SCRIPT_EXEC_PARAM_UNIQUE_BY_TARGET);
-    }
+		if (pMenuData.m_gAction_script)
+		{
+			if (pSource->GetTypeId() == TYPEID_UNIT)
+				GetMap()->ScriptsStart(sGossipScripts, pMenuData.m_gAction_script, pSource, this, Map::SCRIPT_EXEC_PARAM_UNIQUE_BY_SOURCE);
+			else if (pSource->GetTypeId() == TYPEID_GAMEOBJECT)
+				GetMap()->ScriptsStart(sGossipScripts, pMenuData.m_gAction_script, this, pSource, Map::SCRIPT_EXEC_PARAM_UNIQUE_BY_TARGET);
+		}
+	}
 }
 
 uint32 Player::GetGossipTextId(WorldObject* pSource)
