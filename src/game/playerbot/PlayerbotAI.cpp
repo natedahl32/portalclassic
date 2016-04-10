@@ -2342,14 +2342,15 @@ void PlayerbotAI::DoNextCombatManeuver()
     else
         Attack();
 
+	//Removed, was causing a crash
 	//when mob use some spell invisibility the bot action
-	if (m_targetCombat->HasAuraType(SPELL_AURA_MOD_INVISIBILITY) && !(m_combatOrder & ORDERS_HEAL))
+	/*if (m_targetCombat->HasAuraType(SPELL_AURA_MOD_INVISIBILITY) && !(m_combatOrder & ORDERS_HEAL))
 	{
 		m_bot->AttackStop();
 		m_bot->SetSelectionGuid(ObjectGuid());
 		m_bot->InterruptNonMeleeSpells(true);
 		return;
-	}
+	}*/
 
     // clear orders if current target for attacks doesn't make sense anymore
     if (!m_targetCombat || m_targetCombat->isDead() || !m_targetCombat->IsInWorld() || !m_bot->IsHostileTo(m_targetCombat) || !m_bot->IsInMap(m_targetCombat))
