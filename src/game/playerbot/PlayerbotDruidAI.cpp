@@ -107,7 +107,7 @@ PlayerbotDruidAI::PlayerbotDruidAI(Player* const master, Player* const bot, Play
 		m_statWeights[ITEM_MOD_AGILITY] = 0.5f;
 		m_statWeights[ITEM_MOD_MANA] = 0.15f;
 		m_statWeights[ITEM_MOD_HEALTH] = 0.85f;
-}
+	}
 }
 
 PlayerbotDruidAI::~PlayerbotDruidAI() {}
@@ -740,7 +740,8 @@ void PlayerbotDruidAI::DoNonCombatActions()
 	{
 		if (Item* pItem = m_bot->StoreNewItemInInventorySlot(Wild_Thornroot, 20))
 			m_bot->SendNewItem(pItem, 20, true, false);
-        return;
+		return;
+	}
 
     // Return to fighting form AFTER reviving, healing, buffing
     CheckForms();
