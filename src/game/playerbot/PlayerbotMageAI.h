@@ -3,6 +3,8 @@
 
 #include "PlayerbotClassAI.h"
 
+#define  ArcanePowder 17020
+
 enum
 {
     SPELL_FROST,

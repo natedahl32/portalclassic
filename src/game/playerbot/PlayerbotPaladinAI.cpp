@@ -646,6 +646,15 @@ void PlayerbotPaladinAI::DoNonCombatActions()
     if (Buff(&PlayerbotPaladinAI::BuffHelper, 1) & RETURN_CONTINUE) // Paladin's BuffHelper takes care of choosing the specific Blessing so just pass along a non-zero value
                 return;
 
+	//creat water
+	if (m_ai->FindDrink() == nullptr && m_bot->getLevel() == 60)
+	{
+		if (Item* pItem = m_bot->StoreNewItemInInventorySlot(CRYSTAL_WATER, 20))
+			m_bot->SendNewItem(pItem, 20, true, false);
+
+		return;
+	}
+
     // hp/mana check
     if (EatDrinkBandage())
                     return;

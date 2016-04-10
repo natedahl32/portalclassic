@@ -719,11 +719,27 @@ void PlayerbotDruidAI::DoNonCombatActions()
     if (OMEN_OF_CLARITY && !m_bot->HasAura(OMEN_OF_CLARITY) && CastSpell(OMEN_OF_CLARITY, m_bot))
         return;
 
+    // Return to fighting form AFTER reviving, healing, buffing
+    CheckForms();
+
+	//creat water
+	if (m_ai->FindDrink() == nullptr && m_bot->getLevel() == 60)
+	{
+		if (Item* pItem = m_bot->StoreNewItemInInventorySlot(CRYSTAL_WATER, 20))
+			m_bot->SendNewItem(pItem, 20, true, false);
+
+		return;
+	}
+
     // hp/mana check
     if (EatDrinkBandage())
         return;
 
-    if (INNERVATE && m_ai->In_Reach(m_bot,INNERVATE) && !m_bot->HasAura(INNERVATE) && m_ai->GetManaPercent() <= 20 && CastSpell(INNERVATE, m_bot))
+	//creat Wild_Thornroot
+	if (!m_ai->HasSpellReagents(GIFT_OF_THE_WILD) && m_bot->getLevel() == 60)
+	{
+		if (Item* pItem = m_bot->StoreNewItemInInventorySlot(Wild_Thornroot, 20))
+			m_bot->SendNewItem(pItem, 20, true, false);
         return;
 
     // Return to fighting form AFTER reviving, healing, buffing
@@ -848,10 +864,10 @@ bool PlayerbotDruidAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPr
 	// Calculate DPS of a weapon
 	uint32 spec = m_bot->GetSpec();
 	if (spec == DRUID_SPEC_FERAL) {
-		if (pNewProto->Class == ITEM_CLASS_WEAPON && pCurrentProto->Class == ITEM_CLASS_WEAPON) {
-			newScore += (pNewProto->getDPS() * 0.9f);
-			currentScore += (pNewProto->getDPS() * 0.9f);
-		}
+	if (pNewProto->Class == ITEM_CLASS_WEAPON && pCurrentProto->Class == ITEM_CLASS_WEAPON) {
+		newScore += (pNewProto->getDPS() * 0.9f);
+		currentScore += (pNewProto->getDPS() * 0.9f);
+	}
 	}
 
 	return newScore > currentScore;

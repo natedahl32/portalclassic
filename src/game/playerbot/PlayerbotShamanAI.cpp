@@ -519,6 +519,15 @@ void PlayerbotShamanAI::DoNonCombatActions()
             return;// RETURN_CONTINUE;
     }
 
+	//create water
+	if (m_ai->FindDrink() == nullptr && m_bot->getLevel() == 60)
+	{
+		if (Item* pItem = m_bot->StoreNewItemInInventorySlot(CRYSTAL_WATER, 20))
+			m_bot->SendNewItem(pItem, 20, true, false);
+
+		return;
+	}
+
     // hp/mana check
     if (EatDrinkBandage())
         return;
@@ -570,13 +579,13 @@ bool PlayerbotShamanAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemP
 	// Calculate DPS of a weapon
 	uint32 spec = m_bot->GetSpec();
 	if (spec == SHAMAN_SPEC_ENHANCEMENT) {
-	if (pNewProto->Class == ITEM_CLASS_WEAPON && pCurrentProto->Class == ITEM_CLASS_WEAPON) {
+		if (pNewProto->Class == ITEM_CLASS_WEAPON && pCurrentProto->Class == ITEM_CLASS_WEAPON) {
 			// TOOD: Calculate slow vs fast on mainhand/offhand weapons
 			newScore += (pNewProto->getDPS() * 0.9f);
 			currentScore += (pCurrentProto->getDPS() * 0.9f);
 		}
 	}
-
+	
 
 	return newScore > currentScore;
 }

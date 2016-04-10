@@ -3,6 +3,9 @@
 
 #include "PlayerbotClassAI.h"
 
+#define CRYSTAL_WATER 8079
+#define SacredCandle 17029
+
 enum
 {
     SPELL_HOLY,

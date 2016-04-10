@@ -817,7 +817,7 @@ std::list<const ItemPrototype*> PlayerbotAI::GetExistingItemsInSlot(ItemPrototyp
 		// Get current item in this slot
 		Item* pItemCurrent = m_bot->GetItemByPos(INVENTORY_SLOT_BAG_0, slot); // EquipmentSlots
 		if (pItemCurrent)
-			items.push_back(pItemCurrent->GetProto());
+		items.push_back(pItemCurrent->GetProto());
 	}
 
 	return items;
@@ -833,7 +833,7 @@ bool PlayerbotAI::IsItemAnUpgrade(ItemPrototype const *pProto)
 	// If the item is not useful, it is not an upgrade
 	if (!IsItemUseful(pProto->ItemId)) {
 		DEBUG_LOG("Item is not useful to me.");
-		return false;
+		return false;		
 	}
 
 	// If the item is not armor or a weapon, we can't consider it as an upgrade
@@ -872,22 +872,22 @@ bool PlayerbotAI::IsItemAnUpgrade(ItemPrototype const *pProto)
 					if (pProto->ItemLevel >= (pItemCurrentProto->ItemLevel - 10)) {
 						isUpgrade = true;
 						break;
-				}
+					}
 				}
 				else if (pProto->Quality == pItemCurrentProto->Quality) {
 					// If quality is the same the item level must be better than current item. If item level is same we will fall through to the next set of class logic
 					if (pProto->ItemLevel > pItemCurrentProto->ItemLevel) {
 						isUpgrade = true;
 						break;
+					}
 				}
-			}
 			}
 
 			// Check with class AI
 			if (m_classAI->IsNewItemAnUpgrade(pProto, pItemCurrentProto)) {
 				isUpgrade = true;
 				break;
-		}
+			}
 		}
 
 	}
@@ -2308,7 +2308,7 @@ void PlayerbotAI::GetCombatTarget(Unit* forcedTarget)
     }
 
     m_bot->SetSelectionGuid((m_targetCombat->GetObjectGuid()));
-    SetIgnoreUpdateTime(1);
+    //SetIgnoreUpdateTime(1);
 
     if (m_bot->getStandState() != UNIT_STAND_STATE_STAND)
         m_bot->SetStandState(UNIT_STAND_STATE_STAND);
@@ -2341,6 +2341,15 @@ void PlayerbotAI::DoNextCombatManeuver()
         GetDuelTarget(GetMaster()); // TODO: Wow... wait... what? So not right.
     else
         Attack();
+
+	//when mob use some spell invisibility the bot action
+	if (m_targetCombat->HasAuraType(SPELL_AURA_MOD_INVISIBILITY) && !(m_combatOrder & ORDERS_HEAL))
+	{
+		m_bot->AttackStop();
+		m_bot->SetSelectionGuid(ObjectGuid());
+		m_bot->InterruptNonMeleeSpells(true);
+		return;
+	}
 
     // clear orders if current target for attacks doesn't make sense anymore
     if (!m_targetCombat || m_targetCombat->isDead() || !m_targetCombat->IsInWorld() || !m_bot->IsHostileTo(m_targetCombat) || !m_bot->IsInMap(m_targetCombat))
@@ -5555,7 +5564,7 @@ bool PlayerbotAI::IsElite(Unit* pTarget) const
         }
 
     return false;
-}
+        }
 
 // Check if bot target has one of the following auras: Sap, Polymorph, Shackle Undead, Banish, Seduction, Freezing Trap, Hibernate
 // This is used by the AI to prevent bots from attacking crowd control targets
@@ -7210,8 +7219,8 @@ void PlayerbotAI::_HandleCommandEquip(std::string &text, Player& /*fromPlayer*/)
     extractItemIds(text, itemIds);
         findItemsInInv(itemIds, itemList);
 
-        for (std::list<Item*>::iterator it = itemList.begin(); it != itemList.end(); ++it)
-            EquipItem(*it);
+			for (std::list<Item*>::iterator it = itemList.begin(); it != itemList.end(); ++it)
+				EquipItem(*it);
         
         SendNotEquipList(*m_bot);
     }
@@ -7238,12 +7247,12 @@ void PlayerbotAI::_HandleCommandGear(std::string &text, Player& /*fromPlayer*/)
 			if (IsItemAnUpgrade(pProto)){
 				SendUpgradingItems(pProto);
 				return;
-			}
 		}
-
+		}
+        
 		// Not an upgrade - don't say anything
 	}
-}
+    }
 
 void PlayerbotAI::_HandleCommandFind(std::string &text, Player& /*fromPlayer*/)
         {

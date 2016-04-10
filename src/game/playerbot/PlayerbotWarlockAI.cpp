@@ -666,6 +666,24 @@ void PlayerbotWarlockAI::DoNonCombatActions()
         }
     }
 
+    // hp/mana check
+    if (pet && DARK_PACT && (pet->GetPower(POWER_MANA) / pet->GetMaxPower(POWER_MANA)) > 40 && m_ai->GetManaPercent() <= 50)
+        if (m_ai->CastSpell(DARK_PACT, *m_bot))
+            return;
+
+    if (LIFE_TAP && m_ai->GetManaPercent() <= 60 && m_ai->GetHealthPercent() > 60)
+        if (m_ai->CastSpell(LIFE_TAP, *m_bot))
+            return;
+
+	//create water
+	if (m_ai->FindDrink() == nullptr && m_bot->getLevel() == 60)
+	{
+		if (Item* pItem = m_bot->StoreNewItemInInventorySlot(CRYSTAL_WATER, 20))
+			m_bot->SendNewItem(pItem, 20, true, false);
+		
+		return;
+	}
+
     if (EatDrinkBandage())
         return;
 

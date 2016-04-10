@@ -331,6 +331,15 @@ void PlayerbotHunterAI::DoNonCombatActions()
     if (ASPECT_OF_THE_HAWK > 0 && !m_bot->HasAura(ASPECT_OF_THE_HAWK, EFFECT_INDEX_0))
         m_ai->CastSpell(ASPECT_OF_THE_HAWK, *m_bot);
 
+	//create water
+	if (m_ai->FindDrink() == nullptr && m_bot->getLevel() == 60)
+	{
+		if (Item* pItem = m_bot->StoreNewItemInInventorySlot(CRYSTAL_WATER, 20))
+			m_bot->SendNewItem(pItem, 20, true, false);
+		
+		return;
+	}
+
     // hp/mana check
     if (EatDrinkBandage())
         return;
