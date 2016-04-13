@@ -614,13 +614,13 @@ void PlayerbotMgr::HandleMasterIncomingPacket(const WorldPacket& packet)
             {
                 Player* const bot = it->second;
                 if (!bot)
-                    return;
+                    continue;
 
                 Creature *pCreature = bot->GetNPCIfCanInteractWith(guid, UNIT_NPC_FLAG_NONE);
                 if (!pCreature)
                 {
                     DEBUG_LOG ("[PlayerbotMgr]: HandleMasterIncomingPacket - Received  CMSG_GOSSIP_HELLO %s not found or you can't interact with him.", guid.GetString().c_str());
-                    return;
+					continue;
                 }
 
                 GossipMenuItemsMapBounds pMenuItemBounds = sObjectMgr.GetGossipMenuItemsMapBounds(pCreature->GetCreatureInfo()->GossipMenuId);
@@ -635,43 +635,43 @@ void PlayerbotMgr::HandleMasterIncomingPacket(const WorldPacket& packet)
                     {
                         case GOSSIP_OPTION_TAXIVENDOR:
                         {
-                            // bot->GetPlayerbotAI()->TellMaster("PlayerbotMgr:GOSSIP_OPTION_TAXIVENDOR");
+                            //bot->GetPlayerbotAI()->TellMaster("PlayerbotMgr:GOSSIP_OPTION_TAXIVENDOR");
                             bot->GetSession()->SendLearnNewTaxiNode(pCreature);
                             break;
                         }
                         case GOSSIP_OPTION_QUESTGIVER:
                         {
-                            // bot->GetPlayerbotAI()->TellMaster("PlayerbotMgr:GOSSIP_OPTION_QUESTGIVER");
+                            //bot->GetPlayerbotAI()->TellMaster("PlayerbotMgr:GOSSIP_OPTION_QUESTGIVER");
                             bot->GetPlayerbotAI()->TurnInQuests(pCreature);
                             break;
                         }
                         case GOSSIP_OPTION_VENDOR:
                         {
-                            // bot->GetPlayerbotAI()->TellMaster("PlayerbotMgr:GOSSIP_OPTION_VENDOR");
+                            //bot->GetPlayerbotAI()->TellMaster("PlayerbotMgr:GOSSIP_OPTION_VENDOR");
                             if (!botConfig.GetBoolDefault("PlayerbotAI.SellGarbage", true))
-                                return;
+								return;
 
                             bot->GetPlayerbotAI()->SellGarbage();
                             break;
                         }
                         case GOSSIP_OPTION_STABLEPET:
                         {
-                            // bot->GetPlayerbotAI()->TellMaster("PlayerbotMgr:GOSSIP_OPTION_STABLEPET");
+                            //bot->GetPlayerbotAI()->TellMaster("PlayerbotMgr:GOSSIP_OPTION_STABLEPET");
                             break;
                         }
                         case GOSSIP_OPTION_AUCTIONEER:
                         {
-                            // bot->GetPlayerbotAI()->TellMaster("PlayerbotMgr:GOSSIP_OPTION_AUCTIONEER");
+                            //bot->GetPlayerbotAI()->TellMaster("PlayerbotMgr:GOSSIP_OPTION_AUCTIONEER");
                             break;
                         }
                         case GOSSIP_OPTION_BANKER:
                         {
-                            // bot->GetPlayerbotAI()->TellMaster("PlayerbotMgr:GOSSIP_OPTION_BANKER");
+                            //bot->GetPlayerbotAI()->TellMaster("PlayerbotMgr:GOSSIP_OPTION_BANKER");
                             break;
                         }
                         case GOSSIP_OPTION_INNKEEPER:
                         {
-                            // bot->GetPlayerbotAI()->TellMaster("PlayerbotMgr:GOSSIP_OPTION_INNKEEPER");
+                            //bot->GetPlayerbotAI()->TellMaster("PlayerbotMgr:GOSSIP_OPTION_INNKEEPER");
                             break;
                         }
                     }

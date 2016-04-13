@@ -5969,6 +5969,67 @@ void PlayerbotAI::_doSellItem(Item* const item, std::ostringstream &report, std:
             report << silver << "|r|cffc0c0c0s|r|cff00ff00";
         report << cost << "|r|cff95524Cc|r|cff00ff00\n";
     }
+	// added to sell normal and uncommon items automatically if they are not useful to the bot or gear that is not an upgrade
+	else if (item->CanBeTraded() && (item->GetProto()->Quality == ITEM_QUALITY_NORMAL || item->GetProto()->Quality == ITEM_QUALITY_UNCOMMON))
+	{
+		// If the items is not useful, sell it
+		if (!IsItemUseful(item->GetProto()->ItemId)) {
+			uint32 cost = item->GetCount() * item->GetProto()->SellPrice;
+			m_bot->ModifyMoney(cost);
+			m_bot->MoveItemFromInventory(item->GetBagSlot(), item->GetSlot(), true);
+			m_bot->AddItemToBuyBackSlot(item);
+
+			++TotalSold;
+			TotalCost += cost;
+
+			report << "Sold ";
+			MakeItemLink(item, report, true);
+			report << " for ";
+
+			uint32 gold = uint32(cost / 10000);
+			cost -= (gold * 10000);
+			uint32 silver = uint32(cost / 100);
+			cost -= (silver * 100);
+
+			if (gold > 0)
+				report << gold << "|r|cfffffc00g|r|cff00ff00";
+			if (silver > 0)
+				report << silver << "|r|cffc0c0c0s|r|cff00ff00";
+			report << cost << "|r|cff95524Cc|r|cff00ff00\n";
+		}
+		else {
+			// the item is useful, but if it's a weapon we can use and it's not an upgrade sell it. We don't keep greens lying around
+			if (item->GetProto()->Class == ITEM_CLASS_WEAPON || item->GetProto()->Class == ITEM_CLASS_ARMOR) {
+				if (!IsItemAnUpgrade(item->GetProto())) {
+					uint32 cost = item->GetCount() * item->GetProto()->SellPrice;
+					m_bot->ModifyMoney(cost);
+					m_bot->MoveItemFromInventory(item->GetBagSlot(), item->GetSlot(), true);
+					m_bot->AddItemToBuyBackSlot(item);
+
+					++TotalSold;
+					TotalCost += cost;
+
+					report << "Sold ";
+					MakeItemLink(item, report, true);
+					report << " for ";
+
+					uint32 gold = uint32(cost / 10000);
+					cost -= (gold * 10000);
+					uint32 silver = uint32(cost / 100);
+					cost -= (silver * 100);
+
+					if (gold > 0)
+						report << gold << "|r|cfffffc00g|r|cff00ff00";
+					if (silver > 0)
+						report << silver << "|r|cffc0c0c0s|r|cff00ff00";
+					report << cost << "|r|cff95524Cc|r|cff00ff00\n";
+				}
+			}
+			else if (item->GetProto()->SellPrice > 0) {
+				MakeItemLink(item, canSell, true);
+			}
+		}
+	}
     else if (item->GetProto()->SellPrice > 0)
         MakeItemLink(item, canSell, true);
 }
