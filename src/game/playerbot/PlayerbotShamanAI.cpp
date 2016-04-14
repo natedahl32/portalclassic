@@ -82,17 +82,17 @@ PlayerbotShamanAI::PlayerbotShamanAI(Player* const master, Player* const bot, Pl
 	uint32 spec = m_bot->GetSpec();
 	if (spec == SHAMAN_SPEC_ELEMENTAL) {
 		m_statWeights[ITEM_MOD_STAMINA] = 0.45f;
-		m_statWeights[ITEM_MOD_SPIRIT] = 0.2f;
+		m_statWeights[ITEM_MOD_SPIRIT] = 0.1f;
 		m_statWeights[ITEM_MOD_INTELLECT] = 0.9f;
-		m_statWeights[ITEM_MOD_STRENGTH] = 0.05f;
-		m_statWeights[ITEM_MOD_AGILITY] = 0.05f;
+		m_statWeights[ITEM_MOD_STRENGTH] = 0.01f;
+		m_statWeights[ITEM_MOD_AGILITY] = 0.01f;
 		m_statWeights[ITEM_MOD_MANA] = 0.6f;
 		m_statWeights[ITEM_MOD_HEALTH] = 0.5f;
 	}
 	else if (spec == SHAMAN_SPEC_ENHANCEMENT) {
 		m_statWeights[ITEM_MOD_STAMINA] = 0.45f;
-		m_statWeights[ITEM_MOD_SPIRIT] = 0.05f;
-		m_statWeights[ITEM_MOD_INTELLECT] = 0.5f;
+		m_statWeights[ITEM_MOD_SPIRIT] = 0.01f;
+		m_statWeights[ITEM_MOD_INTELLECT] = 0.3f;
 		m_statWeights[ITEM_MOD_STRENGTH] = 0.7f;
 		m_statWeights[ITEM_MOD_AGILITY] = 0.9f;
 		m_statWeights[ITEM_MOD_MANA] = 0.35f;
@@ -100,17 +100,17 @@ PlayerbotShamanAI::PlayerbotShamanAI(Player* const master, Player* const bot, Pl
 	}
 	else if (spec == SHAMAN_SPEC_RESTORATION) {
 		m_statWeights[ITEM_MOD_STAMINA] = 0.65f;
-		m_statWeights[ITEM_MOD_SPIRIT] = 0.35f;
+		m_statWeights[ITEM_MOD_SPIRIT] = 0.2f;
 		m_statWeights[ITEM_MOD_INTELLECT] = 0.9f;
-		m_statWeights[ITEM_MOD_STRENGTH] = 0.05f;
-		m_statWeights[ITEM_MOD_AGILITY] = 0.05f;
+		m_statWeights[ITEM_MOD_STRENGTH] = 0.01f;
+		m_statWeights[ITEM_MOD_AGILITY] = 0.01f;
 		m_statWeights[ITEM_MOD_MANA] = 0.55f;
 		m_statWeights[ITEM_MOD_HEALTH] = 0.6f;
 	}
 	// Catch all for no spec (pre level 10) or no talent points assigned
 	else {
 		m_statWeights[ITEM_MOD_STAMINA] = 0.45f;
-		m_statWeights[ITEM_MOD_SPIRIT] = 0.05f;
+		m_statWeights[ITEM_MOD_SPIRIT] = 0.01f;
 		m_statWeights[ITEM_MOD_INTELLECT] = 0.5f;
 		m_statWeights[ITEM_MOD_STRENGTH] = 0.7f;
 		m_statWeights[ITEM_MOD_AGILITY] = 0.9f;

@@ -71,10 +71,10 @@ PlayerbotWarlockAI::PlayerbotWarlockAI(Player* const master, Player* const bot, 
 
 	// Create stat weights for warlock, not based on spec (no basis behind these, just guesstimates)
 	m_statWeights[ITEM_MOD_STAMINA] = 0.7f;
-	m_statWeights[ITEM_MOD_SPIRIT] = 0.2f;
+	m_statWeights[ITEM_MOD_SPIRIT] = 0.1f;
 	m_statWeights[ITEM_MOD_INTELLECT] = 0.9f;
-	m_statWeights[ITEM_MOD_STRENGTH] = 0.05f;
-	m_statWeights[ITEM_MOD_AGILITY] = 0.05f;
+	m_statWeights[ITEM_MOD_STRENGTH] = 0.01f;
+	m_statWeights[ITEM_MOD_AGILITY] = 0.01f;
 	m_statWeights[ITEM_MOD_MANA] = 0.6f;
 	m_statWeights[ITEM_MOD_HEALTH] = 0.7f;
 

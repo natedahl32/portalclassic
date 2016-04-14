@@ -864,25 +864,6 @@ bool PlayerbotAI::IsItemAnUpgrade(ItemPrototype const *pProto)
 		// If we have an item in this slot
 		if (pItemCurrentProto)
 		{
-			// If any of the items we are comparing are less than rare and we can decide quality strictly by quality and item level
-			if (pProto->Quality < ITEM_QUALITY_RARE || pItemCurrentProto->Quality < ITEM_QUALITY_RARE) {
-				if (pProto->Quality > pItemCurrentProto->Quality) {
-					// TODO: Make this value configurable
-					// If the quality is better the new item can be up to 10 item levels less than the current item to be an upgrade
-					if (pProto->ItemLevel >= (pItemCurrentProto->ItemLevel - 10)) {
-						isUpgrade = true;
-						break;
-					}
-				}
-				else if (pProto->Quality == pItemCurrentProto->Quality) {
-					// If quality is the same the item level must be better than current item. If item level is same we will fall through to the next set of class logic
-					if (pProto->ItemLevel > pItemCurrentProto->ItemLevel) {
-						isUpgrade = true;
-						break;
-					}
-				}
-			}
-
 			// Check with class AI
 			if (m_classAI->IsNewItemAnUpgrade(pProto, pItemCurrentProto)) {
 				isUpgrade = true;
@@ -6023,6 +6004,10 @@ void PlayerbotAI::_doSellItem(Item* const item, std::ostringstream &report, std:
 					if (silver > 0)
 						report << silver << "|r|cffc0c0c0s|r|cff00ff00";
 					report << cost << "|r|cff95524Cc|r|cff00ff00\n";
+				}
+				else {
+					// then equip it
+					EquipItem(item);
 				}
 			}
 			else if (item->GetProto()->SellPrice > 0) {

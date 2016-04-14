@@ -51,11 +51,11 @@ PlayerbotRogueAI::PlayerbotRogueAI(Player* const master, Player* const bot, Play
 
 	// Create stat weights for mage, not based on spec (no basis behind these, just guesstimates)
 	m_statWeights[ITEM_MOD_STAMINA] = 0.5f;
-	m_statWeights[ITEM_MOD_SPIRIT] = 0.05f;
-	m_statWeights[ITEM_MOD_INTELLECT] = 0.05f;
+	m_statWeights[ITEM_MOD_SPIRIT] = 0.01f;
+	m_statWeights[ITEM_MOD_INTELLECT] = 0.01f;
 	m_statWeights[ITEM_MOD_STRENGTH] = 0.8f;
 	m_statWeights[ITEM_MOD_AGILITY] = 0.9f;
-	m_statWeights[ITEM_MOD_MANA] = 0.05f;
+	m_statWeights[ITEM_MOD_MANA] = 0.01f;
 	m_statWeights[ITEM_MOD_HEALTH] = 0.5f;
 }
 
