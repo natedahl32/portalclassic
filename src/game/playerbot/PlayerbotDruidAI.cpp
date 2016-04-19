@@ -465,6 +465,8 @@ CombatManeuverReturns PlayerbotDruidAI::HealPlayer(Player* target)
     if (r != RETURN_NO_ACTION_OK)
         return r;
 
+	// TODO: This might be ok in a group, but in a raid setting don't just Rebirth the first person that dies.
+	// We should be waiting from a callout from the raid leader in that scenario.
     if (!target->isAlive())
     {
         if (m_bot->isInCombat())
