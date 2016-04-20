@@ -7,9 +7,10 @@ PlayerbotClassAI::PlayerbotClassAI(Player* const master, Player* const bot, Play
     m_bot = bot;
     m_ai = ai;
 
-    m_MinHealthPercentTank   = 80;
-    m_MinHealthPercentHealer = 60;
-    m_MinHealthPercentDPS    = 30;
+	// bumped these up quite a bit, we will handle better in the healing AI
+    m_MinHealthPercentTank   = 90;
+    m_MinHealthPercentHealer = 80;
+    m_MinHealthPercentDPS    = 70;
     m_MinHealthPercentMaster = m_MinHealthPercentDPS;
 
     ClearWait();
