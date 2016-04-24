@@ -566,7 +566,7 @@ CombatManeuverReturns PlayerbotDruidAI::HealPlayer(Player* target)
 			return RETURN_CONTINUE;
     }
 
-    if (hp < 65 && HEALING_TOUCH > 0 && m_ai->In_Reach(target,HEALING_TOUCH) && CastSpell(HEALING_TOUCH, target))
+    if (hp < 70 && HEALING_TOUCH > 0 && m_ai->In_Reach(target,HEALING_TOUCH) && CastSpell(HEALING_TOUCH, target))
         return RETURN_CONTINUE;
 
     if (hp < 90 && REJUVENATION > 0 && m_ai->In_Reach(target,REJUVENATION) && !target->HasAura(REJUVENATION) && CastSpell(REJUVENATION, target))
