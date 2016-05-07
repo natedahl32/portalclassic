@@ -70,7 +70,7 @@ public:
     // all non combat actions go here, ex buffs, heals, rezzes
     void DoNonCombatActions();
 
-	bool IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto);
+	virtual bool IsNewItemAnUpgrade(Item const *pNewItem, Item const *pCurrentItem);
 
 private:
     CombatManeuverReturns DoFirstCombatManeuverPVE(Unit* pTarget);

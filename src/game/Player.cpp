@@ -18888,3 +18888,49 @@ float Player::ComputeRest(time_t timePassed, bool offline /*= false*/, bool inRe
     }
     return bonus;
 }
+
+Item* Player::FindItem(uint32 ItemId)
+{
+	// list out items equipped & in main backpack
+	//INVENTORY_SLOT_ITEM_START = 23
+	//INVENTORY_SLOT_ITEM_END = 39
+
+	for (uint8 slot = EQUIPMENT_SLOT_START; slot < INVENTORY_SLOT_ITEM_END; slot++)
+	{
+		// DEBUG_LOG ("[PlayerbotAI]: FindItem - [%s's]backpack slot = %u",m_bot->GetName(),slot); // 23 to 38 = 16
+		Item* const pItem = GetItemByPos(INVENTORY_SLOT_BAG_0, slot);  // 255, 23 to 38
+		if (pItem)
+		{
+			const ItemPrototype* const pItemProto = pItem->GetProto();
+			if (!pItemProto)
+				continue;
+
+			if (pItemProto->ItemId == ItemId)   // have required item
+				return pItem;
+		}
+	}
+	// list out items in other removable backpacks
+	//INVENTORY_SLOT_BAG_START = 19
+	//INVENTORY_SLOT_BAG_END = 23
+
+	for (uint8 bag = INVENTORY_SLOT_BAG_START; bag < INVENTORY_SLOT_BAG_END; ++bag)  // 20 to 23 = 4
+	{
+		const Bag* const pBag = (Bag *)GetItemByPos(INVENTORY_SLOT_BAG_0, bag);   // 255, 20 to 23
+		if (pBag)
+			for (uint8 slot = 0; slot < pBag->GetBagSize(); ++slot)
+			{
+				//DEBUG_LOG("[PlayerbotAI]: FindItem - [%s's]bag[%u] slot = %u", m_bot->GetName(), bag, slot);  // 1 to bagsize = ?
+				Item* const pItem = GetItemByPos(bag, slot); // 20 to 23, 1 to bagsize
+				if (pItem)
+				{
+					const ItemPrototype* const pItemProto = pItem->GetProto();
+					if (!pItemProto)
+						continue;
+
+					if (pItemProto->ItemId == ItemId)        // have required item
+						return pItem;
+				}
+			}
+	}
+	return nullptr;
+}

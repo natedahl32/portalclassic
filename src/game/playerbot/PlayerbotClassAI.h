@@ -59,7 +59,7 @@ public:
     time_t GetWaitUntil() { return m_WaitUntil; }
     void SetWait(uint8 t) { m_WaitUntil = m_ai->CurrentTime() + t; }
     void ClearWait() { m_WaitUntil = 0; }
-	virtual bool IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto);
+	virtual bool IsNewItemAnUpgrade(Item const *pNewItem, Item const *pCurrentItem);
     //void SetWaitUntil(time_t t) { m_WaitUntil = t; }
 
 protected:
@@ -75,6 +75,9 @@ protected:
     Player* GetHealTarget(JOB_TYPE type = JOB_ALL);
     Player* GetResurrectionTarget(JOB_TYPE type = JOB_ALL, bool bMustBeOOC = true);
     JOB_TYPE GetTargetJob(Player* target);
+
+	float GetItemScore(const ItemPrototype* pItemProto);
+	float GetItemEnchantmentScore(const Item* pItem);
 
     // These values are used in GetHealTarget and can be overridden per class (to accomodate healing spell health checks)
     uint8 m_MinHealthPercentTank;

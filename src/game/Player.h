@@ -2092,6 +2092,9 @@ class MANGOS_DLL_SPEC Player : public Unit
         bool IsInDuel() const { return duel && duel->startTime != 0; }
 		PlayerTalentMap GetTalents(uint8 spec) { return m_talents[spec]; }
 
+
+		Item* FindItem(uint32 ItemId);
+
     protected:
 
         uint32 m_contestedPvPTimer;

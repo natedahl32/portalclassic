@@ -998,7 +998,8 @@ public:
     bool IsInQuestCreatureList(uint32 id) { return m_needCreatureOrGOList.find(id) != m_needCreatureOrGOList.end(); };
     bool IsItemUseful(uint32 itemid);
 	bool IsItemAnUpgrade(Item* pItem);
-	std::list<const ItemPrototype*> GetExistingItemsInSlot(ItemPrototype const *pNewItem);
+	std::list<const Item*> GetExistingItemsInSlot(Item const *pNewItem);
+	std::list<const Item*> PlayerbotAI::GetExistingItemsInSlotByProto(ItemPrototype const *pNewItemProto);
 	void SendUpgradingItems(ItemPrototype const *newItem);
 
     void SendOrders(Player& player);
@@ -1139,7 +1140,6 @@ private:
     void MakeItemLink(const Item *item, std::ostringstream &out, bool IncludeQuantity = true);
     void MakeItemLink(const ItemPrototype *item, std::ostringstream &out);
 
-	bool IsItemAnUpgrade(ItemPrototype const *pProto);
 	void UpgradeProfession(uint32 profId, uint32 upgrades[3]);
 
     // it is safe to keep these back reference pointers because m_bot

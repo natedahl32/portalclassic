@@ -89,7 +89,7 @@ public:
     bool CanPull();
     bool CastHoTOnTank();
 
-	bool IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto);
+	virtual bool IsNewItemAnUpgrade(Item const *pNewItem, Item const *pCurrentItem);
 
 private:
     CombatManeuverReturns DoFirstCombatManeuverPVE(Unit* pTarget);

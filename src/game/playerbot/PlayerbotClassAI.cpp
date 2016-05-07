@@ -24,7 +24,11 @@ CombatManeuverReturns PlayerbotClassAI::DoNextCombatManeuverPVE(Unit *) { return
 CombatManeuverReturns PlayerbotClassAI::DoFirstCombatManeuverPVP(Unit *) { return RETURN_NO_ACTION_OK; }
 CombatManeuverReturns PlayerbotClassAI::DoNextCombatManeuverPVP(Unit *) { return RETURN_NO_ACTION_OK; }
 
-bool PlayerbotClassAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto) { return false; }
+bool PlayerbotClassAI::IsNewItemAnUpgrade(Item const *pNewItem, Item const *pCurrentItem) 
+{ 
+	DEBUG_LOG("[PlayerbotAI]: Warning: Using PlayerbotClassAI::IsNewItemAnUpgrade() rather than class specific function");
+	return false; 
+}
 
 void PlayerbotClassAI::DoNonCombatActions()
 {
@@ -390,4 +394,152 @@ CombatManeuverReturns PlayerbotClassAI::CastSpellWand(uint32 nextAction, Unit *p
         return (m_ai->CastSpell(nextAction, *pTarget) ? RETURN_CONTINUE : RETURN_NO_ACTION_ERROR);
     else
         return (m_ai->CastSpell(nextAction) ? RETURN_CONTINUE : RETURN_NO_ACTION_ERROR);
+}
+
+float PlayerbotClassAI::GetItemScore(const ItemPrototype* pItemProto)
+{
+	float score = 0;
+
+	for (int i = 0; i < MAX_ITEM_MOD; i++) {
+		// Get values of the items for this mod
+		uint32 value = pItemProto->GetStatValue((ItemModType)i);
+
+		// If this is health, we need to divide by the units of health per stamina so we get an accurate value of the two. Otherwise health
+		// will be overvalued. Same for mana.
+		if (i == ITEM_MOD_HEALTH) {
+			value = value / 10;
+		}
+		else if (i == ITEM_MOD_MANA) {
+			value = value / 15;
+		}
+
+		// Calculate the score
+		score += (value * m_statWeights[i]);
+	}
+
+	return score;
+}
+
+float PlayerbotClassAI::GetItemEnchantmentScore(const Item* pItem)
+{
+	float score = 0;
+
+	// Calculate enchantments applied to the item
+	for (uint32 i = PERM_ENCHANTMENT_SLOT; i < MAX_ENCHANTMENT_SLOT; ++i)
+	{
+		// Don't count temp enchantment slots
+
+		uint32 enchantmentId = pItem->GetEnchantmentId(EnchantmentSlot(i));
+		SpellItemEnchantmentEntry const* pEnchant = sSpellItemEnchantmentStore.LookupEntry(enchantmentId);
+		if (!pEnchant) {
+			//DEBUG_LOG("[PlayerbotAI]: Info: No enchantment found in Slot %u", i);
+			continue;
+		}			
+
+		for (int s = 0; s < 3; ++s)
+		{
+			uint32 enchant_display_type = pEnchant->type[s];
+			uint32 enchant_amount = pEnchant->amount[s];
+			uint32 enchant_spell_id = pEnchant->spellid[s];
+
+			//DEBUG_LOG("[PlayerbotAI]: Info: Enchant Display Type of %u found in slot %u", enchant_display_type, i);
+			//DEBUG_LOG("[PlayerbotAI]: Info: Enchant Amount of %u found in slot %u", enchant_amount, i);
+			//DEBUG_LOG("[PlayerbotAI]: Info: Enchant Spell Id of %u found in slot %u", enchant_spell_id, i);
+
+			// check the spell
+			if (enchant_spell_id > 0) {
+				SpellEntry const* spellInfo = sSpellStore.LookupEntry(enchant_spell_id);
+				if (spellInfo) {
+					for (uint32 effIndex = 0; effIndex < MAX_EFFECT_INDEX; ++effIndex) {
+						if (spellInfo->EffectApplyAuraName[effIndex] == SPELL_AURA_MOD_STAT) {
+							// Get the value
+							uint32 value = spellInfo->CalculateSimpleValue(SpellEffectIndex(effIndex));
+
+							// Which stat is it?
+							switch (spellInfo->EffectMiscValue[effIndex])
+							{
+								case STAT_STRENGTH:
+									score += (value * m_statWeights[ITEM_MOD_STRENGTH]);
+									break;
+								case STAT_AGILITY:
+									score += (value * m_statWeights[ITEM_MOD_AGILITY]);
+									break;
+								case STAT_STAMINA:
+									score += (value * m_statWeights[ITEM_MOD_STAMINA]);
+									break;
+								case STAT_INTELLECT:
+									score += (value * m_statWeights[ITEM_MOD_INTELLECT]);
+									break;
+								case STAT_SPIRIT:
+									score += (value * m_statWeights[ITEM_MOD_SPIRIT]);
+									break;
+								default:
+									break;
+							}
+						}
+					}
+				}
+			}
+
+			// checks enchant types
+			switch (enchant_display_type)
+			{
+				case ITEM_ENCHANTMENT_TYPE_NONE:
+					break;
+				case ITEM_ENCHANTMENT_TYPE_COMBAT_SPELL:	// TODO: Add calculation for combat spells
+					break;
+				case ITEM_ENCHANTMENT_TYPE_DAMAGE:			// TODO: Add calculation for damage type enchantments
+					/*if (item->GetSlot() == EQUIPMENT_SLOT_MAINHAND)
+					HandleStatModifier(UNIT_MOD_DAMAGE_MAINHAND, TOTAL_VALUE, float(enchant_amount), apply);
+					else if (item->GetSlot() == EQUIPMENT_SLOT_OFFHAND)
+					HandleStatModifier(UNIT_MOD_DAMAGE_OFFHAND, TOTAL_VALUE, float(enchant_amount), apply);
+					else if (item->GetSlot() == EQUIPMENT_SLOT_RANGED)
+					HandleStatModifier(UNIT_MOD_DAMAGE_RANGED, TOTAL_VALUE, float(enchant_amount), apply); */
+					break;
+				case ITEM_ENCHANTMENT_TYPE_EQUIP_SPELL:		// TODO: Add calculation for equip type enchantments
+				{
+					//if (enchant_spell_id)
+					//{
+					//	if (apply)
+					//		CastSpell(this, enchant_spell_id, true, item);
+					//	else
+					//		RemoveAurasDueToItemSpell(item, enchant_spell_id);
+					//}
+					break;
+				}
+				case ITEM_ENCHANTMENT_TYPE_RESISTANCE:		// TODO: Add calculation for resists
+					//HandleStatModifier(UnitMods(UNIT_MOD_RESISTANCE_START + enchant_spell_id), TOTAL_VALUE, float(enchant_amount), apply);
+					break;
+				case ITEM_ENCHANTMENT_TYPE_STAT:
+				{
+					uint32 value = enchant_amount;
+
+					// If this is health, we need to divide by the units of health per stamina so we get an accurate value of the two. Otherwise health
+					// will be overvalued. Same for mana.
+					if (enchant_spell_id == ITEM_MOD_HEALTH) {
+						value = value / 10;
+					}
+					else if (enchant_spell_id == ITEM_MOD_MANA) {
+						value = value / 15;
+					}
+
+					score += (value * m_statWeights[enchant_spell_id]);
+
+					break;
+				}
+				case ITEM_ENCHANTMENT_TYPE_TOTEM:           // Shaman Rockbiter Weapon
+				{
+					if (m_bot->getClass() == CLASS_SHAMAN)
+					{
+						// TODO: Handle totem type enchantments
+					}
+					break;
+				}
+				default:
+					break;
+			}                                               
+		}                                                   
+	}
+
+	return score;
 }

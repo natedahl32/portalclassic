@@ -356,43 +356,27 @@ uint32 PlayerbotMageAI::Neutralize(uint8 creatureType)
     return 0;
 }
 
-bool PlayerbotMageAI::IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto)
+bool PlayerbotMageAI::IsNewItemAnUpgrade(Item const *pNewItem, Item const *pCurrentItem)
 {
-	float newScore = 0;
-	float currentScore = 0;
+	// Get item score stats
+	float newScore = GetItemScore(pNewItem->GetProto());
+	float currentScore = GetItemScore(pCurrentItem->GetProto());
 
-	// TODO: Move this to a common method, it is the same for all classes
-	// Loop through all mods on the item and calculate score
-	for (int i = 0; i < MAX_ITEM_MOD; i++) {
-		// Get values of the items for this mod
-		uint32 newVal = pNewProto->GetStatValue((ItemModType)i);
-		uint32 currentVal = pCurrentProto->GetStatValue((ItemModType)i);
+	// Get item enchantment score stats
+	newScore += GetItemEnchantmentScore(pNewItem);
+	currentScore += GetItemEnchantmentScore(pCurrentItem);
 
-		// If this is health, we need to divide by the units of health per stamina so we get an accurate value of the two. Otherwise health
-		// will be overvalued. Same for mana.
-		if (i == ITEM_MOD_HEALTH) {
-			newVal = newVal / 10;
-			currentVal = currentVal / 10;
-		}
-		else if (i == ITEM_MOD_MANA) {
-			newVal = newVal / 15;
-			currentVal = currentVal / 15;
-		}
 
-		// Calculate the score
-		newScore += (newVal * m_statWeights[i]);
-		currentScore += (currentVal * m_statWeights[i]);
-	}
-
+	// Both of these are in the GetItemEnchantmentScore calculations (not implemented though)		
 	// TODO: Calculate spell effects on items, such as +crit% and spellpower.
 	// TODO: Calculate damage modifiers on items
 
 	// Calculate DPS of a weapon
-	if (pNewProto->Class == ITEM_CLASS_WEAPON && pCurrentProto->Class == ITEM_CLASS_WEAPON) {
+	if (pNewItem->GetProto()->Class == ITEM_CLASS_WEAPON && pCurrentItem->GetProto()->Class == ITEM_CLASS_WEAPON) {
 		// Only care about wands DPS, caster weapons are stat sticks
-		if (pNewProto->SubClass == ITEM_SUBCLASS_WEAPON_WAND && pCurrentProto->SubClass == ITEM_SUBCLASS_WEAPON_WAND) {
-			newScore += (pNewProto->getDPS() * 0.9f);
-			currentScore += (pCurrentProto->getDPS() * 0.9f);
+		if (pNewItem->GetProto()->SubClass == ITEM_SUBCLASS_WEAPON_WAND && pCurrentItem->GetProto()->SubClass == ITEM_SUBCLASS_WEAPON_WAND) {
+			newScore += (pNewItem->GetProto()->getDPS() * 0.9f);
+			currentScore += (pCurrentItem->GetProto()->getDPS() * 0.9f);
 		}
 	}
 

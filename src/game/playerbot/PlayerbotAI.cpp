@@ -525,7 +525,7 @@ void PlayerbotAI::SendNotEquipList(Player& /*player*/)
 void PlayerbotAI::SendUpgradingItems(ItemPrototype const *newItem)
 {
 	// Get the items we would be upgrading and link them back to our master
-	std::list<const ItemPrototype*> existing = GetExistingItemsInSlot(newItem);
+	std::list<const Item*> existing = GetExistingItemsInSlotByProto(newItem);
 
 	ChatHandler ch(GetMaster());
 	std::ostringstream out;
@@ -535,13 +535,14 @@ void PlayerbotAI::SendUpgradingItems(ItemPrototype const *newItem)
 		return;
 	}
 		
-	for (std::list<const ItemPrototype*>::const_iterator iterator = existing.begin(), end = existing.end(); iterator != end; ++iterator) {
-		const ItemPrototype* const pItemProto = *iterator;
+	for (std::list<const Item*>::const_iterator iterator = existing.begin(), end = existing.end(); iterator != end; ++iterator) {
+		const Item* const pItem = *iterator;
+		//const ItemPrototype* const pItemProto = *iterator;
 
-		std::string itemName = pItemProto->Name1;
-		ItemLocalization(itemName, pItemProto->ItemId);
+		std::string itemName = pItem->GetProto()->Name1;
+		ItemLocalization(itemName, pItem->GetProto()->ItemId);
 
-		out << " |cffffffff|Hitem:" << pItemProto->ItemId
+		out << " |cffffffff|Hitem:" << pItem->GetProto()->ItemId
 			<< ":0:0:0:0:0:0:0" << "|h[" << itemName
 			<< "]|h|r";
 	}
@@ -747,10 +748,16 @@ bool PlayerbotAI::IsItemUseful(uint32 itemid)
 }
 
 // Gets any existing items that are currently equipped in the same slot as the new item
-std::list<const ItemPrototype*> PlayerbotAI::GetExistingItemsInSlot(ItemPrototype const *pNewItem)
+std::list<const Item*> PlayerbotAI::GetExistingItemsInSlot(Item const *pNewItem)
+{
+	return GetExistingItemsInSlotByProto(pNewItem->GetProto());
+}
+
+// Gets any existing items that are currently equipped in the same slot as the new item
+std::list<const Item*> PlayerbotAI::GetExistingItemsInSlotByProto(ItemPrototype const *pNewItemProto)
 {
 	std::list<EquipmentSlots> slots;
-	switch (pNewItem->InventoryType)
+	switch (pNewItemProto->InventoryType)
 	{
 	case INVTYPE_HEAD:
 		slots.push_back(EQUIPMENT_SLOT_HEAD);
@@ -809,7 +816,7 @@ std::list<const ItemPrototype*> PlayerbotAI::GetExistingItemsInSlot(ItemPrototyp
 		break;
 	}
 
-	std::list<const ItemPrototype*> items;
+	std::list<const Item*> items;
 	// loop through each equipment slot for this item and get the item(s) currently in that slot
 	for (std::list<EquipmentSlots>::const_iterator iterator = slots.begin(), end = slots.end(); iterator != end; ++iterator) {
 		EquipmentSlots slot = *iterator;
@@ -817,7 +824,7 @@ std::list<const ItemPrototype*> PlayerbotAI::GetExistingItemsInSlot(ItemPrototyp
 		// Get current item in this slot
 		Item* pItemCurrent = m_bot->GetItemByPos(INVENTORY_SLOT_BAG_0, slot); // EquipmentSlots
 		if (pItemCurrent)
-		items.push_back(pItemCurrent->GetProto());
+			items.push_back(pItemCurrent);
 	}
 
 	return items;
@@ -825,19 +832,14 @@ std::list<const ItemPrototype*> PlayerbotAI::GetExistingItemsInSlot(ItemPrototyp
 
 bool PlayerbotAI::IsItemAnUpgrade(Item* pItem)
 {
-	return IsItemAnUpgrade(pItem->GetProto());
-}
-
-bool PlayerbotAI::IsItemAnUpgrade(ItemPrototype const *pProto)
-{
 	// If the item is not useful, it is not an upgrade
-	if (!IsItemUseful(pProto->ItemId)) {
+	if (!IsItemUseful(pItem->GetProto()->ItemId)) {
 		DEBUG_LOG("Item is not useful to me.");
-		return false;		
+		return false;
 	}
 
 	// If the item is not armor or a weapon, we can't consider it as an upgrade
-	switch (pProto->Class)
+	switch (pItem->GetProto()->Class)
 	{
 		case ITEM_CLASS_WEAPON:
 		case ITEM_CLASS_ARMOR:
@@ -848,7 +850,7 @@ bool PlayerbotAI::IsItemAnUpgrade(ItemPrototype const *pProto)
 	}
 
 	// Get the current items to compare
-	std::list<const ItemPrototype*> currentItems = GetExistingItemsInSlot(pProto);
+	std::list<const Item*> currentItems = GetExistingItemsInSlot(pItem);
 
 	// If there are no items equipped it is an upgrade
 	if (currentItems.size() == 0)
@@ -858,14 +860,14 @@ bool PlayerbotAI::IsItemAnUpgrade(ItemPrototype const *pProto)
 
 	// loop through each item and check it against the item given to us
 	// if we find an upgrade we break immediately
-	for (std::list<const ItemPrototype*>::const_iterator iterator = currentItems.begin(), end = currentItems.end(); iterator != end; ++iterator) {
-		const ItemPrototype* pItemCurrentProto = *iterator;
+	for (std::list<const Item*>::const_iterator iterator = currentItems.begin(), end = currentItems.end(); iterator != end; ++iterator) {
+		const Item* pItemCurrent = *iterator;
 
 		// If we have an item in this slot
-		if (pItemCurrentProto)
+		if (pItemCurrent)
 		{
 			// Check with class AI
-			if (m_classAI->IsNewItemAnUpgrade(pProto, pItemCurrentProto)) {
+			if (m_classAI->IsNewItemAnUpgrade(pItem, pItemCurrent)) {
 				isUpgrade = true;
 				break;
 			}
@@ -3470,12 +3472,13 @@ void PlayerbotAI::TurnInQuests(WorldObject *questgiver)
 							{
 								ItemPrototype const * const pRewardItem = sObjectMgr.GetItemPrototype(pQuest->RewChoiceItemId[i]);
 
+								// TODO: Fix this
 								// Is the item an upgrade? If so, immediately choose this one (we are foregoing the possibility there is a better upgrade here, might be dangerous)
-								if (IsItemAnUpgrade(pRewardItem))
+								/*if (IsItemAnUpgrade(pRewardItem))
 								{
 									rewardIdx = i;
 									break;
-								}
+								}*/
 								
 								// Not an upgrade but it is useful. Set the reward index to this but keep looping through looking for an upgrade
 								rewardIdx = i;
@@ -5981,7 +5984,7 @@ void PlayerbotAI::_doSellItem(Item* const item, std::ostringstream &report, std:
 		else {
 			// the item is useful, but if it's a weapon we can use and it's not an upgrade sell it. We don't keep greens lying around
 			if (item->GetProto()->Class == ITEM_CLASS_WEAPON || item->GetProto()->Class == ITEM_CLASS_ARMOR) {
-				if (!IsItemAnUpgrade(item->GetProto())) {
+				if (!IsItemAnUpgrade(item)) {
 					uint32 cost = item->GetCount() * item->GetProto()->SellPrice;
 					m_bot->ModifyMoney(cost);
 					m_bot->MoveItemFromInventory(item->GetBagSlot(), item->GetSlot(), true);
@@ -7290,37 +7293,41 @@ void PlayerbotAI::_HandleCommandGear(std::string &text, Player& /*fromPlayer*/)
 		}
 
 		for (std::list<uint32>::iterator it = itemIds.begin(); it != itemIds.end(); ++it) {
-			const ItemPrototype* pProto = ObjectMgr::GetItemPrototype(*it);
-			if (IsItemAnUpgrade(pProto)){
-				SendUpgradingItems(pProto);
+			// Get the actual item from the masters inventory. We can't use a prototype because they don't have the
+			// random properties that may be assigned.
+			Item* pItem = GetMaster()->FindItem(*it);
+			//const ItemPrototype* pProto = ObjectMgr::GetItemPrototype(*it);
+			if (IsItemAnUpgrade(pItem)){
+				SendUpgradingItems(pItem->GetProto());
 				return;
-		}
+			}
 		}
         
 		// Not an upgrade - don't say anything
+		TellMaster("Item is not an upgrade for me.");
 	}
-    }
+}
 
 void PlayerbotAI::_HandleCommandFind(std::string &text, Player& /*fromPlayer*/)
-        {
-            extractGOinfo(text, m_lootTargets);
+{
+    extractGOinfo(text, m_lootTargets);
 
-            m_lootCurrent = m_lootTargets.front();
-            m_lootTargets.pop_front();
+    m_lootCurrent = m_lootTargets.front();
+    m_lootTargets.pop_front();
 
-            GameObject *go = m_bot->GetMap()->GetGameObject(m_lootCurrent);
-            if (!go)
-            {
-                m_lootTargets.clear();
-                m_lootCurrent = ObjectGuid();
-                return;
-            }
+    GameObject *go = m_bot->GetMap()->GetGameObject(m_lootCurrent);
+    if (!go)
+    {
+        m_lootTargets.clear();
+        m_lootCurrent = ObjectGuid();
+        return;
+    }
 
-            SetMovementOrder(MOVEMENT_STAY);
-            m_bot->GetMotionMaster()->MovePoint(go->GetMapId(), go->GetPositionX(), go->GetPositionY(), go->GetPositionZ());
-            m_lootTargets.clear();
-            m_lootCurrent = ObjectGuid();
-        }
+    SetMovementOrder(MOVEMENT_STAY);
+    m_bot->GetMotionMaster()->MovePoint(go->GetMapId(), go->GetPositionX(), go->GetPositionY(), go->GetPositionZ());
+    m_lootTargets.clear();
+    m_lootCurrent = ObjectGuid();
+}
  
 void PlayerbotAI::_HandleCommandGet(std::string &text, Player &fromPlayer)
     {

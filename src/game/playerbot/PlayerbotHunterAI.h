@@ -89,7 +89,7 @@ public:
     // buff a specific player, usually a real PC who is not in group
     //void BuffPlayer(Player *target);
 
-	bool IsNewItemAnUpgrade(ItemPrototype const *pNewProto, ItemPrototype const *pCurrentProto);
+	virtual bool IsNewItemAnUpgrade(Item const *pNewItem, Item const *pCurrentItem);
 
 private:
     CombatManeuverReturns DoFirstCombatManeuverPVE(Unit* pTarget);
