@@ -268,8 +268,8 @@ CombatManeuverReturns PlayerbotDruidAI::DoNextCombatManeuverPVE(Unit* pTarget)
                 if (BARKSKIN > 0 && !m_bot->HasAura(BARKSKIN, EFFECT_INDEX_0) && CastSpell(BARKSKIN, m_bot))
                     return RETURN_CONTINUE;
 
-        return RETURN_NO_ACTION_OK;
-    }
+				return RETURN_NO_ACTION_OK;
+			}
             //no other cases: cats have cower in the damage rotation and bears can tank
         }
     }
@@ -465,6 +465,8 @@ CombatManeuverReturns PlayerbotDruidAI::HealPlayer(Player* target)
     if (r != RETURN_NO_ACTION_OK)
         return r;
 
+	// TODO: This might be ok in a group, but in a raid setting don't just Rebirth the first person that dies.
+	// We should be waiting from a callout from the raid leader in that scenario.
     if (!target->isAlive())
     {
         if (m_bot->isInCombat())
@@ -533,13 +535,13 @@ CombatManeuverReturns PlayerbotDruidAI::HealPlayer(Player* target)
     }
 
     // Everyone is healthy enough, return OK. MUST correlate to highest value below (should be last HP check)
-    if (hp >= 80)
+    if (hp >= 90)
         return RETURN_NO_ACTION_OK;
 
     // Start heals. Do lowest HP checks at the top
 
     // Emergency heal: target needs to be healed NOW!
-    if ((target == pMainTank && hp < 10) || (target != pMainTank && hp < 15))
+    if ((target == pMainTank && hp < 25) || (target != pMainTank && hp < 27))
     {
         // first try Nature's Swiftness + Healing Touch: instant heal
         if (NATURES_SWIFTNESS > 0 && !m_bot->HasSpellCooldown(NATURES_SWIFTNESS) && CastSpell(NATURES_SWIFTNESS, m_bot))
@@ -554,20 +556,20 @@ CombatManeuverReturns PlayerbotDruidAI::HealPlayer(Player* target)
     }
 
     // Urgent heal: target won't die next second, but first bot needs to gain some time to cast Healing Touch safely
-    if ((target == pMainTank && hp < 15) || (target != pMainTank && hp < 25))
+    if ((target == pMainTank && hp < 50) || (target != pMainTank && hp < 55))
     {
         if (REGROWTH > 0 && m_ai->In_Reach(target,REGROWTH) && !target->HasAura(REGROWTH) && CastSpell(REGROWTH, target))
-        return RETURN_CONTINUE;
+			return RETURN_CONTINUE;
         if (REJUVENATION > 0 && m_ai->In_Reach(target,REJUVENATION) && target->HasAura(REGROWTH) && !target->HasAura(REJUVENATION) && CastSpell(REJUVENATION, target))
-        return RETURN_CONTINUE;
+			return RETURN_CONTINUE;
         if (SWIFTMEND > 0 && !m_bot->HasSpellCooldown(SWIFTMEND) && m_ai->In_Reach(target,SWIFTMEND) && (target->HasAura(REJUVENATION) || target->HasAura(REGROWTH)) && CastSpell(SWIFTMEND, target))
-        return RETURN_CONTINUE;
+			return RETURN_CONTINUE;
     }
 
-    if (hp < 60 && HEALING_TOUCH > 0 && m_ai->In_Reach(target,HEALING_TOUCH) && CastSpell(HEALING_TOUCH, target))
+    if (hp < 70 && HEALING_TOUCH > 0 && m_ai->In_Reach(target,HEALING_TOUCH) && CastSpell(HEALING_TOUCH, target))
         return RETURN_CONTINUE;
 
-    if (hp < 80 && REJUVENATION > 0 && m_ai->In_Reach(target,REJUVENATION) && !target->HasAura(REJUVENATION) && CastSpell(REJUVENATION, target))
+    if (hp < 90 && REJUVENATION > 0 && m_ai->In_Reach(target,REJUVENATION) && !target->HasAura(REJUVENATION) && CastSpell(REJUVENATION, target))
         return RETURN_CONTINUE;
 
     return RETURN_NO_ACTION_UNKNOWN;

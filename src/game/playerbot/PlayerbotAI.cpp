@@ -3974,7 +3974,8 @@ void PlayerbotAI::MovementReset()
         if (pTarget)
         {
             // check player for follow situations
-            if (pTarget->IsBeingTeleported() || pTarget->IsTaxiFlying())
+			// if the follow target is dead, do not follow them
+            if (pTarget->IsBeingTeleported() || pTarget->IsTaxiFlying() || !pTarget->isAlive())
                 return;
 
             // use player's corpse as distance check target
@@ -4113,8 +4114,9 @@ void PlayerbotAI::UpdateAI(const uint32 /*p_time*/)
     if (CurrentTime() < m_ignoreAIUpdatesUntilTime)
         return;
 
+	// Removing the ignore update time. We want precision timing for our bots.
     // default updates occur every two seconds
-    SetIgnoreUpdateTime(2);
+    //SetIgnoreUpdateTime(2);
 
     if (!m_bot->isAlive())
     {
@@ -4160,7 +4162,7 @@ void PlayerbotAI::UpdateAI(const uint32 /*p_time*/)
             // resurrect now
             // DEBUG_LOG ("[PlayerbotAI]: UpdateAI - Reviving %s to corpse...", m_bot->GetName() );
 
-            SetIgnoreUpdateTime(6);
+            SetIgnoreUpdateTime(2);
 
             PlayerbotChatHandler ch(GetMaster());
             if (!ch.revive(*m_bot))
@@ -4184,48 +4186,50 @@ void PlayerbotAI::UpdateAI(const uint32 /*p_time*/)
         m_bot->GetMotionMaster()->Clear(true);
         // set state to dead
         SetState(BOTSTATE_DEAD);
-        // wait 30sec
-        SetIgnoreUpdateTime(30);
+        
+		// wait 30sec
+		// we don't want to sit around and wait for bots to revive, changing this to 2 seconds
+        SetIgnoreUpdateTime(2);
 
         return;
     }
 
     // bot still alive
-        if (!m_findNPC.empty())
-            findNearbyCreature();
+    if (!m_findNPC.empty())
+        findNearbyCreature();
 
-        // if we are casting a spell then interrupt it
-        // make sure any actions that cast a spell set a proper m_ignoreAIUpdatesUntilTime!
-        Spell* const pSpell = GetCurrentSpell();
-        if (pSpell && !(pSpell->IsChannelActive() || pSpell->IsAutoRepeat()))
+    // if we are casting a spell then interrupt it
+    // make sure any actions that cast a spell set a proper m_ignoreAIUpdatesUntilTime!
+    Spell* const pSpell = GetCurrentSpell();
+    if (pSpell && !(pSpell->IsChannelActive() || pSpell->IsAutoRepeat()))
     {
         // DEBUG_LOG("spell (%s) is being interrupted",pSpell->m_spellInfo->SpellName[0]);
-            InterruptCurrentCastingSpell();
+        InterruptCurrentCastingSpell();
         return;
     }
 
-        // direct cast command from master
+    // direct cast command from master
     if (m_spellIdCommand != 0)
-        {
-            Unit* pTarget = ObjectAccessor::GetUnit(*m_bot, m_targetGuidCommand);
-            if (pTarget)
-                CastSpell(m_spellIdCommand, *pTarget);
-            m_spellIdCommand = 0;
-            m_targetGuidCommand = ObjectGuid();
+    {
+        Unit* pTarget = ObjectAccessor::GetUnit(*m_bot, m_targetGuidCommand);
+        if (pTarget)
+            CastSpell(m_spellIdCommand, *pTarget);
+        m_spellIdCommand = 0;
+        m_targetGuidCommand = ObjectGuid();
 
-        return;
-        }
+		return;
+    }
 
-        //if master is unmounted, unmount the bot
+    //if master is unmounted, unmount the bot
     if (!GetMaster()->IsMounted() && m_bot->IsMounted())
-        {
-            WorldPacket emptyPacket;
-            m_bot->GetSession()->HandleCancelMountAuraOpcode(emptyPacket);  //updated code
+    {
+        WorldPacket emptyPacket;
+        m_bot->GetSession()->HandleCancelMountAuraOpcode(emptyPacket);  //updated code
 
-        return;
-        }
+		return;
+    }
 
-        // handle combat (either self/master/group in combat, or combat state and valid target)
+    // handle combat (either self/master/group in combat, or combat state and valid target)
     if (IsInCombat() || (m_botState == BOTSTATE_COMBAT && m_targetCombat) ||  m_ScenarioType == SCENARIO_PVP_DUEL)
     {
         //check if the bot is Mounted
@@ -4235,7 +4239,7 @@ void PlayerbotAI::UpdateAI(const uint32 /*p_time*/)
             {
                 // DEBUG_LOG("m_DelayAttackInit (%li) + m_DelayAttack (%u) > time(%li)", m_DelayAttackInit, m_DelayAttack, CurrentTime());
                 if (m_DelayAttackInit + m_DelayAttack > CurrentTime())
-                    return SetIgnoreUpdateTime(1); // short bursts of delay
+                    return SetIgnoreUpdateTime(0); // short bursts of delay
 
                 return DoNextCombatManeuver();
             }
@@ -4290,7 +4294,7 @@ void PlayerbotAI::UpdateAI(const uint32 /*p_time*/)
         return;
     }
 
-        // if commanded to follow master and not already following master then follow master
+    // if commanded to follow master and not already following master then follow master
     if (!m_bot->isInCombat() && !IsMoving())
         return MovementReset();
 
@@ -5834,7 +5838,7 @@ bool PlayerbotAI::TradeCopper(uint32 copper)
 
 bool PlayerbotAI::DoTeleport(WorldObject& /*obj*/)
 {
-    SetIgnoreUpdateTime(6);
+    SetIgnoreUpdateTime(2);
     PlayerbotChatHandler ch(GetMaster());
     if (!ch.teleport(*m_bot))
     {
@@ -5847,7 +5851,7 @@ bool PlayerbotAI::DoTeleport(WorldObject& /*obj*/)
 
 void PlayerbotAI::HandleTeleportAck()
 {
-    SetIgnoreUpdateTime(6);
+    SetIgnoreUpdateTime(2);
     m_bot->GetMotionMaster()->Clear(true);
     if (m_bot->IsBeingTeleportedNear())
     {
@@ -7016,7 +7020,7 @@ void PlayerbotAI::_HandleCommandPull(std::string &text, Player &fromPlayer)
     // Sets Combat Orders to PULL
     SetGroupCombatOrder(ORDERS_TEMP_WAIT_TANKAGGRO);
 
-    SetGroupIgnoreUpdateTime(2);
+    SetGroupIgnoreUpdateTime(1);
 
     // Set all group members (save this tank) to wait 10 seconds. They will wait until the tank says so, until any non-tank gains aggro or 10 seconds - whichever is shortest
     if (m_bot->GetGroup()) // one last sanity check, should be unnecessary
