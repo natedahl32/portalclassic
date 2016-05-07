@@ -7296,15 +7296,58 @@ void PlayerbotAI::_HandleCommandGear(std::string &text, Player& /*fromPlayer*/)
 			return;
 		}
 
-		for (std::list<uint32>::iterator it = itemIds.begin(); it != itemIds.end(); ++it) {
+		bool created = false;
+		for (std::list<uint32>::iterator it = itemIds.begin(); it != itemIds.end(); ++it) {	
+
 			// Get the actual item from the masters inventory. We can't use a prototype because they don't have the
 			// random properties that may be assigned.
 			Item* pItem = GetMaster()->FindItem(*it);
-			//const ItemPrototype* pProto = ObjectMgr::GetItemPrototype(*it);
+			if (!pItem) {
+
+				// Get the item from the loot list
+				Loot* loot = sLootMgr.GetLoot(GetMaster(), ObjectGuid());
+				if (!loot)
+				{
+					sLog.outError("PLAYERBOT Debug Error cannot get loot object info in Gear Check command!");
+					return;
+				}
+
+				// Get the list of items first and iterate it
+				LootItemList lootList;
+				loot->GetLootItemsListFor(GetMaster(), lootList);
+
+				for (LootItemList::const_iterator lootItr = lootList.begin(); lootItr != lootList.end(); ++lootItr)
+				{
+					LootItem* lootItem = *lootItr;
+
+					// If this is the item then create it
+					if (lootItem->itemProto->ItemId == *it) {
+						// Create an item from the loot item
+						pItem = Item::CreateItem(*it, 1, GetMaster(), lootItem->randomPropertyId);
+
+						// set to created so we can clean it up
+						created = true;
+
+						break;
+					}
+				}
+
+				// couldn't find the item
+				if (!pItem)
+				{
+					TellMaster("Can't find item in inventory or loot list!");
+					return;
+				}
+			}
+				
+			// Check if item is an upgrade
 			if (IsItemAnUpgrade(pItem)){
 				SendUpgradingItems(pItem->GetProto());
+				if (created) delete pItem;
 				return;
 			}
+
+			if (created) delete pItem;
 		}
         
 		// Not an upgrade - don't say anything
