@@ -1,0 +1,703 @@
+ tbbmalloc
+
+ Timestamp is 579c1dec (Sat Jul 30 11:24:28 2016)
+
+ Preferred load address is 0000000180000000
+
+ Start         Length     Name                   Class
+ 0001:00000000 00000009H .text$di                CODE
+ 0001:00000010 00003680H .text$mn                CODE
+ 0001:00003690 0000009bH .text$x                 CODE
+ 0002:00000000 00000158H .idata$5                DATA
+ 0002:00000158 00000008H .CRT$XCA                DATA
+ 0002:00000160 00000008H .CRT$XCU                DATA
+ 0002:00000168 00000008H .CRT$XCZ                DATA
+ 0002:00000170 00000008H .CRT$XIA                DATA
+ 0002:00000178 00000008H .CRT$XIAA               DATA
+ 0002:00000180 00000008H .CRT$XIC                DATA
+ 0002:00000188 00000008H .CRT$XIZ                DATA
+ 0002:00000190 000006e0H .rdata                  DATA
+ 0002:00000870 00000068H .rdata$debug            DATA
+ 0002:000008d8 00000008H .rtc$IAA                DATA
+ 0002:000008e0 00000008H .rtc$IZZ                DATA
+ 0002:000008e8 00000008H .rtc$TAA                DATA
+ 0002:000008f0 00000008H .rtc$TZZ                DATA
+ 0002:000008f8 000005ecH .xdata                  DATA
+ 0002:00000ef0 000001c4H .edata                  DATA
+ 0002:000010b4 00000028H .idata$2                DATA
+ 0002:000010dc 00000014H .idata$3                DATA
+ 0002:000010f0 00000158H .idata$4                DATA
+ 0002:00001248 000002e6H .idata$6                DATA
+ 0003:00000000 0000076cH .data                   DATA
+ 0003:00000770 0000d828H .bss                    DATA
+ 0004:00000000 00000528H .pdata                  DATA
+ 0005:00000000 00000058H .rsrc$01                DATA
+ 0005:00000060 00000180H .rsrc$02                DATA
+
+  Address         Publics by Value              Rva+Base               Lib:Object
+
+ 0000:00000000       __guard_fids_table         0000000000000000     <absolute>
+ 0000:00000000       __guard_flags              0000000000000000     <absolute>
+ 0000:00000000       __guard_fids_count         0000000000000000     <absolute>
+ 0000:00000000       ___safe_se_handler_count   0000000000000000     <absolute>
+ 0000:00000000       ___safe_se_handler_table   0000000000000000     <absolute>
+ 0000:00000000       __ImageBase                0000000180000000     <linker-defined>
+ 0001:00000010       ?pop@LifoQueue@internal@rml@@QEAAPEAXXZ 0000000180001010 f i MemoryAllocator.obj
+ 0001:00000ba0       ?push@CachedObjectsList@internal@rml@@QEAAXPEAX_N_K@Z 0000000180001ba0 f i MemoryAllocator.obj
+ 0001:00000c60       ?pop@CachedObjectsList@internal@rml@@QEAAPEAUCachedObject@23@_K@Z 0000000180001c60 f i MemoryAllocator.obj
+ 0001:00001540       __TBB_mallocThreadShutdownNotification 0000000180002540 f   MemoryAllocator.obj
+ 0001:00001710       scalable_malloc            0000000180002710 f   MemoryAllocator.obj
+ 0001:00001b00       scalable_free              0000000180002b00 f   MemoryAllocator.obj
+ 0001:00001c10       safer_scalable_free        0000000180002c10 f   MemoryAllocator.obj
+ 0001:00001c80       scalable_realloc           0000000180002c80 f   MemoryAllocator.obj
+ 0001:00001d60       safer_scalable_realloc     0000000180002d60 f   MemoryAllocator.obj
+ 0001:00001ee0       scalable_calloc            0000000180002ee0 f   MemoryAllocator.obj
+ 0001:00001f20       scalable_posix_memalign    0000000180002f20 f   MemoryAllocator.obj
+ 0001:00001f70       scalable_aligned_malloc    0000000180002f70 f   MemoryAllocator.obj
+ 0001:00001fd0       scalable_aligned_realloc   0000000180002fd0 f   MemoryAllocator.obj
+ 0001:00002050       safer_scalable_aligned_realloc 0000000180003050 f   MemoryAllocator.obj
+ 0001:00002190       scalable_aligned_free      0000000180003190 f   MemoryAllocator.obj
+ 0001:000021a0       scalable_msize             00000001800031a0 f   MemoryAllocator.obj
+ 0001:00002200       safer_scalable_msize       0000000180003200 f   MemoryAllocator.obj
+ 0001:00002350       DllMain                    0000000180003350 f   tbbmalloc.obj
+ 0001:00002c20       __TBB_machine_fetchadd1    0000000180003c20     atomic_support.obj
+ 0001:00002c28       __TBB_machine_fetchstore1  0000000180003c28     atomic_support.obj
+ 0001:00002c30       __TBB_machine_cmpswp1      0000000180003c30     atomic_support.obj
+ 0001:00002c38       __TBB_machine_fetchadd2    0000000180003c38     atomic_support.obj
+ 0001:00002c48       __TBB_machine_fetchstore2  0000000180003c48     atomic_support.obj
+ 0001:00002c50       __TBB_machine_cmpswp2      0000000180003c50     atomic_support.obj
+ 0001:00002c60       __TBB_machine_pause        0000000180003c60     atomic_support.obj
+ 0001:00002c80       __security_check_cookie    0000000180003c80 f   MSVCRT:amdsecgs.obj
+ 0001:00002ca0       __raise_securityfailure    0000000180003ca0 f   MSVCRT:gs_report.obj
+ 0001:00002cec       __report_gsfailure         0000000180003cec f   MSVCRT:gs_report.obj
+ 0001:00002dc0       __report_rangecheckfailure 0000000180003dc0 f   MSVCRT:gs_report.obj
+ 0001:00002dd4       __report_securityfailure   0000000180003dd4 f   MSVCRT:gs_report.obj
+ 0001:00002ed0       _CRT_INIT                  0000000180003ed0 f   MSVCRT:crtdll.obj
+ 0001:0000311c       _DllMainCRTStartup         000000018000411c f   MSVCRT:crtdll.obj
+ 0001:00003292       __crt_debugger_hook        0000000180004292 f   MSVCRT:MSVCR120.dll
+ 0001:00003298       __crtUnhandledException    0000000180004298 f   MSVCRT:MSVCR120.dll
+ 0001:0000329e       __crtTerminateProcess      000000018000429e f   MSVCRT:MSVCR120.dll
+ 0001:000032a4       __crtCaptureCurrentContext 00000001800042a4 f   MSVCRT:MSVCR120.dll
+ 0001:000032aa       __crtCapturePreviousContext 00000001800042aa f   MSVCRT:MSVCR120.dll
+ 0001:000032b0       __CppXcptFilter            00000001800042b0 f   MSVCRT:MSVCR120.dll
+ 0001:000032b6       _amsg_exit                 00000001800042b6 f   MSVCRT:MSVCR120.dll
+ 0001:000032c0       _FindPESection             00000001800042c0 f   MSVCRT:pesect.obj
+ 0001:00003310       _IsNonwritableInCurrentImage 0000000180004310 f   MSVCRT:pesect.obj
+ 0001:00003360       _ValidateImageBase         0000000180004360 f   MSVCRT:pesect.obj
+ 0001:00003390       __atonexitinit             0000000180004390 f   MSVCRT:atonexit.obj
+ 0001:000033e0       _onexit                    00000001800043e0 f   MSVCRT:atonexit.obj
+ 0001:00003490       atexit                     0000000180004490 f   MSVCRT:atonexit.obj
+ 0001:000034a8       __security_init_cookie     00000001800044a8 f   MSVCRT:gs_support.obj
+ 0001:00003554       _RTC_Initialize            0000000180004554 f   MSVCRT:initsect.obj
+ 0001:0000358c       _RTC_Terminate             000000018000458c f   MSVCRT:initsect.obj
+ 0001:000035c4       _initterm                  00000001800045c4 f   MSVCRT:MSVCR120.dll
+ 0001:000035ca       _initterm_e                00000001800045ca f   MSVCRT:MSVCR120.dll
+ 0001:000035d0       __clean_type_info_names    00000001800045d0 f   MSVCRT:tncleanup.obj
+ 0001:000035dc       __C_specific_handler       00000001800045dc f   MSVCRT:MSVCR120.dll
+ 0001:000035e2       _lock                      00000001800045e2 f   MSVCRT:MSVCR120.dll
+ 0001:000035e8       _unlock                    00000001800045e8 f   MSVCRT:MSVCR120.dll
+ 0001:000035ee       __dllonexit                00000001800045ee f   MSVCRT:MSVCR120.dll
+ 0001:000035f4       __clean_type_info_names_internal 00000001800045f4 f   MSVCRT:MSVCR120.dll
+ 0001:000035fa       IsProcessorFeaturePresent  00000001800045fa f   kernel32:KERNEL32.dll
+ 0001:00003600       __GSHandlerCheck           0000000180004600 f   MSVCRT:gshandler.obj
+ 0001:00003620       __GSHandlerCheckCommon     0000000180004620 f   MSVCRT:gshandler.obj
+ 0001:00003684       memcpy                     0000000180004684 f   MSVCRT:MSVCR120.dll
+ 0001:0000368a       memset                     000000018000468a f   MSVCRT:MSVCR120.dll
+ 0002:00000000       __imp_TlsGetValue          0000000180005000     kernel32:KERNEL32.dll
+ 0002:00000008       __imp_VirtualFree          0000000180005008     kernel32:KERNEL32.dll
+ 0002:00000010       __imp_TlsSetValue          0000000180005010     kernel32:KERNEL32.dll
+ 0002:00000018       __imp_VirtualAlloc         0000000180005018     kernel32:KERNEL32.dll
+ 0002:00000020       __imp_TlsAlloc             0000000180005020     kernel32:KERNEL32.dll
+ 0002:00000028       __imp_SwitchToThread       0000000180005028     kernel32:KERNEL32.dll
+ 0002:00000030       __imp_GetProcAddress       0000000180005030     kernel32:KERNEL32.dll
+ 0002:00000038       __imp_LoadLibraryA         0000000180005038     kernel32:KERNEL32.dll
+ 0002:00000040       __imp_GetEnvironmentVariableA 0000000180005040     kernel32:KERNEL32.dll
+ 0002:00000048       __imp_GetCurrentThreadId   0000000180005048     kernel32:KERNEL32.dll
+ 0002:00000050       __imp_GetCurrentProcessId  0000000180005050     kernel32:KERNEL32.dll
+ 0002:00000058       __imp_QueryPerformanceCounter 0000000180005058     kernel32:KERNEL32.dll
+ 0002:00000060       __imp_DecodePointer        0000000180005060     kernel32:KERNEL32.dll
+ 0002:00000068       __imp_EncodePointer        0000000180005068     kernel32:KERNEL32.dll
+ 0002:00000070       __imp_IsProcessorFeaturePresent 0000000180005070     kernel32:KERNEL32.dll
+ 0002:00000078       __imp_IsDebuggerPresent    0000000180005078     kernel32:KERNEL32.dll
+ 0002:00000080       __imp_GetSystemTimeAsFileTime 0000000180005080     kernel32:KERNEL32.dll
+ 0002:00000088       \177KERNEL32_NULL_THUNK_DATA 0000000180005088     kernel32:KERNEL32.dll
+ 0002:00000090       __imp___crt_debugger_hook  0000000180005090     MSVCRT:MSVCR120.dll
+ 0002:00000098       __imp___crtUnhandledException 0000000180005098     MSVCRT:MSVCR120.dll
+ 0002:000000a0       __imp___crtTerminateProcess 00000001800050a0     MSVCRT:MSVCR120.dll
+ 0002:000000a8       __imp___crtCapturePreviousContext 00000001800050a8     MSVCRT:MSVCR120.dll
+ 0002:000000b0       __imp___CppXcptFilter      00000001800050b0     MSVCRT:MSVCR120.dll
+ 0002:000000b8       __imp__amsg_exit           00000001800050b8     MSVCRT:MSVCR120.dll
+ 0002:000000c0       __imp_free                 00000001800050c0     MSVCRT:MSVCR120.dll
+ 0002:000000c8       __imp__malloc_crt          00000001800050c8     MSVCRT:MSVCR120.dll
+ 0002:000000d0       __imp__initterm            00000001800050d0     MSVCRT:MSVCR120.dll
+ 0002:000000d8       __imp__initterm_e          00000001800050d8     MSVCRT:MSVCR120.dll
+ 0002:000000e0       __imp___C_specific_handler 00000001800050e0     MSVCRT:MSVCR120.dll
+ 0002:000000e8       __imp__lock                00000001800050e8     MSVCRT:MSVCR120.dll
+ 0002:000000f0       __imp__unlock              00000001800050f0     MSVCRT:MSVCR120.dll
+ 0002:000000f8       __imp__calloc_crt          00000001800050f8     MSVCRT:MSVCR120.dll
+ 0002:00000100       __imp___dllonexit          0000000180005100     MSVCRT:MSVCR120.dll
+ 0002:00000108       __imp__onexit              0000000180005108     MSVCRT:MSVCR120.dll
+ 0002:00000110       __imp___clean_type_info_names_internal 0000000180005110     MSVCRT:MSVCR120.dll
+ 0002:00000118       __imp_exit                 0000000180005118     MSVCRT:MSVCR120.dll
+ 0002:00000120       __imp_fprintf              0000000180005120     MSVCRT:MSVCR120.dll
+ 0002:00000128       __imp__errno               0000000180005128     MSVCRT:MSVCR120.dll
+ 0002:00000130       __imp___iob_func           0000000180005130     MSVCRT:MSVCR120.dll
+ 0002:00000138       __imp___crtCaptureCurrentContext 0000000180005138     MSVCRT:MSVCR120.dll
+ 0002:00000140       __imp_memcpy               0000000180005140     MSVCRT:MSVCR120.dll
+ 0002:00000148       __imp_memset               0000000180005148     MSVCRT:MSVCR120.dll
+ 0002:00000150       \177MSVCR120_NULL_THUNK_DATA 0000000180005150     MSVCRT:MSVCR120.dll
+ 0002:00000158       __xc_a                     0000000180005158     MSVCRT:cinitexe.obj
+ 0002:00000168       __xc_z                     0000000180005168     MSVCRT:cinitexe.obj
+ 0002:00000170       __xi_a                     0000000180005170     MSVCRT:cinitexe.obj
+ 0002:00000188       __xi_z                     0000000180005188     MSVCRT:cinitexe.obj
+ 0002:000001d8       _pRawDllMain               00000001800051d8     MSVCRT:crtdll.obj
+ 0002:000001d8       _pDefaultRawDllMain        00000001800051d8     MSVCRT:crtdll.obj
+ 0002:000001e0       ??_C@_0EM@FEKCKKFG@The?5memory?5manager?5cannot?5access@ 00000001800051e0     MemoryAllocator.obj
+ 0002:00000300       ??_C@_0BB@GHDLJDEE@libittnotify?4dll?$AA@ 0000000180005300     itt_notify_proxy.obj
+ 0002:00000318       ??_C@_0BF@DALCJNFN@INTEL_LIBITTNOTIFY64?$AA@ 0000000180005318     itt_notify_proxy.obj
+ 0002:00000330       ??_C@_07MMBOFDEG@control?$AA@ 0000000180005330     itt_notify_proxy.obj
+ 0002:00000338       ??_C@_06FJHNOCKE@thread?$AA@ 0000000180005338     itt_notify_proxy.obj
+ 0002:00000340       ??_C@_04KJJCFCK@mark?$AA@  0000000180005340     itt_notify_proxy.obj
+ 0002:00000348       ??_C@_04JNABKDKF@sync?$AA@ 0000000180005348     itt_notify_proxy.obj
+ 0002:00000350       ??_C@_05DEEMBJFM@fsync?$AA@ 0000000180005350     itt_notify_proxy.obj
+ 0002:00000358       ??_C@_03IGHFHLNJ@jit?$AA@  0000000180005358     itt_notify_proxy.obj
+ 0002:0000035c       ??_C@_03NFKEKGGK@all?$AA@  000000018000535c     itt_notify_proxy.obj
+ 0002:00000360       ??_C@_0BB@MEEBFJKA@KMP_FOR_TPROFILE?$AA@ 0000000180005360     itt_notify_proxy.obj
+ 0002:00000378       ??_C@_0P@PHKFPIJA@KMP_FOR_TCHECK?$AA@ 0000000180005378     itt_notify_proxy.obj
+ 0002:00000388       ??_C@_0M@OBBFCECB@__itt_pause?$AA@ 0000000180005388     itt_notify_proxy.obj
+ 0002:00000398       ??_C@_0N@PMDEDCGD@__itt_resume?$AA@ 0000000180005398     itt_notify_proxy.obj
+ 0002:000003a8       ??_C@_0M@CAFHBOLD@__itt_markA?$AA@ 00000001800053a8     itt_notify_proxy.obj
+ 0002:000003b8       ??_C@_0M@DMMPKLGE@__itt_markW?$AA@ 00000001800053b8     itt_notify_proxy.obj
+ 0002:000003c8       ??_C@_0BD@MBBPNJCH@__itt_mark_globalA?$AA@ 00000001800053c8     itt_notify_proxy.obj
+ 0002:000003e0       ??_C@_0BD@NNIHGMPA@__itt_mark_globalW?$AA@ 00000001800053e0     itt_notify_proxy.obj
+ 0002:000003f8       ??_C@_0BH@NLDAAGM@__itt_thread_set_nameA?$AA@ 00000001800053f8     itt_notify_proxy.obj
+ 0002:00000410       ??_C@_0BH@BBCLLFLL@__itt_thread_set_nameW?$AA@ 0000000180005410     itt_notify_proxy.obj
+ 0002:00000428       ??_C@_0BD@PFHNCEK@__itt_sync_createA?$AA@ 0000000180005428     itt_notify_proxy.obj
+ 0002:00000440       ??_C@_0BD@BDMPGHJN@__itt_sync_createW?$AA@ 0000000180005440     itt_notify_proxy.obj
+ 0002:00000458       ??_C@_0BD@FKOJKJGJ@__itt_sync_renameA?$AA@ 0000000180005458     itt_notify_proxy.obj
+ 0002:00000470       ??_C@_0BD@EGHBBMLO@__itt_sync_renameW?$AA@ 0000000180005470     itt_notify_proxy.obj
+ 0002:00000488       ??_C@_0BD@OFAHOGJG@__itt_sync_destroy?$AA@ 0000000180005488     itt_notify_proxy.obj
+ 0002:000004a0       ??_C@_0P@CFDOAOOE@__itt_mark_off?$AA@ 00000001800054a0     itt_notify_proxy.obj
+ 0002:000004b0       ??_C@_0BG@CDJIJGAC@__itt_mark_global_off?$AA@ 00000001800054b0     itt_notify_proxy.obj
+ 0002:000004c8       ??_C@_0BE@GBGGMKDN@__itt_thread_ignore?$AA@ 00000001800054c8     itt_notify_proxy.obj
+ 0002:000004e0       ??_C@_0BD@CPKFKJEO@__itt_sync_prepare?$AA@ 00000001800054e0     itt_notify_proxy.obj
+ 0002:000004f8       ??_C@_0BC@MCENPEOO@__itt_sync_cancel?$AA@ 00000001800054f8     itt_notify_proxy.obj
+ 0002:00000510       ??_C@_0BE@GIFMGCLF@__itt_sync_acquired?$AA@ 0000000180005510     itt_notify_proxy.obj
+ 0002:00000528       ??_C@_0BF@DIEOIMOH@__itt_sync_releasing?$AA@ 0000000180005528     itt_notify_proxy.obj
+ 0002:00000540       ??_C@_0BE@LGGNMGLH@__itt_sync_released?$AA@ 0000000180005540     itt_notify_proxy.obj
+ 0002:00000558       ??_C@_0BC@FOINABEG@__itt_memory_read?$AA@ 0000000180005558     itt_notify_proxy.obj
+ 0002:00000570       ??_C@_0BD@NMPEKHPI@__itt_memory_write?$AA@ 0000000180005570     itt_notify_proxy.obj
+ 0002:00000588       ??_C@_0BE@PDNEALBC@__itt_memory_update?$AA@ 0000000180005588     itt_notify_proxy.obj
+ 0002:000005a0       ??_C@_0BH@BMDJEFLP@__itt_jit_notify_event?$AA@ 00000001800055a0     itt_notify_proxy.obj
+ 0002:000005b8       ??_C@_0BD@PMJJPFNK@__itt_mark_createA?$AA@ 00000001800055b8     itt_notify_proxy.obj
+ 0002:000005d0       ??_C@_0BD@OAABEAAN@__itt_mark_createW?$AA@ 00000001800055d0     itt_notify_proxy.obj
+ 0002:000005e8       ??_C@_0BK@EPNEOEMG@__itt_notify_sync_prepare?$AA@ 00000001800055e8     itt_notify_proxy.obj
+ 0002:00000608       ??_C@_0BJ@DIOKJHB@__itt_notify_sync_cancel?$AA@ 0000000180005608     itt_notify_proxy.obj
+ 0002:00000628       ??_C@_0BL@ILFPBIOK@__itt_notify_sync_acquired?$AA@ 0000000180005628     itt_notify_proxy.obj
+ 0002:00000648       ??_C@_0BM@MDHJMDPI@__itt_notify_sync_releasing?$AA@ 0000000180005648     itt_notify_proxy.obj
+ 0002:00000668       ??_C@_0BK@LHKMCGEO@__itt_notify_cpath_target?$AA@ 0000000180005668     itt_notify_proxy.obj
+ 0002:00000688       ??_C@_0BF@NPFOLKPO@__itt_sync_set_nameA?$AA@ 0000000180005688     itt_notify_proxy.obj
+ 0002:000006a0       ??_C@_0BF@MDMGAPCJ@__itt_sync_set_nameW?$AA@ 00000001800056a0     itt_notify_proxy.obj
+ 0002:000006b8       ??_C@_0BE@PKPGFCJA@__itt_thr_name_setA?$AA@ 00000001800056b8     itt_notify_proxy.obj
+ 0002:000006d0       ??_C@_0BE@OGGOOHEH@__itt_thr_name_setW?$AA@ 00000001800056d0     itt_notify_proxy.obj
+ 0002:000006e8       ??_C@_0BE@PFMCBGMI@__itt_event_createA?$AA@ 00000001800056e8     itt_notify_proxy.obj
+ 0002:00000700       ??_C@_0BE@OJFKKDBP@__itt_event_createW?$AA@ 0000000180005700     itt_notify_proxy.obj
+ 0002:00000718       ??_C@_0BB@NAOEIHEA@__itt_thr_ignore?$AA@ 0000000180005718     itt_notify_proxy.obj
+ 0002:00000730       ??_C@_0BC@CFNFCMCG@__itt_event_start?$AA@ 0000000180005730     itt_notify_proxy.obj
+ 0002:00000748       ??_C@_0BA@IJAPHNDA@__itt_event_end?$AA@ 0000000180005748     itt_notify_proxy.obj
+ 0002:00000758       ??_C@_0BA@OOLJINGG@__itt_state_get?$AA@ 0000000180005758     itt_notify_proxy.obj
+ 0002:00000768       ??_C@_0BA@DBMCENKO@__itt_state_set?$AA@ 0000000180005768     itt_notify_proxy.obj
+ 0002:00000778       ??_C@_0BD@OMOHDNKK@__itt_obj_mode_set?$AA@ 0000000180005778     itt_notify_proxy.obj
+ 0002:00000790       ??_C@_0BD@EBCLOJDM@__itt_thr_mode_set?$AA@ 0000000180005790     itt_notify_proxy.obj
+ 0002:000007a8       ??_C@_0BC@LLDNPJMG@__itt_api_version?$AA@ 00000001800057a8     itt_notify_proxy.obj
+ 0002:000007c0       ??_C@_0BM@MMFMDFCK@__itt_jit_get_new_method_id?$AA@ 00000001800057c0     itt_notify_proxy.obj
+ 0002:000007e0       ??_C@_0BH@BCIELMCH@INTEL_ITTNOTIFY_GROUPS?$AA@ 00000001800057e0     itt_notify_proxy.obj
+ 0002:000007f8       ??_C@_03IJOFBOLG@?0?$DL?5?$AA@ 00000001800057f8     itt_notify_proxy.obj
+ 0002:000007fc       __real@463e8000            00000001800057fc     MemoryAllocator.obj
+ 0002:00000800       _load_config_used          0000000180005800     MSVCRT:loadcfg.obj
+ 0002:000008d8       __rtc_iaa                  00000001800058d8     MSVCRT:initsect.obj
+ 0002:000008e0       __rtc_izz                  00000001800058e0     MSVCRT:initsect.obj
+ 0002:000008e8       __rtc_taa                  00000001800058e8     MSVCRT:initsect.obj
+ 0002:000008f0       __rtc_tzz                  00000001800058f0     MSVCRT:initsect.obj
+ 0002:000010b4       __IMPORT_DESCRIPTOR_KERNEL32 00000001800060b4     kernel32:KERNEL32.dll
+ 0002:000010c8       __IMPORT_DESCRIPTOR_MSVCR120 00000001800060c8     MSVCRT:MSVCR120.dll
+ 0002:000010dc       __NULL_IMPORT_DESCRIPTOR   00000001800060dc     kernel32:KERNEL32.dll
+ 0003:00000000       __security_cookie          0000000180007000     MSVCRT:gs_cookie.obj
+ 0003:00000008       __security_cookie_complement 0000000180007008     MSVCRT:gs_cookie.obj
+ 0003:00000010       __native_dllmain_reason    0000000180007010     MSVCRT:natstart.obj
+ 0003:00000020       __itt_notify_sync_acquired_ptr_ 0000000180007020     itt_notify_proxy.obj
+ 0003:00000028       __itt_notify_sync_releasing_ptr_ 0000000180007028     itt_notify_proxy.obj
+ 0003:00000030       __itt_sync_renameW_ptr_    0000000180007030     itt_notify_proxy.obj
+ 0003:00000038       __itt_sync_prepare_ptr_    0000000180007038     itt_notify_proxy.obj
+ 0003:00000040       __itt_sync_set_nameA_ptr_  0000000180007040     itt_notify_proxy.obj
+ 0003:00000048       __itt_sync_destroy_ptr_    0000000180007048     itt_notify_proxy.obj
+ 0003:00000050       __itt_mark_globalW_ptr_    0000000180007050     itt_notify_proxy.obj
+ 0003:00000058       __itt_resume_ptr_          0000000180007058     itt_notify_proxy.obj
+ 0003:00000060       __itt_sync_releasing_ptr_  0000000180007060     itt_notify_proxy.obj
+ 0003:00000068       __itt_mark_global_off_ptr_ 0000000180007068     itt_notify_proxy.obj
+ 0003:00000070       __itt_state_get_ptr_       0000000180007070     itt_notify_proxy.obj
+ 0003:00000078       __itt_sync_cancel_ptr_     0000000180007078     itt_notify_proxy.obj
+ 0003:00000080       __itt_memory_write_ptr_    0000000180007080     itt_notify_proxy.obj
+ 0003:00000088       __itt_jit_notify_event_ptr_ 0000000180007088     itt_notify_proxy.obj
+ 0003:00000090       __itt_sync_renameA_ptr_    0000000180007090     itt_notify_proxy.obj
+ 0003:00000098       __itt_mark_globalA_ptr_    0000000180007098     itt_notify_proxy.obj
+ 0003:000000a0       __itt_event_createW_ptr_   00000001800070a0     itt_notify_proxy.obj
+ 0003:000000a8       __itt_event_end_ptr_       00000001800070a8     itt_notify_proxy.obj
+ 0003:000000b0       __itt_thr_mode_set_ptr_    00000001800070b0     itt_notify_proxy.obj
+ 0003:000000b8       __itt_event_createA_ptr_   00000001800070b8     itt_notify_proxy.obj
+ 0003:000000c0       __itt_thread_set_nameA_ptr_ 00000001800070c0     itt_notify_proxy.obj
+ 0003:000000c8       __itt_sync_createA_ptr_    00000001800070c8     itt_notify_proxy.obj
+ 0003:000000d0       __itt_memory_update_ptr_   00000001800070d0     itt_notify_proxy.obj
+ 0003:000000d8       __itt_sync_set_nameW_ptr_  00000001800070d8     itt_notify_proxy.obj
+ 0003:00000160       __itt_thread_ignore_ptr_   0000000180007160     itt_notify_proxy.obj
+ 0003:00000168       __itt_memory_read_ptr_     0000000180007168     itt_notify_proxy.obj
+ 0003:00000170       __itt_fsync_acquired_ptr_  0000000180007170     itt_notify_proxy.obj
+ 0003:00000178       __itt_sync_createW_ptr_    0000000180007178     itt_notify_proxy.obj
+ 0003:00000180       __itt_notify_sync_prepare_ptr_ 0000000180007180     itt_notify_proxy.obj
+ 0003:00000188       __itt_fsync_releasing_ptr_ 0000000180007188     itt_notify_proxy.obj
+ 0003:00000190       __itt_markA_ptr_           0000000180007190     itt_notify_proxy.obj
+ 0003:00000198       __itt_thread_set_nameW_ptr_ 0000000180007198     itt_notify_proxy.obj
+ 0003:000001a0       __itt_api_version_ptr_     00000001800071a0     itt_notify_proxy.obj
+ 0003:000001a8       __itt_notify_cpath_target_ptr_ 00000001800071a8     itt_notify_proxy.obj
+ 0003:000001b0       __itt_fsync_cancel_ptr_    00000001800071b0     itt_notify_proxy.obj
+ 0003:000001b8       __itt_sync_acquired_ptr_   00000001800071b8     itt_notify_proxy.obj
+ 0003:000001c0       __itt_mark_off_ptr_        00000001800071c0     itt_notify_proxy.obj
+ 0003:000001c8       __itt_mark_createW_ptr_    00000001800071c8     itt_notify_proxy.obj
+ 0003:000001d0       __itt_thr_name_setW_ptr_   00000001800071d0     itt_notify_proxy.obj
+ 0003:000001d8       __itt_sync_released_ptr_   00000001800071d8     itt_notify_proxy.obj
+ 0003:000001e0       __itt_mark_createA_ptr_    00000001800071e0     itt_notify_proxy.obj
+ 0003:000001e8       __itt_markW_ptr_           00000001800071e8     itt_notify_proxy.obj
+ 0003:000001f0       __itt_jit_get_new_method_id_ptr_ 00000001800071f0     itt_notify_proxy.obj
+ 0003:000001f8       __itt_fsync_released_ptr_  00000001800071f8     itt_notify_proxy.obj
+ 0003:00000230       __itt_notify_sync_cancel_ptr_ 0000000180007230     itt_notify_proxy.obj
+ 0003:00000238       __itt_state_set_ptr_       0000000180007238     itt_notify_proxy.obj
+ 0003:00000240       __itt_pause_ptr_           0000000180007240     itt_notify_proxy.obj
+ 0003:00000248       __itt_thr_name_setA_ptr_   0000000180007248     itt_notify_proxy.obj
+ 0003:00000250       __itt_event_start_ptr_     0000000180007250     itt_notify_proxy.obj
+ 0003:00000258       __itt_thr_ignore_ptr_      0000000180007258     itt_notify_proxy.obj
+ 0003:00000758       __itt_fsync_prepare_ptr_   0000000180007758     itt_notify_proxy.obj
+ 0003:00000760       __itt_obj_mode_set_ptr_    0000000180007760     itt_notify_proxy.obj
+ 0003:00000768       _fltused                   0000000180007768     MSVCRT:dllsupp.obj
+ 0003:00000ce8       ?__type_info_root_node@@3U__type_info_node@@A 0000000180007ce8     MSVCRT:tncleanup.obj
+ 0003:0000df70       __native_startup_lock      0000000180014f70     <common>
+ 0003:0000df78       __native_startup_state     0000000180014f78     <common>
+ 0003:0000df80       __onexitend                0000000180014f80     <common>
+ 0003:0000df88       __onexitbegin              0000000180014f88     <common>
+ 0003:0000df90       __dyn_tls_init_callback    0000000180014f90     <common>
+
+ entry point at        0001:0000311c
+
+ Static symbols
+
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     kernel32:KERNEL32.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0000:fffe8000       .debug$S                   0000000180000000     MSVCRT:MSVCR120.dll
+ 0001:00000000       ??__EfreeBlockList@internal@rml@@YAXXZ 0000000180001000 f   MemoryAllocator.obj
+ 0001:000000a0       ?mallocBigBlock@internal@rml@@YAHXZ 00000001800010a0 f   MemoryAllocator.obj
+ 0001:000001b0       ?bootStrapMalloc@internal@rml@@YAPEAX_K@Z 00000001800011b0 f   MemoryAllocator.obj
+ 0001:000002c0       ?outofTLSBin@internal@rml@@YAXPEAUBin@12@PEAUBlock@12@@Z 00000001800012c0 f   MemoryAllocator.obj
+ 0001:00000300       ?emptyEnoughToUse@internal@rml@@YAIPEAUBlock@12@@Z 0000000180001300 f   MemoryAllocator.obj
+ 0001:00000340       ?freePublicObject@internal@rml@@YAXPEAUBlock@12@PEAUFreeObject@12@@Z 0000000180001340 f   MemoryAllocator.obj
+ 0001:00000400       ?privatizePublicFreeList@internal@rml@@YAXPEAUBlock@12@@Z 0000000180001400 f   MemoryAllocator.obj
+ 0001:00000490       ?getPublicFreeListBlock@internal@rml@@YAPEAUBlock@12@PEAUBin@12@@Z 0000000180001490 f   MemoryAllocator.obj
+ 0001:00000530       ?getPartialBlock@internal@rml@@YAPEAUBlock@12@PEAUBin@12@I@Z 0000000180001530 f   MemoryAllocator.obj
+ 0001:00000680       ?returnPartialBlock@internal@rml@@YAXPEAUBin@12@PEAUBlock@12@@Z 0000000180001680 f   MemoryAllocator.obj
+ 0001:000007d0       ?initEmptyBlock@internal@rml@@YAXPEAUBlock@12@_K@Z 00000001800017d0 f   MemoryAllocator.obj
+ 0001:00000930       ?getRawBlock@internal@rml@@YAPEAUBlock@12@XZ 0000000180001930 f   MemoryAllocator.obj
+ 0001:00000ab0       ?getEmptyBlock@internal@rml@@YAPEAUBlock@12@_K@Z 0000000180001ab0 f   MemoryAllocator.obj
+ 0001:00000af0       ?returnEmptyBlock@internal@rml@@YAXPEAUBlock@12@_N@Z 0000000180001af0 f   MemoryAllocator.obj
+ 0001:00000d10       ?cleanupCacheIfNeed@internal@rml@@YA_KXZ 0000000180001d10 f   MemoryAllocator.obj
+ 0001:00000e90       ?mallocLargeObject@internal@rml@@YAPEAX_K0_N@Z 0000000180001e90 f   MemoryAllocator.obj
+ 0001:00000f80       ?freeLargeObject@internal@rml@@YAXPEAX@Z 0000000180001f80 f   MemoryAllocator.obj
+ 0001:00001000       ?allocateFromBlock@internal@rml@@YAPEAUFreeObject@12@PEAUBlock@12@@Z 0000000180002000 f   MemoryAllocator.obj
+ 0001:00001050       ?moveBlockToBinFront@internal@rml@@YAXPEAUBlock@12@@Z 0000000180002050 f   MemoryAllocator.obj
+ 0001:000011a0       ?processLessUsedBlock@internal@rml@@YAXPEAUBlock@12@@Z 00000001800021a0 f   MemoryAllocator.obj
+ 0001:000012e0       ?allocateAligned@internal@rml@@YAPEAX_K0@Z 00000001800022e0 f   MemoryAllocator.obj
+ 0001:00001470       ?reallocAligned@internal@rml@@YAPEAXPEAX_K1@Z 0000000180002470 f   MemoryAllocator.obj
+ 0001:000016f0       ?safer_dereference@@YA_KPEA_K@Z 00000001800026f0 f   MemoryAllocator.obj
+ 0001:000022d0       ??$getIndexOrObjectSize@$0A@@internal@rml@@YAII@Z 00000001800032d0 f   MemoryAllocator.obj
+ 0001:00002370       __itt_pause_init           0000000180003370 f   itt_notify_proxy.obj
+ 0001:00002380       __itt_resume_init          0000000180003380 f   itt_notify_proxy.obj
+ 0001:00002390       __itt_markA_init           0000000180003390 f   itt_notify_proxy.obj
+ 0001:000023a0       __itt_markW_init           00000001800033a0 f   itt_notify_proxy.obj
+ 0001:000023b0       __itt_mark_globalA_init    00000001800033b0 f   itt_notify_proxy.obj
+ 0001:000023c0       __itt_mark_globalW_init    00000001800033c0 f   itt_notify_proxy.obj
+ 0001:000023d0       __itt_thread_set_nameA_init 00000001800033d0 f   itt_notify_proxy.obj
+ 0001:000023e0       __itt_thread_set_nameW_init 00000001800033e0 f   itt_notify_proxy.obj
+ 0001:000023f0       __itt_sync_createA_init    00000001800033f0 f   itt_notify_proxy.obj
+ 0001:00002400       __itt_sync_createW_init    0000000180003400 f   itt_notify_proxy.obj
+ 0001:00002410       __itt_sync_renameA_init    0000000180003410 f   itt_notify_proxy.obj
+ 0001:00002420       __itt_sync_renameW_init    0000000180003420 f   itt_notify_proxy.obj
+ 0001:00002430       __itt_sync_destroy_init    0000000180003430 f   itt_notify_proxy.obj
+ 0001:00002440       __itt_mark_off_init        0000000180003440 f   itt_notify_proxy.obj
+ 0001:00002450       __itt_mark_global_off_init 0000000180003450 f   itt_notify_proxy.obj
+ 0001:00002460       __itt_thread_ignore_init   0000000180003460 f   itt_notify_proxy.obj
+ 0001:00002470       __itt_sync_prepare_init    0000000180003470 f   itt_notify_proxy.obj
+ 0001:00002480       __itt_sync_cancel_init     0000000180003480 f   itt_notify_proxy.obj
+ 0001:00002490       __itt_sync_acquired_init   0000000180003490 f   itt_notify_proxy.obj
+ 0001:000024a0       __itt_sync_releasing_init  00000001800034a0 f   itt_notify_proxy.obj
+ 0001:000024b0       __itt_sync_released_init   00000001800034b0 f   itt_notify_proxy.obj
+ 0001:000024c0       __itt_memory_read_init     00000001800034c0 f   itt_notify_proxy.obj
+ 0001:000024d0       __itt_memory_write_init    00000001800034d0 f   itt_notify_proxy.obj
+ 0001:000024e0       __itt_memory_update_init   00000001800034e0 f   itt_notify_proxy.obj
+ 0001:000024f0       __itt_jit_notify_event_init 00000001800034f0 f   itt_notify_proxy.obj
+ 0001:00002500       __itt_mark_createA_init    0000000180003500 f   itt_notify_proxy.obj
+ 0001:00002510       __itt_mark_createW_init    0000000180003510 f   itt_notify_proxy.obj
+ 0001:00002520       __itt_fsync_prepare_init   0000000180003520 f   itt_notify_proxy.obj
+ 0001:00002530       __itt_fsync_cancel_init    0000000180003530 f   itt_notify_proxy.obj
+ 0001:00002540       __itt_fsync_acquired_init  0000000180003540 f   itt_notify_proxy.obj
+ 0001:00002550       __itt_fsync_releasing_init 0000000180003550 f   itt_notify_proxy.obj
+ 0001:00002560       __itt_fsync_released_init  0000000180003560 f   itt_notify_proxy.obj
+ 0001:00002570       __itt_notify_sync_prepare_init 0000000180003570 f   itt_notify_proxy.obj
+ 0001:00002580       __itt_notify_sync_cancel_init 0000000180003580 f   itt_notify_proxy.obj
+ 0001:00002590       __itt_notify_sync_acquired_init 0000000180003590 f   itt_notify_proxy.obj
+ 0001:000025a0       __itt_notify_sync_releasing_init 00000001800035a0 f   itt_notify_proxy.obj
+ 0001:000025b0       __itt_notify_cpath_target_init 00000001800035b0 f   itt_notify_proxy.obj
+ 0001:000025c0       __itt_sync_set_nameA_init  00000001800035c0 f   itt_notify_proxy.obj
+ 0001:000025d0       __itt_sync_set_nameW_init  00000001800035d0 f   itt_notify_proxy.obj
+ 0001:000025e0       __itt_thr_name_setA_init   00000001800035e0 f   itt_notify_proxy.obj
+ 0001:000025f0       __itt_thr_name_setW_init   00000001800035f0 f   itt_notify_proxy.obj
+ 0001:00002600       __itt_event_createA_init   0000000180003600 f   itt_notify_proxy.obj
+ 0001:00002610       __itt_event_createW_init   0000000180003610 f   itt_notify_proxy.obj
+ 0001:00002620       __itt_thr_ignore_init      0000000180003620 f   itt_notify_proxy.obj
+ 0001:00002630       __itt_event_start_init     0000000180003630 f   itt_notify_proxy.obj
+ 0001:00002640       __itt_event_end_init       0000000180003640 f   itt_notify_proxy.obj
+ 0001:00002650       __itt_state_get_init       0000000180003650 f   itt_notify_proxy.obj
+ 0001:00002660       __itt_state_set_init       0000000180003660 f   itt_notify_proxy.obj
+ 0001:00002670       __itt_obj_mode_set_init    0000000180003670 f   itt_notify_proxy.obj
+ 0001:00002680       __itt_thr_mode_set_init    0000000180003680 f   itt_notify_proxy.obj
+ 0001:00002690       __itt_api_version_init     0000000180003690 f   itt_notify_proxy.obj
+ 0001:000026a0       __itt_jit_get_new_method_id_init 00000001800036a0 f   itt_notify_proxy.obj
+ 0001:000026b0       __itt_get_lib_name         00000001800036b0 f   itt_notify_proxy.obj
+ 0001:00002740       __itt_get_groups           0000000180003740 f   itt_notify_proxy.obj
+ 0001:00002ab0       __itt_init_lib             0000000180003ab0 f   itt_notify_proxy.obj
+ 0001:00002c20       $$000000                   0000000180003c20     atomic_support.obj
+ 0001:00002c70       $$000000                   0000000180003c70     MSVCRT:amdsecgs.obj
+ 0001:00002e70       pre_c_init                 0000000180003e70 f   MSVCRT:crtdll.obj
+ 0001:0000315c       __DllMainCRTStartup        000000018000415c f   MSVCRT:crtdll.obj
+ 0001:00003690       ?filt$0@?0??safer_dereference@@YA_KPEA_K@Z@4HA 0000000180004690 f   MemoryAllocator.obj
+ 0001:000036a8       __DllMainCRTStartup$filt$0 00000001800046a8 f   MSVCRT:crtdll.obj
+ 0001:000036cd       __DllMainCRTStartup$fin$1  00000001800046cd f   MSVCRT:crtdll.obj
+ 0001:000036f0       _IsNonwritableInCurrentImage$filt$0 00000001800046f0 f   MSVCRT:pesect.obj
+ 0001:00003710       _onexit$fin$0              0000000180004710 f   MSVCRT:atonexit.obj
+ 0002:00000160       freeBlockList$initializer$ 0000000180005160     MemoryAllocator.obj
+ 0002:00000178       pcinit                     0000000180005178     MSVCRT:crtdll.obj
+ 0002:00000180       pinit                      0000000180005180     MSVCRT:atonexit.obj
+ 0002:000001c8       GS_ExceptionPointers       00000001800051c8     MSVCRT:gs_report.obj
+ 0002:00000230       mmapRequestSize            0000000180005230     MemoryAllocator.obj
+ 0002:00000238       emptyEnoughRatio           0000000180005238     MemoryAllocator.obj
+ 0002:00000240       globalCachedObjectBins     0000000180005240     MemoryAllocator.obj
+ 0002:00000248       globalSizeBins             0000000180005248     MemoryAllocator.obj
+ 0002:00000250       ittnotify_lib_name         0000000180005250     itt_notify_proxy.obj
+ 0002:00000260       VersionString              0000000180005260     tbb_misc.obj
+ 0002:000008f8       $unwind$?pop@LifoQueue@internal@rml@@QEAAPEAXXZ 00000001800058f8     MemoryAllocator.obj
+ 0002:000008f8       $unwind$?allocateAligned@internal@rml@@YAPEAX_K0@Z 00000001800058f8     MemoryAllocator.obj
+ 0002:00000904       $chain$0$?pop@LifoQueue@internal@rml@@QEAAPEAXXZ 0000000180005904     MemoryAllocator.obj
+ 0002:00000918       $chain$1$?pop@LifoQueue@internal@rml@@QEAAPEAXXZ 0000000180005918     MemoryAllocator.obj
+ 0002:00000928       $unwind$?mallocBigBlock@internal@rml@@YAHXZ 0000000180005928     MemoryAllocator.obj
+ 0002:00000938       $chain$3$?mallocBigBlock@internal@rml@@YAHXZ 0000000180005938     MemoryAllocator.obj
+ 0002:00000950       $chain$4$?mallocBigBlock@internal@rml@@YAHXZ 0000000180005950     MemoryAllocator.obj
+ 0002:00000960       $unwind$_RTC_Initialize    0000000180005960     MSVCRT:initsect.obj
+ 0002:00000960       $unwind$?freeLargeObject@internal@rml@@YAXPEAX@Z 0000000180005960     MemoryAllocator.obj
+ 0002:00000960       $unwind$scalable_calloc    0000000180005960     MemoryAllocator.obj
+ 0002:00000960       $unwind$?bootStrapMalloc@internal@rml@@YAPEAX_K@Z 0000000180005960     MemoryAllocator.obj
+ 0002:00000960       $unwind$?getEmptyBlock@internal@rml@@YAPEAUBlock@12@_K@Z 0000000180005960     MemoryAllocator.obj
+ 0002:00000960       $unwind$_RTC_Terminate     0000000180005960     MSVCRT:initsect.obj
+ 0002:0000096c       $unwind$?reallocAligned@internal@rml@@YAPEAXPEAX_K1@Z 000000018000596c     MemoryAllocator.obj
+ 0002:0000096c       $unwind$?freePublicObject@internal@rml@@YAXPEAUBlock@12@PEAUFreeObject@12@@Z 000000018000596c     MemoryAllocator.obj
+ 0002:00000980       $unwind$?moveBlockToBinFront@internal@rml@@YAXPEAUBlock@12@@Z 0000000180005980     MemoryAllocator.obj
+ 0002:00000980       $unwind$?processLessUsedBlock@internal@rml@@YAXPEAUBlock@12@@Z 0000000180005980     MemoryAllocator.obj
+ 0002:00000980       $unwind$safer_scalable_msize 0000000180005980     MemoryAllocator.obj
+ 0002:00000980       $unwind$_DllMainCRTStartup 0000000180005980     MSVCRT:crtdll.obj
+ 0002:00000980       $unwind$?privatizePublicFreeList@internal@rml@@YAXPEAUBlock@12@@Z 0000000180005980     MemoryAllocator.obj
+ 0002:00000980       $unwind$?getPublicFreeListBlock@internal@rml@@YAPEAUBlock@12@PEAUBin@12@@Z 0000000180005980     MemoryAllocator.obj
+ 0002:00000990       $unwind$?getPartialBlock@internal@rml@@YAPEAUBlock@12@PEAUBin@12@I@Z 0000000180005990     MemoryAllocator.obj
+ 0002:000009a0       $chain$0$?getPartialBlock@internal@rml@@YAPEAUBlock@12@PEAUBin@12@I@Z 00000001800059a0     MemoryAllocator.obj
+ 0002:000009b4       $chain$1$?getPartialBlock@internal@rml@@YAPEAUBlock@12@PEAUBin@12@I@Z 00000001800059b4     MemoryAllocator.obj
+ 0002:000009c4       $unwind$?returnPartialBlock@internal@rml@@YAXPEAUBin@12@PEAUBlock@12@@Z 00000001800059c4     MemoryAllocator.obj
+ 0002:000009d8       $unwind$?initEmptyBlock@internal@rml@@YAXPEAUBlock@12@_K@Z 00000001800059d8     MemoryAllocator.obj
+ 0002:000009e8       $chain$1$?initEmptyBlock@internal@rml@@YAXPEAUBlock@12@_K@Z 00000001800059e8     MemoryAllocator.obj
+ 0002:00000a00       $chain$2$?initEmptyBlock@internal@rml@@YAXPEAUBlock@12@_K@Z 0000000180005a00     MemoryAllocator.obj
+ 0002:00000a10       $unwind$?getRawBlock@internal@rml@@YAPEAUBlock@12@XZ 0000000180005a10     MemoryAllocator.obj
+ 0002:00000a1c       $chain$0$?getRawBlock@internal@rml@@YAPEAUBlock@12@XZ 0000000180005a1c     MemoryAllocator.obj
+ 0002:00000a30       $unwind$?returnEmptyBlock@internal@rml@@YAXPEAUBlock@12@_N@Z 0000000180005a30     MemoryAllocator.obj
+ 0002:00000a38       $chain$0$?returnEmptyBlock@internal@rml@@YAXPEAUBlock@12@_N@Z 0000000180005a38     MemoryAllocator.obj
+ 0002:00000a4c       $chain$1$?returnEmptyBlock@internal@rml@@YAXPEAUBlock@12@_N@Z 0000000180005a4c     MemoryAllocator.obj
+ 0002:00000a5c       $unwind$?push@CachedObjectsList@internal@rml@@QEAAXPEAX_N_K@Z 0000000180005a5c     MemoryAllocator.obj
+ 0002:00000a70       $chain$0$?push@CachedObjectsList@internal@rml@@QEAAXPEAX_N_K@Z 0000000180005a70     MemoryAllocator.obj
+ 0002:00000a84       $chain$1$?push@CachedObjectsList@internal@rml@@QEAAXPEAX_N_K@Z 0000000180005a84     MemoryAllocator.obj
+ 0002:00000a94       $unwind$?pop@CachedObjectsList@internal@rml@@QEAAPEAUCachedObject@23@_K@Z 0000000180005a94     MemoryAllocator.obj
+ 0002:00000aa4       $chain$0$?pop@CachedObjectsList@internal@rml@@QEAAPEAUCachedObject@23@_K@Z 0000000180005aa4     MemoryAllocator.obj
+ 0002:00000ab8       $chain$1$?pop@CachedObjectsList@internal@rml@@QEAAPEAUCachedObject@23@_K@Z 0000000180005ab8     MemoryAllocator.obj
+ 0002:00000ac8       $unwind$?cleanupCacheIfNeed@internal@rml@@YA_KXZ 0000000180005ac8     MemoryAllocator.obj
+ 0002:00000ad0       $chain$4$?cleanupCacheIfNeed@internal@rml@@YA_KXZ 0000000180005ad0     MemoryAllocator.obj
+ 0002:00000af4       $chain$5$?cleanupCacheIfNeed@internal@rml@@YA_KXZ 0000000180005af4     MemoryAllocator.obj
+ 0002:00000b04       $unwind$?mallocLargeObject@internal@rml@@YAPEAX_K0_N@Z 0000000180005b04     MemoryAllocator.obj
+ 0002:00000b1c       $chain$0$?allocateAligned@internal@rml@@YAPEAX_K0@Z 0000000180005b1c     MemoryAllocator.obj
+ 0002:00000b30       $chain$1$?allocateAligned@internal@rml@@YAPEAX_K0@Z 0000000180005b30     MemoryAllocator.obj
+ 0002:00000b40       $unwind$__TBB_mallocThreadShutdownNotification 0000000180005b40     MemoryAllocator.obj
+ 0002:00000b4c       $chain$0$__TBB_mallocThreadShutdownNotification 0000000180005b4c     MemoryAllocator.obj
+ 0002:00000b60       $chain$3$__TBB_mallocThreadShutdownNotification 0000000180005b60     MemoryAllocator.obj
+ 0002:00000b7c       $chain$4$__TBB_mallocThreadShutdownNotification 0000000180005b7c     MemoryAllocator.obj
+ 0002:00000b8c       $chain$5$__TBB_mallocThreadShutdownNotification 0000000180005b8c     MemoryAllocator.obj
+ 0002:00000b9c       $unwind$?safer_dereference@@YA_KPEA_K@Z 0000000180005b9c     MemoryAllocator.obj
+ 0002:00000bbc       $unwind$?filt$0@?0??safer_dereference@@YA_KPEA_K@Z@4HA 0000000180005bbc     MemoryAllocator.obj
+ 0002:00000bc4       $unwind$scalable_malloc    0000000180005bc4     MemoryAllocator.obj
+ 0002:00000bd8       $unwind$scalable_free      0000000180005bd8     MemoryAllocator.obj
+ 0002:00000be0       $chain$0$scalable_free     0000000180005be0     MemoryAllocator.obj
+ 0002:00000bf4       $chain$1$scalable_free     0000000180005bf4     MemoryAllocator.obj
+ 0002:00000c08       $chain$2$scalable_free     0000000180005c08     MemoryAllocator.obj
+ 0002:00000c18       $chain$4$scalable_free     0000000180005c18     MemoryAllocator.obj
+ 0002:00000c18       $chain$6$scalable_free     0000000180005c18     MemoryAllocator.obj
+ 0002:00000c2c       $chain$7$scalable_free     0000000180005c2c     MemoryAllocator.obj
+ 0002:00000c3c       $unwind$safer_scalable_free 0000000180005c3c     MemoryAllocator.obj
+ 0002:00000c48       $unwind$scalable_realloc   0000000180005c48     MemoryAllocator.obj
+ 0002:00000c54       $chain$1$scalable_realloc  0000000180005c54     MemoryAllocator.obj
+ 0002:00000c6c       $chain$2$scalable_realloc  0000000180005c6c     MemoryAllocator.obj
+ 0002:00000c7c       $unwind$safer_scalable_realloc 0000000180005c7c     MemoryAllocator.obj
+ 0002:00000c8c       $chain$1$safer_scalable_realloc 0000000180005c8c     MemoryAllocator.obj
+ 0002:00000ca4       $chain$3$safer_scalable_realloc 0000000180005ca4     MemoryAllocator.obj
+ 0002:00000cbc       $unwind$__GSHandlerCheckCommon 0000000180005cbc     MSVCRT:gshandler.obj
+ 0002:00000cbc       $unwind$scalable_posix_memalign 0000000180005cbc     MemoryAllocator.obj
+ 0002:00000cbc       $unwind$__atonexitinit     0000000180005cbc     MSVCRT:atonexit.obj
+ 0002:00000cbc       $unwind$pre_c_init         0000000180005cbc     MSVCRT:crtdll.obj
+ 0002:00000cbc       $unwind$__raise_securityfailure 0000000180005cbc     MSVCRT:gs_report.obj
+ 0002:00000cbc       $unwind$__itt_get_lib_name 0000000180005cbc     itt_notify_proxy.obj
+ 0002:00000cc4       $unwind$scalable_aligned_realloc 0000000180005cc4     MemoryAllocator.obj
+ 0002:00000cc4       $unwind$scalable_aligned_malloc 0000000180005cc4     MemoryAllocator.obj
+ 0002:00000cc4       $unwind$DllMain            0000000180005cc4     tbbmalloc.obj
+ 0002:00000cc4       $unwind$atexit             0000000180005cc4     MSVCRT:atonexit.obj
+ 0002:00000cc4       $unwind$__report_rangecheckfailure 0000000180005cc4     MSVCRT:gs_report.obj
+ 0002:00000cc4       $unwind$__itt_init_lib     0000000180005cc4     itt_notify_proxy.obj
+ 0002:00000cc4       $unwind$__GSHandlerCheck   0000000180005cc4     MSVCRT:gshandler.obj
+ 0002:00000cc4       $unwind$scalable_msize     0000000180005cc4     MemoryAllocator.obj
+ 0002:00000ccc       $chain$0$scalable_aligned_malloc 0000000180005ccc     MemoryAllocator.obj
+ 0002:00000ce0       $chain$1$scalable_aligned_malloc 0000000180005ce0     MemoryAllocator.obj
+ 0002:00000cf0       $chain$0$scalable_aligned_realloc 0000000180005cf0     MemoryAllocator.obj
+ 0002:00000d04       $chain$1$scalable_aligned_realloc 0000000180005d04     MemoryAllocator.obj
+ 0002:00000d14       $unwind$safer_scalable_aligned_realloc 0000000180005d14     MemoryAllocator.obj
+ 0002:00000d28       $chain$0$safer_scalable_aligned_realloc 0000000180005d28     MemoryAllocator.obj
+ 0002:00000d3c       $chain$1$safer_scalable_aligned_realloc 0000000180005d3c     MemoryAllocator.obj
+ 0002:00000d4c       $unwind$__itt_get_groups   0000000180005d4c     itt_notify_proxy.obj
+ 0002:00000d60       $chain$2$__itt_get_groups  0000000180005d60     itt_notify_proxy.obj
+ 0002:00000d7c       $chain$3$__itt_get_groups  0000000180005d7c     itt_notify_proxy.obj
+ 0002:00000d90       $chain$4$__itt_get_groups  0000000180005d90     itt_notify_proxy.obj
+ 0002:00000da0       $chain$6$__itt_get_groups  0000000180005da0     itt_notify_proxy.obj
+ 0002:00000dbc       $chain$7$__itt_get_groups  0000000180005dbc     itt_notify_proxy.obj
+ 0002:00000dcc       $chain$2$__itt_init_lib    0000000180005dcc     itt_notify_proxy.obj
+ 0002:00000de8       $chain$4$__itt_init_lib    0000000180005de8     itt_notify_proxy.obj
+ 0002:00000e00       $chain$5$__itt_init_lib    0000000180005e00     itt_notify_proxy.obj
+ 0002:00000e10       $chain$6$__itt_init_lib    0000000180005e10     itt_notify_proxy.obj
+ 0002:00000e20       $xdatasym                  0000000180005e20     MSVCRT:amdsecgs.obj
+ 0002:00000e24       $unwind$__report_securityfailure 0000000180005e24     MSVCRT:gs_report.obj
+ 0002:00000e2c       $unwind$__report_gsfailure 0000000180005e2c     MSVCRT:gs_report.obj
+ 0002:00000e34       $unwind$_CRT_INIT          0000000180005e34     MSVCRT:crtdll.obj
+ 0002:00000e50       $unwind$__DllMainCRTStartup 0000000180005e50     MSVCRT:crtdll.obj
+ 0002:00000e8c       $unwind$_IsNonwritableInCurrentImage 0000000180005e8c     MSVCRT:pesect.obj
+ 0002:00000eb0       $unwind$__DllMainCRTStartup$fin$1 0000000180005eb0     MSVCRT:pesect.obj
+ 0002:00000eb0       $unwind$__DllMainCRTStartup$filt$0 0000000180005eb0     MSVCRT:pesect.obj
+ 0002:00000eb0       $unwind$_onexit$fin$0      0000000180005eb0     MSVCRT:pesect.obj
+ 0002:00000eb0       $unwind$_IsNonwritableInCurrentImage$filt$0 0000000180005eb0     MSVCRT:pesect.obj
+ 0002:00000eb8       $unwind$_onexit            0000000180005eb8     MSVCRT:atonexit.obj
+ 0002:00000ed8       $unwind$__security_init_cookie 0000000180005ed8     MSVCRT:gs_support.obj
+ 0002:00000ef0       .edata                     0000000180005ef0     tbbmalloc.exp
+ 0002:00000f18       rgpv                       0000000180005f18     tbbmalloc.exp
+ 0002:00000f4c       rgszName                   0000000180005f4c     tbbmalloc.exp
+ 0002:00000f80       rgwOrd                     0000000180005f80     tbbmalloc.exp
+ 0002:00000f9a       szName                     0000000180005f9a     tbbmalloc.exp
+ 0002:00000fa8       $N00001                    0000000180005fa8     tbbmalloc.exp
+ 0002:00000fc7       $N00002                    0000000180005fc7     tbbmalloc.exp
+ 0002:00000fdb       $N00003                    0000000180005fdb     tbbmalloc.exp
+ 0002:00000ff0       $N00004                    0000000180005ff0     tbbmalloc.exp
+ 0002:00001007       $N00005                    0000000180006007     tbbmalloc.exp
+ 0002:0000101d       $N00006                    000000018000601d     tbbmalloc.exp
+ 0002:00001035       $N00007                    0000000180006035     tbbmalloc.exp
+ 0002:0000104e       $N00008                    000000018000604e     tbbmalloc.exp
+ 0002:0000105e       $N00009                    000000018000605e     tbbmalloc.exp
+ 0002:0000106c       $N00010                    000000018000606c     tbbmalloc.exp
+ 0002:0000107c       $N00011                    000000018000607c     tbbmalloc.exp
+ 0002:0000108b       $N00012                    000000018000608b     tbbmalloc.exp
+ 0002:000010a3       $N00013                    00000001800060a3     tbbmalloc.exp
+ 0002:000012dc       .idata$6                   00000001800062dc     kernel32:KERNEL32.dll
+ 0002:00001314       .idata$6                   0000000180006314     MSVCRT:MSVCR120.dll
+ 0003:000000e0       group_list                 00000001800070e0     itt_notify_proxy.obj
+ 0003:00000200       group_alias                0000000180007200     itt_notify_proxy.obj
+ 0003:00000260       func_map                   0000000180007260     itt_notify_proxy.obj
+ 0003:00000770       GS_ExceptionRecord         0000000180007770     MSVCRT:gs_report.obj
+ 0003:00000810       GS_ContextRecord           0000000180007810     MSVCRT:gs_report.obj
+ 0003:00000ce0       DebuggerWasPresent         0000000180007ce0     MSVCRT:gs_report.obj
+ 0003:00000ce4       __proc_attached            0000000180007ce4     MSVCRT:crtdll.obj
+ 0003:00000d00       bootStrapObjectList        0000000180007d00     MemoryAllocator.obj
+ 0003:00000d08       bootStrapBlock             0000000180007d08     MemoryAllocator.obj
+ 0003:00000d10       bootStrapBlockUsed         0000000180007d10     MemoryAllocator.obj
+ 0003:00000d18       ?result@?1??__itt_init_lib@@9@9 0000000180007d18     itt_notify_proxy.obj
+ 0003:00000d1c       ?init@?1??__itt_init_lib@@9@9 0000000180007d1c     itt_notify_proxy.obj
+ 0003:00000d20       globalCachedObjectBinsSpace 0000000180007d20     MemoryAllocator.obj
+ 0003:0000cd20       globalBinSpace             0000000180013d20     MemoryAllocator.obj
+ 0003:0000cf20       error_handler              0000000180013f20     itt_notify_proxy.obj
+ 0003:0000cf28       freeBlockList              0000000180013f28     MemoryAllocator.obj
+ 0003:0000cf38       initAndShutMutex           0000000180013f38     MemoryAllocator.obj
+ 0003:0000cf39       bootStrapLock              0000000180013f39     MemoryAllocator.obj
+ 0003:0000cf40       ThreadIdCount              0000000180013f40     MemoryAllocator.obj
+ 0003:0000cf48       Tid_key                    0000000180013f48     MemoryAllocator.obj
+ 0003:0000cf4c       mallocInitialized          0000000180013f4c     MemoryAllocator.obj
+ 0003:0000cf50       loCacheStat                0000000180013f50     MemoryAllocator.obj
+ 0003:0000cf60       TLS_pointer_key            0000000180013f60     MemoryAllocator.obj
+ 0003:0000cf68       ittnotify_lib              0000000180013f68     itt_notify_proxy.obj
+ 0003:0000cf70       ?env_value@?1??__itt_get_env_var@@9@9 0000000180013f70     itt_notify_proxy.obj
+ 0004:00000000       $pdata$?pop@LifoQueue@internal@rml@@QEAAPEAXXZ 0000000180015000     MemoryAllocator.obj
+ 0004:0000000c       $pdata$0$?pop@LifoQueue@internal@rml@@QEAAPEAXXZ 000000018001500c     MemoryAllocator.obj
+ 0004:00000018       $pdata$1$?pop@LifoQueue@internal@rml@@QEAAPEAXXZ 0000000180015018     MemoryAllocator.obj
+ 0004:00000024       $pdata$?mallocBigBlock@internal@rml@@YAHXZ 0000000180015024     MemoryAllocator.obj
+ 0004:00000030       $pdata$3$?mallocBigBlock@internal@rml@@YAHXZ 0000000180015030     MemoryAllocator.obj
+ 0004:0000003c       $pdata$4$?mallocBigBlock@internal@rml@@YAHXZ 000000018001503c     MemoryAllocator.obj
+ 0004:00000048       $pdata$?bootStrapMalloc@internal@rml@@YAPEAX_K@Z 0000000180015048     MemoryAllocator.obj
+ 0004:00000054       $pdata$?freePublicObject@internal@rml@@YAXPEAUBlock@12@PEAUFreeObject@12@@Z 0000000180015054     MemoryAllocator.obj
+ 0004:00000060       $pdata$?privatizePublicFreeList@internal@rml@@YAXPEAUBlock@12@@Z 0000000180015060     MemoryAllocator.obj
+ 0004:0000006c       $pdata$?getPublicFreeListBlock@internal@rml@@YAPEAUBlock@12@PEAUBin@12@@Z 000000018001506c     MemoryAllocator.obj
+ 0004:00000078       $pdata$?getPartialBlock@internal@rml@@YAPEAUBlock@12@PEAUBin@12@I@Z 0000000180015078     MemoryAllocator.obj
+ 0004:00000084       $pdata$0$?getPartialBlock@internal@rml@@YAPEAUBlock@12@PEAUBin@12@I@Z 0000000180015084     MemoryAllocator.obj
+ 0004:00000090       $pdata$1$?getPartialBlock@internal@rml@@YAPEAUBlock@12@PEAUBin@12@I@Z 0000000180015090     MemoryAllocator.obj
+ 0004:0000009c       $pdata$?returnPartialBlock@internal@rml@@YAXPEAUBin@12@PEAUBlock@12@@Z 000000018001509c     MemoryAllocator.obj
+ 0004:000000a8       $pdata$?initEmptyBlock@internal@rml@@YAXPEAUBlock@12@_K@Z 00000001800150a8     MemoryAllocator.obj
+ 0004:000000b4       $pdata$1$?initEmptyBlock@internal@rml@@YAXPEAUBlock@12@_K@Z 00000001800150b4     MemoryAllocator.obj
+ 0004:000000c0       $pdata$2$?initEmptyBlock@internal@rml@@YAXPEAUBlock@12@_K@Z 00000001800150c0     MemoryAllocator.obj
+ 0004:000000cc       $pdata$?getRawBlock@internal@rml@@YAPEAUBlock@12@XZ 00000001800150cc     MemoryAllocator.obj
+ 0004:000000d8       $pdata$0$?getRawBlock@internal@rml@@YAPEAUBlock@12@XZ 00000001800150d8     MemoryAllocator.obj
+ 0004:000000e4       $pdata$?getEmptyBlock@internal@rml@@YAPEAUBlock@12@_K@Z 00000001800150e4     MemoryAllocator.obj
+ 0004:000000f0       $pdata$?returnEmptyBlock@internal@rml@@YAXPEAUBlock@12@_N@Z 00000001800150f0     MemoryAllocator.obj
+ 0004:000000fc       $pdata$0$?returnEmptyBlock@internal@rml@@YAXPEAUBlock@12@_N@Z 00000001800150fc     MemoryAllocator.obj
+ 0004:00000108       $pdata$1$?returnEmptyBlock@internal@rml@@YAXPEAUBlock@12@_N@Z 0000000180015108     MemoryAllocator.obj
+ 0004:00000114       $pdata$?push@CachedObjectsList@internal@rml@@QEAAXPEAX_N_K@Z 0000000180015114     MemoryAllocator.obj
+ 0004:00000120       $pdata$0$?push@CachedObjectsList@internal@rml@@QEAAXPEAX_N_K@Z 0000000180015120     MemoryAllocator.obj
+ 0004:0000012c       $pdata$1$?push@CachedObjectsList@internal@rml@@QEAAXPEAX_N_K@Z 000000018001512c     MemoryAllocator.obj
+ 0004:00000138       $pdata$?pop@CachedObjectsList@internal@rml@@QEAAPEAUCachedObject@23@_K@Z 0000000180015138     MemoryAllocator.obj
+ 0004:00000144       $pdata$0$?pop@CachedObjectsList@internal@rml@@QEAAPEAUCachedObject@23@_K@Z 0000000180015144     MemoryAllocator.obj
+ 0004:00000150       $pdata$1$?pop@CachedObjectsList@internal@rml@@QEAAPEAUCachedObject@23@_K@Z 0000000180015150     MemoryAllocator.obj
+ 0004:0000015c       $pdata$?cleanupCacheIfNeed@internal@rml@@YA_KXZ 000000018001515c     MemoryAllocator.obj
+ 0004:00000168       $pdata$4$?cleanupCacheIfNeed@internal@rml@@YA_KXZ 0000000180015168     MemoryAllocator.obj
+ 0004:00000174       $pdata$5$?cleanupCacheIfNeed@internal@rml@@YA_KXZ 0000000180015174     MemoryAllocator.obj
+ 0004:00000180       $pdata$?mallocLargeObject@internal@rml@@YAPEAX_K0_N@Z 0000000180015180     MemoryAllocator.obj
+ 0004:0000018c       $pdata$?freeLargeObject@internal@rml@@YAXPEAX@Z 000000018001518c     MemoryAllocator.obj
+ 0004:00000198       $pdata$?moveBlockToBinFront@internal@rml@@YAXPEAUBlock@12@@Z 0000000180015198     MemoryAllocator.obj
+ 0004:000001a4       $pdata$?processLessUsedBlock@internal@rml@@YAXPEAUBlock@12@@Z 00000001800151a4     MemoryAllocator.obj
+ 0004:000001b0       $pdata$?allocateAligned@internal@rml@@YAPEAX_K0@Z 00000001800151b0     MemoryAllocator.obj
+ 0004:000001bc       $pdata$0$?allocateAligned@internal@rml@@YAPEAX_K0@Z 00000001800151bc     MemoryAllocator.obj
+ 0004:000001c8       $pdata$1$?allocateAligned@internal@rml@@YAPEAX_K0@Z 00000001800151c8     MemoryAllocator.obj
+ 0004:000001d4       $pdata$?reallocAligned@internal@rml@@YAPEAXPEAX_K1@Z 00000001800151d4     MemoryAllocator.obj
+ 0004:000001e0       $pdata$__TBB_mallocThreadShutdownNotification 00000001800151e0     MemoryAllocator.obj
+ 0004:000001ec       $pdata$0$__TBB_mallocThreadShutdownNotification 00000001800151ec     MemoryAllocator.obj
+ 0004:000001f8       $pdata$3$__TBB_mallocThreadShutdownNotification 00000001800151f8     MemoryAllocator.obj
+ 0004:00000204       $pdata$4$__TBB_mallocThreadShutdownNotification 0000000180015204     MemoryAllocator.obj
+ 0004:00000210       $pdata$5$__TBB_mallocThreadShutdownNotification 0000000180015210     MemoryAllocator.obj
+ 0004:0000021c       $pdata$?safer_dereference@@YA_KPEA_K@Z 000000018001521c     MemoryAllocator.obj
+ 0004:00000228       $pdata$scalable_malloc     0000000180015228     MemoryAllocator.obj
+ 0004:00000234       $pdata$scalable_free       0000000180015234     MemoryAllocator.obj
+ 0004:00000240       $pdata$0$scalable_free     0000000180015240     MemoryAllocator.obj
+ 0004:0000024c       $pdata$1$scalable_free     000000018001524c     MemoryAllocator.obj
+ 0004:00000258       $pdata$2$scalable_free     0000000180015258     MemoryAllocator.obj
+ 0004:00000264       $pdata$4$scalable_free     0000000180015264     MemoryAllocator.obj
+ 0004:00000270       $pdata$6$scalable_free     0000000180015270     MemoryAllocator.obj
+ 0004:0000027c       $pdata$7$scalable_free     000000018001527c     MemoryAllocator.obj
+ 0004:00000288       $pdata$safer_scalable_free 0000000180015288     MemoryAllocator.obj
+ 0004:00000294       $pdata$scalable_realloc    0000000180015294     MemoryAllocator.obj
+ 0004:000002a0       $pdata$1$scalable_realloc  00000001800152a0     MemoryAllocator.obj
+ 0004:000002ac       $pdata$2$scalable_realloc  00000001800152ac     MemoryAllocator.obj
+ 0004:000002b8       $pdata$safer_scalable_realloc 00000001800152b8     MemoryAllocator.obj
+ 0004:000002c4       $pdata$1$safer_scalable_realloc 00000001800152c4     MemoryAllocator.obj
+ 0004:000002d0       $pdata$3$safer_scalable_realloc 00000001800152d0     MemoryAllocator.obj
+ 0004:000002dc       $pdata$scalable_calloc     00000001800152dc     MemoryAllocator.obj
+ 0004:000002e8       $pdata$scalable_posix_memalign 00000001800152e8     MemoryAllocator.obj
+ 0004:000002f4       $pdata$scalable_aligned_malloc 00000001800152f4     MemoryAllocator.obj
+ 0004:00000300       $pdata$0$scalable_aligned_malloc 0000000180015300     MemoryAllocator.obj
+ 0004:0000030c       $pdata$1$scalable_aligned_malloc 000000018001530c     MemoryAllocator.obj
+ 0004:00000318       $pdata$scalable_aligned_realloc 0000000180015318     MemoryAllocator.obj
+ 0004:00000324       $pdata$0$scalable_aligned_realloc 0000000180015324     MemoryAllocator.obj
+ 0004:00000330       $pdata$1$scalable_aligned_realloc 0000000180015330     MemoryAllocator.obj
+ 0004:0000033c       $pdata$safer_scalable_aligned_realloc 000000018001533c     MemoryAllocator.obj
+ 0004:00000348       $pdata$0$safer_scalable_aligned_realloc 0000000180015348     MemoryAllocator.obj
+ 0004:00000354       $pdata$1$safer_scalable_aligned_realloc 0000000180015354     MemoryAllocator.obj
+ 0004:00000360       $pdata$scalable_msize      0000000180015360     MemoryAllocator.obj
+ 0004:0000036c       $pdata$safer_scalable_msize 000000018001536c     MemoryAllocator.obj
+ 0004:00000378       $pdata$DllMain             0000000180015378     tbbmalloc.obj
+ 0004:00000384       $pdata$__itt_get_lib_name  0000000180015384     itt_notify_proxy.obj
+ 0004:00000390       $pdata$__itt_get_groups    0000000180015390     itt_notify_proxy.obj
+ 0004:0000039c       $pdata$2$__itt_get_groups  000000018001539c     itt_notify_proxy.obj
+ 0004:000003a8       $pdata$3$__itt_get_groups  00000001800153a8     itt_notify_proxy.obj
+ 0004:000003b4       $pdata$4$__itt_get_groups  00000001800153b4     itt_notify_proxy.obj
+ 0004:000003c0       $pdata$6$__itt_get_groups  00000001800153c0     itt_notify_proxy.obj
+ 0004:000003cc       $pdata$7$__itt_get_groups  00000001800153cc     itt_notify_proxy.obj
+ 0004:000003d8       $pdata$__itt_init_lib      00000001800153d8     itt_notify_proxy.obj
+ 0004:000003e4       $pdata$2$__itt_init_lib    00000001800153e4     itt_notify_proxy.obj
+ 0004:000003f0       $pdata$4$__itt_init_lib    00000001800153f0     itt_notify_proxy.obj
+ 0004:000003fc       $pdata$5$__itt_init_lib    00000001800153fc     itt_notify_proxy.obj
+ 0004:00000408       $pdata$6$__itt_init_lib    0000000180015408     itt_notify_proxy.obj
+ 0004:00000420       $pdata$__raise_securityfailure 0000000180015420     MSVCRT:gs_report.obj
+ 0004:0000042c       $pdata$__report_gsfailure  000000018001542c     MSVCRT:gs_report.obj
+ 0004:00000438       $pdata$__report_rangecheckfailure 0000000180015438     MSVCRT:gs_report.obj
+ 0004:00000444       $pdata$__report_securityfailure 0000000180015444     MSVCRT:gs_report.obj
+ 0004:00000450       $pdata$pre_c_init          0000000180015450     MSVCRT:crtdll.obj
+ 0004:0000045c       $pdata$_CRT_INIT           000000018001545c     MSVCRT:crtdll.obj
+ 0004:00000468       $pdata$_DllMainCRTStartup  0000000180015468     MSVCRT:crtdll.obj
+ 0004:00000474       $pdata$__DllMainCRTStartup 0000000180015474     MSVCRT:crtdll.obj
+ 0004:00000480       $pdata$_IsNonwritableInCurrentImage 0000000180015480     MSVCRT:pesect.obj
+ 0004:0000048c       $pdata$__atonexitinit      000000018001548c     MSVCRT:atonexit.obj
+ 0004:00000498       $pdata$_onexit             0000000180015498     MSVCRT:atonexit.obj
+ 0004:000004a4       $pdata$atexit              00000001800154a4     MSVCRT:atonexit.obj
+ 0004:000004b0       $pdata$__security_init_cookie 00000001800154b0     MSVCRT:gs_support.obj
+ 0004:000004bc       $pdata$_RTC_Initialize     00000001800154bc     MSVCRT:initsect.obj
+ 0004:000004c8       $pdata$_RTC_Terminate      00000001800154c8     MSVCRT:initsect.obj
+ 0004:000004d4       $pdata$__GSHandlerCheck    00000001800154d4     MSVCRT:gshandler.obj
+ 0004:000004e0       $pdata$__GSHandlerCheckCommon 00000001800154e0     MSVCRT:gshandler.obj
+ 0004:000004ec       $pdata$?filt$0@?0??safer_dereference@@YA_KPEA_K@Z@4HA 00000001800154ec     MemoryAllocator.obj
+ 0004:000004f8       $pdata$__DllMainCRTStartup$filt$0 00000001800154f8     MSVCRT:crtdll.obj
+ 0004:00000504       $pdata$__DllMainCRTStartup$fin$1 0000000180015504     MSVCRT:crtdll.obj
+ 0004:00000510       $pdata$_IsNonwritableInCurrentImage$filt$0 0000000180015510     MSVCRT:pesect.obj
+ 0004:0000051c       $pdata$_onexit$fin$0       000000018001551c     MSVCRT:atonexit.obj
+ 0005:00000060       $R000000                   0000000180016060     * linker generated manifest res *

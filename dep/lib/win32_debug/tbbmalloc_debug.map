@@ -1,0 +1,865 @@
+ tbbmalloc_debug
+
+ Timestamp is 56dac49b (Sat Mar 05 19:35:55 2016)
+
+ Preferred load address is 10000000
+
+ Start         Length     Name                   Class
+ 0001:00000000 0000000fH .text$di                CODE
+ 0001:00000010 00005f36H .text$mn                CODE
+ 0002:00000000 000000ccH .idata$5                DATA
+ 0002:000000cc 00000004H .CRT$XCA                DATA
+ 0002:000000d0 00000004H .CRT$XCU                DATA
+ 0002:000000d4 00000004H .CRT$XCZ                DATA
+ 0002:000000d8 00000004H .CRT$XIA                DATA
+ 0002:000000dc 00000004H .CRT$XIAA               DATA
+ 0002:000000e0 00000004H .CRT$XIC                DATA
+ 0002:000000e4 00000004H .CRT$XIZ                DATA
+ 0002:000000f0 00001ff8H .rdata                  DATA
+ 0002:000020e8 00000070H .rdata$debug            DATA
+ 0002:00002160 00000004H .rdata$sxdata           DATA
+ 0002:00002164 00000004H .rtc$IAA                DATA
+ 0002:00002168 00000004H .rtc$IZZ                DATA
+ 0002:0000216c 00000004H .rtc$TAA                DATA
+ 0002:00002170 00000004H .rtc$TZZ                DATA
+ 0002:00002178 00000084H .xdata$x                DATA
+ 0002:00002200 000001caH .edata                  DATA
+ 0002:000023cc 00000028H .idata$2                DATA
+ 0002:000023f4 00000014H .idata$3                DATA
+ 0002:00002408 000000ccH .idata$4                DATA
+ 0002:000024d4 00000342H .idata$6                DATA
+ 0003:00000000 000008a4H .data                   DATA
+ 0003:000008a8 000074a0H .bss                    DATA
+ 0004:00000000 00000058H .rsrc$01                DATA
+ 0004:00000060 00000180H .rsrc$02                DATA
+
+  Address         Publics by Value              Rva+Base       Lib:Object
+
+ 0000:00000000       ___guard_fids_table        00000000     <absolute>
+ 0000:00000000       ___guard_fids_count        00000000     <absolute>
+ 0000:00000000       __except_list              00000000     <absolute>
+ 0000:00000000       ___guard_flags             00000000     <absolute>
+ 0000:00000001       ___safe_se_handler_count   00000001     <absolute>
+ 0000:00009876       __fltused                  00009876     <absolute>
+ 0000:00009876       __ldused                   00009876     <absolute>
+ 0000:00000000       ___ImageBase               10000000     <linker-defined>
+ 0001:00000010       ___TBB_mallocThreadShutdownNotification 10001010 f   MemoryAllocator.obj
+ 0001:00000170       ___TBB_mallocProcessShutdownNotification 10001170 f   MemoryAllocator.obj
+ 0001:00000210       _scalable_malloc           10001210 f   MemoryAllocator.obj
+ 0001:00000480       _scalable_calloc           10001480 f   MemoryAllocator.obj
+ 0001:000004c0       _scalable_free             100014c0 f   MemoryAllocator.obj
+ 0001:000006e0       _scalable_realloc          100016e0 f   MemoryAllocator.obj
+ 0001:00000740       _scalable_aligned_malloc   10001740 f   MemoryAllocator.obj
+ 0001:000007a0       _scalable_aligned_realloc  100017a0 f   MemoryAllocator.obj
+ 0001:00000830       _scalable_posix_memalign   10001830 f   MemoryAllocator.obj
+ 0001:00000880       _scalable_msize            10001880 f   MemoryAllocator.obj
+ 0001:00000960       _safer_scalable_free       10001960 f   MemoryAllocator.obj
+ 0001:000009a0       _safer_scalable_realloc    100019a0 f   MemoryAllocator.obj
+ 0001:00000ab0       _safer_scalable_aligned_realloc 10001ab0 f   MemoryAllocator.obj
+ 0001:00000c10       _safer_scalable_msize      10001c10 f   MemoryAllocator.obj
+ 0001:00000da0       ?releaseLastIfOld@CachedObjectsList@internal@rml@@QAEXII@Z 10001da0 f   MemoryAllocator.obj
+ 0001:00000f00       ?MapMemory@internal@rml@@YAPAXI@Z 10001f00 f   MemoryAllocator.obj
+ 0001:00000f20       ?UnmapMemory@internal@rml@@YAHPAXI@Z 10001f20 f   MemoryAllocator.obj
+ 0001:00003200       _scalable_aligned_free     10004200 f   MemoryAllocator.obj
+ 0001:00003220       ??$__TBB_machine_store_with_release@EE@@YAXAAEE@Z 10004220 f i MemoryAllocator.obj
+ 0001:00003240       ??0LifoQueue@internal@rml@@QAE@XZ 10004240 f i MemoryAllocator.obj
+ 0001:00003270       ??0RecursiveMallocCallProtector@internal@rml@@QAE@XZ 10004270 f i MemoryAllocator.obj
+ 0001:00003280       ??0atomic_backoff@internal@tbb@@QAE@XZ 10004280 f i MemoryAllocator.obj
+ 0001:000032a0       ??0scoped_lock@MallocMutex@@QAE@AAV1@@Z 100042a0 f i MemoryAllocator.obj
+ 0001:000032d0       ??1RecursiveMallocCallProtector@internal@rml@@QAE@XZ 100042d0 f i MemoryAllocator.obj
+ 0001:000032e0       ??1scoped_lock@MallocMutex@@QAE@XZ 100042e0 f i MemoryAllocator.obj
+ 0001:00003310       ?AtomicCompareExchange@@YAHACHHH@Z 10004310 f i MemoryAllocator.obj
+ 0001:00003330       ?AtomicIncrement@@YAHACH@Z 10004330 f i MemoryAllocator.obj
+ 0001:00003350       ?__TBB_LockByte@@YAIAAE@Z  10004350 f i MemoryAllocator.obj
+ 0001:00003390       ?__TBB_TryLockByte@@YA_NAAE@Z 10004390 f i MemoryAllocator.obj
+ 0001:000033d0       ?do_yield@@YAXXZ           100043d0 f i MemoryAllocator.obj
+ 0001:000033e0       ?isNotForUse@internal@rml@@YA_NPAX@Z 100043e0 f i MemoryAllocator.obj
+ 0001:00003410       ?isSolidPtr@internal@rml@@YA_NPAX@Z 10004410 f i MemoryAllocator.obj
+ 0001:00003440       ?pause@atomic_backoff@internal@tbb@@QAEXXZ 10004440 f i MemoryAllocator.obj
+ 0001:00003480       ?pop@CachedObjectsList@internal@rml@@QAEPAUCachedObject@23@I@Z 10004480 f i MemoryAllocator.obj
+ 0001:00003510       ?pop@LifoQueue@internal@rml@@QAEPAXXZ 10004510 f i MemoryAllocator.obj
+ 0001:00003570       ?push@CachedObjectsList@internal@rml@@QAEXPAX_NI@Z 10004570 f i MemoryAllocator.obj
+ 0001:00003620       ?push@LifoQueue@internal@rml@@QAEXPAPAX@Z 10004620 f i MemoryAllocator.obj
+ 0001:00003660       ?store_with_release@?$__TBB_machine_load_store@E$00@@SAXACEE@Z 10004660 f i MemoryAllocator.obj
+ 0001:00003670       ?itt_set_sync_name_v3@internal@tbb@@YAXPAXPB_W@Z 10004670 f   tbbmalloc.obj
+ 0001:000036a0       ?init_tbbmalloc@internal@rml@@YAXXZ 100046a0 f   tbbmalloc.obj
+ 0001:000036b0       ?InitializeITT@internal@tbb@@YA_NXZ 100046b0 f   tbbmalloc.obj
+ 0001:000036e0       ?itt_store_pointer_with_release_v3@internal@tbb@@YAXPAX0@Z 100046e0 f   tbbmalloc.obj
+ 0001:00003710       ?itt_load_pointer_with_acquire_v3@internal@tbb@@YAPAXPBX@Z 10004710 f   tbbmalloc.obj
+ 0001:00003750       ?itt_load_pointer_v3@internal@tbb@@YAPAXPBX@Z 10004750 f   tbbmalloc.obj
+ 0001:00003770       _ITT_DoOneTimeInitialization 10004770 f   tbbmalloc.obj
+ 0001:00003780       ?MallocInitializeITT@internal@rml@@YAXXZ 10004780 f   tbbmalloc.obj
+ 0001:00003790       _DllMain@12                10004790 f   tbbmalloc.obj
+ 0001:000037c0       ??$__TBB_machine_load_with_acquire@PAX@@YAPAXADSAX@Z 100047c0 f i tbbmalloc.obj
+ 0001:000037e0       ??$__TBB_machine_store_with_release@PAXPAX@@YAXAAPAXPAX@Z 100047e0 f i tbbmalloc.obj
+ 0001:00003800       ?load_with_acquire@?$__TBB_machine_load_store@PAX$03@@SAPAXADSAX@Z 10004800 f i tbbmalloc.obj
+ 0001:00003820       ?store_with_release@?$__TBB_machine_load_store@PAX$03@@SAXACRAXPAX@Z 10004820 f i tbbmalloc.obj
+ 0001:00003830       ?dynamic_link@internal@tbb@@YA_NPBDQBUdynamic_link_descriptor@12@IIPAPAUHINSTANCE__@@@Z 10004830 f   dynamic_link.obj
+ 0001:000038f0       ?dynamic_unlink@internal@tbb@@YAXPAUHINSTANCE__@@@Z 100048f0 f   dynamic_link.obj
+ 0001:00003910       ?dynamic_link@internal@tbb@@YA_NPAXQBUdynamic_link_descriptor@12@II@Z 10004910 f   dynamic_link.obj
+ 0001:00003a20       ___TBB_load_ittnotify      10004a20 f   itt_notify_proxy.obj
+ 0001:00003a30       ___itt_set_error_handler   10004a30 f   itt_notify_proxy.obj
+ 0001:00004900       ?set_assertion_handler@tbb@@YAP6AXPBDH00@ZP6AX0H00@Z@Z 10005900 f   tbb_misc.obj
+ 0001:00004920       ?assertion_failure@tbb@@YAXPBDH00@Z 10005920 f   tbb_misc.obj
+ 0001:00004a00       _TBB_runtime_interface_version 10005a00 f   tbb_misc.obj
+ 0001:00004a10       ?runtime_warning@internal@tbb@@YAXPBDZZ 10005a10 f   tbb_misc.obj
+ 0001:00004ad0       ?GetBoolEnvironmentVariable@internal@tbb@@YA_NPBD@Z 10005ad0 f   tbb_misc.obj
+ 0001:00004b20       ?PrintVersion@internal@tbb@@YAXXZ 10005b20 f   tbb_misc.obj
+ 0001:00004b50       ?PrintExtraVersionInfo@internal@tbb@@YAXPBD0@Z 10005b50 f   tbb_misc.obj
+ 0001:00004b90       ?PrintRMLVersionInfo@internal@tbb@@YAXPAXPBD@Z 10005b90 f   tbb_misc.obj
+ 0001:00004bb0       ___TBB_machine_store8_slow_perf_warning 10005bb0 f   tbb_misc.obj
+ 0001:00004c30       ___TBB_machine_store8_slow 10005c30 f   tbb_misc.obj
+ 0001:00004c90       ??$__TBB_machine_load_with_acquire@H@@YAHADH@Z 10005c90 f i tbb_misc.obj
+ 0001:00004cb0       ??$__TBB_machine_store_with_release@HH@@YAXAAHH@Z 10005cb0 f i tbb_misc.obj
+ 0001:00004cd0       ??$fetch_and_add@$0A@@?$atomic_impl_with_arithmetic@IID@internal@tbb@@QAEII@Z 10005cd0 f i tbb_misc.obj
+ 0001:00004cf0       ??4?$atomic@PAX@tbb@@QAEPAXPAX@Z 10005cf0 f i tbb_misc.obj
+ 0001:00004d10       ??B?$atomic_impl@PAX@internal@tbb@@QDEPAXXZ 10005d10 f i tbb_misc.obj
+ 0001:00004d30       ??E?$atomic_impl_with_arithmetic@IID@internal@tbb@@QAEIH@Z 10005d30 f i tbb_misc.obj
+ 0001:00004d50       ?fetch_and_add@?$atomic_impl_with_arithmetic@IID@internal@tbb@@QAEII@Z 10005d50 f i tbb_misc.obj
+ 0001:00004d70       ?fetch_and_add@?$atomic_traits@$03$0A@@internal@tbb@@SAHPCXH@Z 10005d70 f i tbb_misc.obj
+ 0001:00004d90       ?load_with_acquire@?$__TBB_machine_load_store@H$03@@SAHADH@Z 10005d90 f i tbb_misc.obj
+ 0001:00004db0       ?store_with_release@?$__TBB_machine_load_store@H$03@@SAXACHH@Z 10005db0 f i tbb_misc.obj
+ 0001:00004dc0       ?store_with_release@?$atomic_impl@PAX@internal@tbb@@IAEPAXPAX@Z 10005dc0 f i tbb_misc.obj
+ 0001:00004df0       ___TBB_machine_fetchadd1   10005df0     atomic_support.obj
+ 0001:00004e00       ___TBB_machine_fetchstore1 10005e00     atomic_support.obj
+ 0001:00004e0c       ___TBB_machine_cmpswp1     10005e0c     atomic_support.obj
+ 0001:00004e20       ___TBB_machine_fetchadd2   10005e20     atomic_support.obj
+ 0001:00004e30       ___TBB_machine_fetchstore2 10005e30     atomic_support.obj
+ 0001:00004e40       ___TBB_machine_cmpswp2     10005e40     atomic_support.obj
+ 0001:00004e54       ___TBB_machine_fetchadd4   10005e54     atomic_support.obj
+ 0001:00004e64       ___TBB_machine_fetchstore4 10005e64     atomic_support.obj
+ 0001:00004e70       ___TBB_machine_cmpswp4     10005e70     atomic_support.obj
+ 0001:00004e84       ___TBB_machine_fetchadd8   10005e84     atomic_support.obj
+ 0001:00004ea4       ___TBB_machine_fetchstore8 10005ea4     atomic_support.obj
+ 0001:00004ec0       ___TBB_machine_cmpswp8     10005ec0     atomic_support.obj
+ 0001:00004ee0       ___TBB_machine_load8       10005ee0     atomic_support.obj
+ 0001:00004f14       ___TBB_machine_store8      10005f14     atomic_support.obj
+ 0001:00004f30       ___TBB_machine_trylockbyte 10005f30     lock_byte.obj
+ 0001:00004f4c       _SwitchToThread@0          10005f4c f   kernel32:KERNEL32.dll
+ 0001:00004f52       _TlsAlloc@0                10005f52 f   kernel32:KERNEL32.dll
+ 0001:00004f58       _TlsGetValue@4             10005f58 f   kernel32:KERNEL32.dll
+ 0001:00004f5e       _TlsSetValue@8             10005f5e f   kernel32:KERNEL32.dll
+ 0001:00004f64       _VirtualAlloc@16           10005f64 f   kernel32:KERNEL32.dll
+ 0001:00004f6a       _VirtualFree@12            10005f6a f   kernel32:KERNEL32.dll
+ 0001:00004f70       _SetErrorMode@4            10005f70 f   kernel32:KERNEL32.dll
+ 0001:00004f76       _FreeLibrary@4             10005f76 f   kernel32:KERNEL32.dll
+ 0001:00004f7c       _GetModuleHandleA@4        10005f7c f   kernel32:KERNEL32.dll
+ 0001:00004f82       _GetProcAddress@8          10005f82 f   kernel32:KERNEL32.dll
+ 0001:00004f88       _LoadLibraryA@4            10005f88 f   kernel32:KERNEL32.dll
+ 0001:00004f8e       _GetEnvironmentVariableA@12 10005f8e f   kernel32:KERNEL32.dll
+ 0001:00004f94       __errno                    10005f94 f   MSVCRTD:MSVCR120D.dll
+ 0001:00004f9a       _memcpy                    10005f9a f   MSVCRTD:MSVCR120D.dll
+ 0001:00004fa0       _memset                    10005fa0 f   MSVCRTD:MSVCR120D.dll
+ 0001:00004fa6       _exit                      10005fa6 f   MSVCRTD:MSVCR120D.dll
+ 0001:00004fac       ___iob_func                10005fac f   MSVCRTD:MSVCR120D.dll
+ 0001:00004fb2       _fprintf                   10005fb2 f   MSVCRTD:MSVCR120D.dll
+ 0001:00004fc0       __except_handler4          10005fc0 f   MSVCRTD:chandler4gs.obj
+ 0001:00004ff0       @__security_check_cookie@4 10005ff0 f   MSVCRTD:secchk.obj
+ 0001:00005000       __alloca_probe_16          10006000 f   MSVCRTD:alloca16.obj
+ 0001:00005016       __alloca_probe_8           10006016     MSVCRTD:alloca16.obj
+ 0001:00005030       ___raise_securityfailure   10006030 f   MSVCRTD:gs_report.obj
+ 0001:00005080       ___report_gsfailure        10006080 f   MSVCRTD:gs_report.obj
+ 0001:00005190       ___report_rangecheckfailure 10006190 f   MSVCRTD:gs_report.obj
+ 0001:000051a0       ___report_securityfailure  100061a0 f   MSVCRTD:gs_report.obj
+ 0001:00005280       ___report_securityfailureEx 10006280 f   MSVCRTD:gs_report.obj
+ 0001:000053a6       _getenv                    100063a6 f   MSVCRTD:MSVCR120D.dll
+ 0001:000053ac       _fputs                     100063ac f   MSVCRTD:MSVCR120D.dll
+ 0001:000053b2       _strcmp                    100063b2 f   MSVCRTD:MSVCR120D.dll
+ 0001:000053b8       __CrtDbgReport             100063b8 f   MSVCRTD:MSVCR120D.dll
+ 0001:00005440       _NtCurrentTeb              10006440 f i MSVCRTD:crtdll.obj
+ 0001:00005450       __CRT_INIT@12              10006450 f   MSVCRTD:crtdll.obj
+ 0001:00005730       __DllMainCRTStartup@12     10006730 f   MSVCRTD:crtdll.obj
+ 0001:00005920       __except_handler4_common   10006920 f   MSVCRTD:MSVCR120D.dll
+ 0001:00005930       __alloca_probe             10006930 f   MSVCRTD:chkstk.obj
+ 0001:00005930       __chkstk                   10006930 f   MSVCRTD:chkstk.obj
+ 0001:0000595c       __crt_debugger_hook        1000695c f   MSVCRTD:MSVCR120D.dll
+ 0001:00005962       ___crtUnhandledException   10006962 f   MSVCRTD:MSVCR120D.dll
+ 0001:00005968       ___crtTerminateProcess     10006968 f   MSVCRTD:MSVCR120D.dll
+ 0001:0000596e       __vsnprintf                1000696e f   MSVCRTD:MSVCR120D.dll
+ 0001:00005974       ___CppXcptFilter           10006974 f   MSVCRTD:MSVCR120D.dll
+ 0001:0000597a       __amsg_exit                1000697a f   MSVCRTD:MSVCR120D.dll
+ 0001:00005980       __malloc_dbg               10006980 f   MSVCRTD:MSVCR120D.dll
+ 0001:00005986       __free_dbg                 10006986 f   MSVCRTD:MSVCR120D.dll
+ 0001:0000598c       __CrtSetCheckCount         1000698c f   MSVCRTD:MSVCR120D.dll
+ 0001:000059a0       __FindPESection            100069a0 f   MSVCRTD:pesect.obj
+ 0001:00005a20       __IsNonwritableInCurrentImage 10006a20 f   MSVCRTD:pesect.obj
+ 0001:00005b50       __ValidateImageBase        10006b50 f   MSVCRTD:pesect.obj
+ 0001:00005bb0       ___atonexitinit            10006bb0 f   MSVCRTD:atonexit.obj
+ 0001:00005c60       __onexit                   10006c60 f   MSVCRTD:atonexit.obj
+ 0001:00005d60       _atexit                    10006d60 f   MSVCRTD:atonexit.obj
+ 0001:00005d90       ___security_init_cookie    10006d90 f   MSVCRTD:gs_support.obj
+ 0001:00005e70       __RTC_Initialize           10006e70 f   MSVCRTD:initsect.obj
+ 0001:00005ea0       __RTC_Terminate            10006ea0 f   MSVCRTD:initsect.obj
+ 0001:00005ec6       __initterm                 10006ec6 f   MSVCRTD:MSVCR120D.dll
+ 0001:00005ecc       __initterm_e               10006ecc f   MSVCRTD:MSVCR120D.dll
+ 0001:00005ee0       ___clean_type_info_names   10006ee0 f   MSVCRTD:tncleanup.obj
+ 0001:00005ef2       __lock                     10006ef2 f   MSVCRTD:MSVCR120D.dll
+ 0001:00005ef8       __unlock                   10006ef8 f   MSVCRTD:MSVCR120D.dll
+ 0001:00005efe       __CrtDbgReportW            10006efe f   MSVCRTD:MSVCR120D.dll
+ 0001:00005f04       __calloc_dbg               10006f04 f   MSVCRTD:MSVCR120D.dll
+ 0001:00005f0a       ___dllonexit               10006f0a f   MSVCRTD:MSVCR120D.dll
+ 0001:00005f10       ___clean_type_info_names_internal 10006f10 f   MSVCRTD:MSVCR120D.dll
+ 0001:00005f16       _IsDebuggerPresent@0       10006f16 f   kernel32:KERNEL32.dll
+ 0001:00005f1c       _IsProcessorFeaturePresent@4 10006f1c f   kernel32:KERNEL32.dll
+ 0001:00005f22       _EncodePointer@4           10006f22 f   kernel32:KERNEL32.dll
+ 0001:00005f28       _DecodePointer@4           10006f28 f   kernel32:KERNEL32.dll
+ 0001:00005f2e       _QueryPerformanceCounter@4 10006f2e f   kernel32:KERNEL32.dll
+ 0001:00005f34       _GetCurrentProcessId@0     10006f34 f   kernel32:KERNEL32.dll
+ 0001:00005f3a       _GetCurrentThreadId@0      10006f3a f   kernel32:KERNEL32.dll
+ 0001:00005f40       _GetSystemTimeAsFileTime@4 10006f40 f   kernel32:KERNEL32.dll
+ 0002:00000000       __imp__SwitchToThread@0    10007000     kernel32:KERNEL32.dll
+ 0002:00000004       __imp__TlsAlloc@0          10007004     kernel32:KERNEL32.dll
+ 0002:00000008       __imp__TlsGetValue@4       10007008     kernel32:KERNEL32.dll
+ 0002:0000000c       __imp__TlsSetValue@8       1000700c     kernel32:KERNEL32.dll
+ 0002:00000010       __imp__VirtualAlloc@16     10007010     kernel32:KERNEL32.dll
+ 0002:00000014       __imp__VirtualFree@12      10007014     kernel32:KERNEL32.dll
+ 0002:00000018       __imp__SetErrorMode@4      10007018     kernel32:KERNEL32.dll
+ 0002:0000001c       __imp__FreeLibrary@4       1000701c     kernel32:KERNEL32.dll
+ 0002:00000020       __imp__GetModuleHandleA@4  10007020     kernel32:KERNEL32.dll
+ 0002:00000024       __imp__GetProcAddress@8    10007024     kernel32:KERNEL32.dll
+ 0002:00000028       __imp__LoadLibraryA@4      10007028     kernel32:KERNEL32.dll
+ 0002:0000002c       __imp__GetEnvironmentVariableA@12 1000702c     kernel32:KERNEL32.dll
+ 0002:00000030       __imp__GetCurrentThreadId@0 10007030     kernel32:KERNEL32.dll
+ 0002:00000034       __imp__GetCurrentProcessId@0 10007034     kernel32:KERNEL32.dll
+ 0002:00000038       __imp__QueryPerformanceCounter@4 10007038     kernel32:KERNEL32.dll
+ 0002:0000003c       __imp__DecodePointer@4     1000703c     kernel32:KERNEL32.dll
+ 0002:00000040       __imp__EncodePointer@4     10007040     kernel32:KERNEL32.dll
+ 0002:00000044       __imp__IsProcessorFeaturePresent@4 10007044     kernel32:KERNEL32.dll
+ 0002:00000048       __imp__IsDebuggerPresent@0 10007048     kernel32:KERNEL32.dll
+ 0002:0000004c       __imp__GetSystemTimeAsFileTime@4 1000704c     kernel32:KERNEL32.dll
+ 0002:00000050       \177KERNEL32_NULL_THUNK_DATA 10007050     kernel32:KERNEL32.dll
+ 0002:00000054       __imp__strcmp              10007054     MSVCRTD:MSVCR120D.dll
+ 0002:00000058       __imp___CrtDbgReport       10007058     MSVCRTD:MSVCR120D.dll
+ 0002:0000005c       __imp___except_handler4_common 1000705c     MSVCRTD:MSVCR120D.dll
+ 0002:00000060       __imp___crt_debugger_hook  10007060     MSVCRTD:MSVCR120D.dll
+ 0002:00000064       __imp__fputs               10007064     MSVCRTD:MSVCR120D.dll
+ 0002:00000068       __imp____crtTerminateProcess 10007068     MSVCRTD:MSVCR120D.dll
+ 0002:0000006c       __imp___vsnprintf          1000706c     MSVCRTD:MSVCR120D.dll
+ 0002:0000006c       __imp__vsnprintf           1000706c     MSVCRTD:MSVCR120D.dll
+ 0002:00000070       __imp____CppXcptFilter     10007070     MSVCRTD:MSVCR120D.dll
+ 0002:00000074       __imp___amsg_exit          10007074     MSVCRTD:MSVCR120D.dll
+ 0002:00000078       __imp___malloc_dbg         10007078     MSVCRTD:MSVCR120D.dll
+ 0002:0000007c       __imp___free_dbg           1000707c     MSVCRTD:MSVCR120D.dll
+ 0002:00000080       __imp___CrtSetCheckCount   10007080     MSVCRTD:MSVCR120D.dll
+ 0002:00000084       __imp___initterm           10007084     MSVCRTD:MSVCR120D.dll
+ 0002:00000088       __imp___initterm_e         10007088     MSVCRTD:MSVCR120D.dll
+ 0002:0000008c       __imp___lock               1000708c     MSVCRTD:MSVCR120D.dll
+ 0002:00000090       __imp___unlock             10007090     MSVCRTD:MSVCR120D.dll
+ 0002:00000094       __imp___CrtDbgReportW      10007094     MSVCRTD:MSVCR120D.dll
+ 0002:00000098       __imp___calloc_dbg         10007098     MSVCRTD:MSVCR120D.dll
+ 0002:0000009c       __imp____dllonexit         1000709c     MSVCRTD:MSVCR120D.dll
+ 0002:000000a0       __imp___onexit             100070a0     MSVCRTD:MSVCR120D.dll
+ 0002:000000a4       __imp____clean_type_info_names_internal 100070a4     MSVCRTD:MSVCR120D.dll
+ 0002:000000a8       __imp__getenv              100070a8     MSVCRTD:MSVCR120D.dll
+ 0002:000000ac       __imp__fprintf             100070ac     MSVCRTD:MSVCR120D.dll
+ 0002:000000b0       __imp____iob_func          100070b0     MSVCRTD:MSVCR120D.dll
+ 0002:000000b4       __imp__exit                100070b4     MSVCRTD:MSVCR120D.dll
+ 0002:000000b8       __imp__memset              100070b8     MSVCRTD:MSVCR120D.dll
+ 0002:000000bc       __imp__memcpy              100070bc     MSVCRTD:MSVCR120D.dll
+ 0002:000000c0       __imp___errno              100070c0     MSVCRTD:MSVCR120D.dll
+ 0002:000000c4       __imp____crtUnhandledException 100070c4     MSVCRTD:MSVCR120D.dll
+ 0002:000000c8       \177MSVCR120D_NULL_THUNK_DATA 100070c8     MSVCRTD:MSVCR120D.dll
+ 0002:000000cc       ___xc_a                    100070cc     MSVCRTD:cinitexe.obj
+ 0002:000000d4       ___xc_z                    100070d4     MSVCRTD:cinitexe.obj
+ 0002:000000d8       ___xi_a                    100070d8     MSVCRTD:cinitexe.obj
+ 0002:000000e4       ___xi_z                    100070e4     MSVCRTD:cinitexe.obj
+ 0002:00001bbc       ??_C@_0M@NCPMIDHC@0?5?$DN?$DN?5oldest?$AA@ 10008bbc     MemoryAllocator.obj
+ 0002:00001bc8       ??_C@_0DA@DBFFKLMN@?4?4?2?4?4?2dep?2tbb?2src?2tbbmalloc?2Memo@ 10008bc8     MemoryAllocator.obj
+ 0002:00001bf8       __real@3f800000            10008bf8     MemoryAllocator.obj
+ 0002:00001bfc       __real@467e0000            10008bfc     MemoryAllocator.obj
+ 0002:00001c00       __xmm@41f00000000000000000000000000000 10008c00     MemoryAllocator.obj
+ 0002:00001d84       ___itt_state_err           10008d84     itt_notify_proxy.obj
+ 0002:00001d88       ___itt_event_err           10008d88     itt_notify_proxy.obj
+ 0002:00001d8c       ___itt_err                 10008d8c     itt_notify_proxy.obj
+ 0002:00001ef4       __pRawDllMain              10008ef4     MSVCRTD:crtdll.obj
+ 0002:00001ef4       __pDefaultRawDllMain       10008ef4     MSVCRTD:crtdll.obj
+ 0002:00001ef8       ??_C@_0CL@CCAGLLEM@f?3?2dd?2vctools?2crt?2crtw32?2dllstuf@ 10008ef8     MSVCRTD:crtdll.obj
+ 0002:00001f28       ??_C@_1MC@KPMPFEII@?$AA?$CI?$AA_?$AA_?$AAo?$AAn?$AAe?$AAx?$AAi?$AAt?$AAb?$AAe?$AAg?$AAi?$AAn?$AA?5?$AA?$CB?$AA?$DN?$AA?5?$AAN?$AAU?$AAL?$AAL?$AA?5?$AA?$CG?$AA?$CG?$AA?5?$AA_?$AA_?$AAo?$AAn?$AAe?$AAx@ 10008f28     MSVCRTD:atonexit.obj
+ 0002:00001fec       ??_C@_15GANGMFKL@?$AA?$CF?$AAs?$AA?$AA@ 10008fec     MSVCRTD:atonexit.obj
+ 0002:00001ff8       ??_C@_1FK@IGIDCAPD@?$AAf?$AA?3?$AA?2?$AAd?$AAd?$AA?2?$AAv?$AAc?$AAt?$AAo?$AAo?$AAl?$AAs?$AA?2?$AAc?$AAr?$AAt?$AA?2?$AAc?$AAr?$AAt?$AAw?$AA3?$AA2?$AA?2?$AAd?$AAl?$AAl?$AAs?$AAt?$AAu?$AAf@ 10008ff8     MSVCRTD:atonexit.obj
+ 0002:00002054       ??_C@_0CN@LMJJPMEG@f?3?2dd?2vctools?2crt?2crtw32?2dllstuf@ 10009054     MSVCRTD:atonexit.obj
+ 0002:00002084       ?ProcessDetach@NativeDll@<CrtImplementationDetails>@@0IB 10009084     MSVCRTD:initsect.obj
+ 0002:00002088       ?ProcessAttach@NativeDll@<CrtImplementationDetails>@@0IB 10009088     MSVCRTD:initsect.obj
+ 0002:0000208c       ?ThreadAttach@NativeDll@<CrtImplementationDetails>@@0IB 1000908c     MSVCRTD:initsect.obj
+ 0002:00002090       ?ThreadDetach@NativeDll@<CrtImplementationDetails>@@0IB 10009090     MSVCRTD:initsect.obj
+ 0002:00002094       ?ProcessVerifier@NativeDll@<CrtImplementationDetails>@@0IB 10009094     MSVCRTD:initsect.obj
+ 0002:00002098       ?value@?$integral_constant@_N$0A@@std@@2_NB 10009098     MSVCRTD:tncleanup.obj
+ 0002:00002099       ?value@?$integral_constant@_N$00@std@@2_NB 10009099     MSVCRTD:tncleanup.obj
+ 0002:000020a0       __load_config_used         100090a0     MSVCRTD:loadcfg.obj
+ 0002:00002160       ___safe_se_handler_table   10009160     <linker-defined>
+ 0002:00002164       ___rtc_iaa                 10009164     MSVCRTD:initsect.obj
+ 0002:00002168       ___rtc_izz                 10009168     MSVCRTD:initsect.obj
+ 0002:0000216c       ___rtc_taa                 1000916c     MSVCRTD:initsect.obj
+ 0002:00002170       ___rtc_tzz                 10009170     MSVCRTD:initsect.obj
+ 0002:000023cc       __IMPORT_DESCRIPTOR_KERNEL32 100093cc     kernel32:KERNEL32.dll
+ 0002:000023e0       __IMPORT_DESCRIPTOR_MSVCR120D 100093e0     MSVCRTD:MSVCR120D.dll
+ 0002:000023f4       __NULL_IMPORT_DESCRIPTOR   100093f4     kernel32:KERNEL32.dll
+ 0003:00000010       ___itt_markA_ptr_          1000a010     itt_notify_proxy.obj
+ 0003:00000014       ___itt_markW_ptr_          1000a014     itt_notify_proxy.obj
+ 0003:00000018       ___itt_mark_globalA_ptr_   1000a018     itt_notify_proxy.obj
+ 0003:0000015c       ___itt_mark_globalW_ptr_   1000a15c     itt_notify_proxy.obj
+ 0003:00000298       ___itt_thread_set_nameA_ptr_ 1000a298     itt_notify_proxy.obj
+ 0003:000003bc       ___itt_thread_set_nameW_ptr_ 1000a3bc     itt_notify_proxy.obj
+ 0003:00000478       ___itt_sync_createA_ptr_   1000a478     itt_notify_proxy.obj
+ 0003:0000047c       ___itt_sync_createW_ptr_   1000a47c     itt_notify_proxy.obj
+ 0003:00000480       ___itt_sync_renameA_ptr_   1000a480     itt_notify_proxy.obj
+ 0003:00000484       ___itt_sync_renameW_ptr_   1000a484     itt_notify_proxy.obj
+ 0003:00000488       ___itt_sync_destroy_ptr_   1000a488     itt_notify_proxy.obj
+ 0003:0000048c       ___itt_mark_off_ptr_       1000a48c     itt_notify_proxy.obj
+ 0003:00000490       ___itt_mark_global_off_ptr_ 1000a490     itt_notify_proxy.obj
+ 0003:00000494       ___itt_thread_ignore_ptr_  1000a494     itt_notify_proxy.obj
+ 0003:00000498       ___itt_sync_prepare_ptr_   1000a498     itt_notify_proxy.obj
+ 0003:0000049c       ___itt_sync_cancel_ptr_    1000a49c     itt_notify_proxy.obj
+ 0003:000004a0       ___itt_sync_acquired_ptr_  1000a4a0     itt_notify_proxy.obj
+ 0003:000004a4       ___itt_sync_releasing_ptr_ 1000a4a4     itt_notify_proxy.obj
+ 0003:000004a8       ___itt_sync_released_ptr_  1000a4a8     itt_notify_proxy.obj
+ 0003:000004ac       ___itt_memory_read_ptr_    1000a4ac     itt_notify_proxy.obj
+ 0003:000004b0       ___itt_memory_write_ptr_   1000a4b0     itt_notify_proxy.obj
+ 0003:000004b4       ___itt_memory_update_ptr_  1000a4b4     itt_notify_proxy.obj
+ 0003:000004b8       ___itt_jit_notify_event_ptr_ 1000a4b8     itt_notify_proxy.obj
+ 0003:000004bc       ___itt_mark_createA_ptr_   1000a4bc     itt_notify_proxy.obj
+ 0003:000004c0       ___itt_mark_createW_ptr_   1000a4c0     itt_notify_proxy.obj
+ 0003:000004c4       ___itt_fsync_prepare_ptr_  1000a4c4     itt_notify_proxy.obj
+ 0003:000004c8       ___itt_fsync_cancel_ptr_   1000a4c8     itt_notify_proxy.obj
+ 0003:000004cc       ___itt_fsync_acquired_ptr_ 1000a4cc     itt_notify_proxy.obj
+ 0003:000004d0       ___itt_fsync_releasing_ptr_ 1000a4d0     itt_notify_proxy.obj
+ 0003:000004d4       ___itt_fsync_released_ptr_ 1000a4d4     itt_notify_proxy.obj
+ 0003:000004d8       ___itt_notify_sync_prepare_ptr_ 1000a4d8     itt_notify_proxy.obj
+ 0003:000004dc       ___itt_notify_sync_cancel_ptr_ 1000a4dc     itt_notify_proxy.obj
+ 0003:000004e0       ___itt_notify_sync_acquired_ptr_ 1000a4e0     itt_notify_proxy.obj
+ 0003:000004e4       ___itt_notify_sync_releasing_ptr_ 1000a4e4     itt_notify_proxy.obj
+ 0003:000004e8       ___itt_notify_cpath_target_ptr_ 1000a4e8     itt_notify_proxy.obj
+ 0003:000004ec       ___itt_sync_set_nameA_ptr_ 1000a4ec     itt_notify_proxy.obj
+ 0003:000004f0       ___itt_sync_set_nameW_ptr_ 1000a4f0     itt_notify_proxy.obj
+ 0003:000004f4       ___itt_thr_name_setA_ptr_  1000a4f4     itt_notify_proxy.obj
+ 0003:000004f8       ___itt_thr_name_setW_ptr_  1000a4f8     itt_notify_proxy.obj
+ 0003:000004fc       ___itt_event_createA_ptr_  1000a4fc     itt_notify_proxy.obj
+ 0003:00000500       ___itt_event_createW_ptr_  1000a500     itt_notify_proxy.obj
+ 0003:00000504       ___itt_thr_ignore_ptr_     1000a504     itt_notify_proxy.obj
+ 0003:00000508       ___itt_event_start_ptr_    1000a508     itt_notify_proxy.obj
+ 0003:0000050c       ___itt_event_end_ptr_      1000a50c     itt_notify_proxy.obj
+ 0003:00000510       ___itt_state_get_ptr_      1000a510     itt_notify_proxy.obj
+ 0003:00000514       ___itt_state_set_ptr_      1000a514     itt_notify_proxy.obj
+ 0003:00000518       ___itt_obj_mode_set_ptr_   1000a518     itt_notify_proxy.obj
+ 0003:0000051c       ___itt_thr_mode_set_ptr_   1000a51c     itt_notify_proxy.obj
+ 0003:00000520       ___itt_api_version_ptr_    1000a520     itt_notify_proxy.obj
+ 0003:00000524       ___itt_jit_get_new_method_id_ptr_ 1000a524     itt_notify_proxy.obj
+ 0003:00000604       ___itt_pause_ptr_          1000a604     itt_notify_proxy.obj
+ 0003:00000884       ___itt_resume_ptr_         1000a884     itt_notify_proxy.obj
+ 0003:00000890       ___security_cookie         1000a890     MSVCRTD:gs_cookie.obj
+ 0003:00000894       ___security_cookie_complement 1000a894     MSVCRTD:gs_cookie.obj
+ 0003:000008a0       ___native_dllmain_reason   1000a8a0     MSVCRTD:natstart.obj
+ 0003:00007d2c       ?__type_info_root_node@@3U__type_info_node@@A 10011d2c     MSVCRTD:tncleanup.obj
+ 0003:00007d34       ___native_startup_lock     10011d34     <common>
+ 0003:00007d38       ___native_startup_state    10011d38     <common>
+ 0003:00007d3c       ___onexitend               10011d3c     <common>
+ 0003:00007d40       ___onexitbegin             10011d40     <common>
+ 0003:00007d44       ___dyn_tls_init_callback   10011d44     <common>
+
+ entry point at        0001:00005730
+
+ Static symbols
+
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     MSVCRTD:MSVCR120D.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0000:fffec000       .debug$S                   10000000     kernel32:KERNEL32.dll
+ 0001:00000000       ??__EfreeBlockList@internal@rml@@YAXXZ 10001000 f   MemoryAllocator.obj
+ 0001:00000180       ?__TBB_machine_cmpswp1@@YADPCXDD@Z 10001180 f   MemoryAllocator.obj
+ 0001:000001b0       ?__TBB_machine_cmpswp4@@YAHPCXHH@Z 100011b0 f   MemoryAllocator.obj
+ 0001:000001e0       ?__TBB_machine_fetchadd4@@YAHPCXH@Z 100011e0 f   MemoryAllocator.obj
+ 0001:00000200       ?__TBB_machine_pause@@YAXH@Z 10001200 f   MemoryAllocator.obj
+ 0001:00000c60       ?isPowerOfTwo@@YA_NI@Z     10001c60 f   MemoryAllocator.obj
+ 0001:00000c90       ?isPowerOfTwoMultiple@@YA_NII@Z 10001c90 f   MemoryAllocator.obj
+ 0001:00000cf0       ?getThreadId@internal@rml@@YAHXZ 10001cf0 f   MemoryAllocator.obj
+ 0001:00000d50       ?getThreadMallocTLS@internal@rml@@YAPAXXZ 10001d50 f   MemoryAllocator.obj
+ 0001:00000d70       ?setThreadMallocTLS@internal@rml@@YAXPAX@Z 10001d70 f   MemoryAllocator.obj
+ 0001:00000f60       ?getRawMemory@internal@rml@@YAPAXI_N@Z 10001f60 f   MemoryAllocator.obj
+ 0001:00000f80       ?freeRawMemory@internal@rml@@YAXPAXI_N@Z 10001f80 f   MemoryAllocator.obj
+ 0001:00000fa0       ?highestBitPos@internal@rml@@YAII@Z 10001fa0 f   MemoryAllocator.obj
+ 0001:00000fc0       ?getIndex@internal@rml@@YAII@Z 10001fc0 f   MemoryAllocator.obj
+ 0001:00000fe0       ??$getIndexOrObjectSize@$00@internal@rml@@YAII@Z 10001fe0 f   MemoryAllocator.obj
+ 0001:00001170       ?getObjectSize@internal@rml@@YAII@Z 10002170 f   MemoryAllocator.obj
+ 0001:00001190       ??$getIndexOrObjectSize@$0A@@internal@rml@@YAII@Z 10002190 f   MemoryAllocator.obj
+ 0001:00001310       ?alignBigBlock@internal@rml@@YAPAXPAX@Z 10002310 f   MemoryAllocator.obj
+ 0001:00001330       ??$alignUp@PAX@@YAPAXPAXI@Z 10002330 f   MemoryAllocator.obj
+ 0001:00001350       ?mallocBigBlock@internal@rml@@YAHXZ 10002350 f   MemoryAllocator.obj
+ 0001:00001400       ??$alignDown@PAX@@YAPAXPAXI@Z 10002400 f   MemoryAllocator.obj
+ 0001:00001410       ?initEmptyBlock@internal@rml@@YAXPAUBlock@12@I@Z 10002410 f   MemoryAllocator.obj
+ 0001:000014b0       ?getEmptyBlock@internal@rml@@YAPAUBlock@12@I@Z 100024b0 f   MemoryAllocator.obj
+ 0001:000014e0       ?bootStrapMalloc@internal@rml@@YAPAXI@Z 100024e0 f   MemoryAllocator.obj
+ 0001:00001600       ?bootStrapFree@internal@rml@@YAXPAX@Z 10002600 f   MemoryAllocator.obj
+ 0001:00001660       ?verifyTLSBin@internal@rml@@YAXPAUBin@12@I@Z 10002660 f   MemoryAllocator.obj
+ 0001:00001670       ?pushTLSBin@internal@rml@@YAXPAUBin@12@PAUBlock@12@@Z 10002670 f   MemoryAllocator.obj
+ 0001:000017a0       ?outofTLSBin@internal@rml@@YAXPAUBin@12@PAUBlock@12@@Z 100027a0 f   MemoryAllocator.obj
+ 0001:00001900       ?getAllocationBin@internal@rml@@YAPAUBin@12@I@Z 10002900 f   MemoryAllocator.obj
+ 0001:00001a10       ?emptyEnoughToUse@internal@rml@@YAIPAUBlock@12@@Z 10002a10 f   MemoryAllocator.obj
+ 0001:00001ab0       ?restoreBumpPtr@internal@rml@@YAXPAUBlock@12@@Z 10002ab0 f   MemoryAllocator.obj
+ 0001:00001b30       ?freePublicObject@internal@rml@@YAXPAUBlock@12@PAUFreeObject@12@@Z 10002b30 f   MemoryAllocator.obj
+ 0001:00001c60       ?privatizePublicFreeList@internal@rml@@YAXPAUBlock@12@@Z 10002c60 f   MemoryAllocator.obj
+ 0001:00001dd0       ?getPublicFreeListBlock@internal@rml@@YAPAUBlock@12@PAUBin@12@@Z 10002dd0 f   MemoryAllocator.obj
+ 0001:00001ee0       ?getPartialBlock@internal@rml@@YAPAUBlock@12@PAUBin@12@I@Z 10002ee0 f   MemoryAllocator.obj
+ 0001:00002080       ?returnPartialBlock@internal@rml@@YAXPAUBin@12@PAUBlock@12@@Z 10003080 f   MemoryAllocator.obj
+ 0001:000021c0       ?cleanBlockHeader@internal@rml@@YAXPAUBlock@12@@Z 100031c0 f   MemoryAllocator.obj
+ 0001:00002220       ?getRawBlock@internal@rml@@YAPAUBlock@12@XZ 10003220 f   MemoryAllocator.obj
+ 0001:00002330       ??$isAligned@PAUBlock@internal@rml@@@@YA_NPAUBlock@internal@rml@@I@Z 10003330 f   MemoryAllocator.obj
+ 0001:00002360       ??$isAligned@PAUFreeObject@internal@rml@@@@YA_NPAUFreeObject@internal@rml@@I@Z 10003360 f   MemoryAllocator.obj
+ 0001:00002390       ?returnEmptyBlock@internal@rml@@YAXPAUBlock@12@_N@Z 10003390 f   MemoryAllocator.obj
+ 0001:00002490       ?getActiveBlock@internal@rml@@YAPAUBlock@12@PAUBin@12@@Z 10003490 f   MemoryAllocator.obj
+ 0001:000024c0       ?setActiveBlock@internal@rml@@YAXPAUBin@12@PAUBlock@12@@Z 100034c0 f   MemoryAllocator.obj
+ 0001:00002520       ?setPreviousBlockActive@internal@rml@@YAPAUBlock@12@PAUBin@12@@Z 10003520 f   MemoryAllocator.obj
+ 0001:000025a0       ?initMemoryManager@internal@rml@@YAXXZ 100035a0 f   MemoryAllocator.obj
+ 0001:00002610       ?checkInitialization@internal@rml@@YAXXZ 10003610 f   MemoryAllocator.obj
+ 0001:000026e0       ?isLargeObject@internal@rml@@YAIPAX@Z 100036e0 f   MemoryAllocator.obj
+ 0001:00002700       ??$isAligned@PAX@@YA_NPAXI@Z 10003700 f   MemoryAllocator.obj
+ 0001:00002730       ?cleanupCacheIfNeed@internal@rml@@YAIXZ 10003730 f   MemoryAllocator.obj
+ 0001:000027a0       ?allocateCachedLargeObject@internal@rml@@YAPAUCachedObject@12@I@Z 100037a0 f   MemoryAllocator.obj
+ 0001:00002820       ?mallocLargeObject@internal@rml@@YAPAXII_N@Z 10003820 f   MemoryAllocator.obj
+ 0001:00002960       ??$alignUp@I@@YAIII@Z      10003960 f   MemoryAllocator.obj
+ 0001:00002980       ?freeLargeObjectToCache@internal@rml@@YA_NPAULargeObjectHeader@12@@Z 10003980 f   MemoryAllocator.obj
+ 0001:00002a10       ?freeLargeObject@internal@rml@@YAXPAX@Z 10003a10 f   MemoryAllocator.obj
+ 0001:00002a70       ?allocateFromFreeList@internal@rml@@YAPAUFreeObject@12@PAUBlock@12@@Z 10003a70 f   MemoryAllocator.obj
+ 0001:00002b00       ?allocateFromBumpPtr@internal@rml@@YAPAUFreeObject@12@PAUBlock@12@@Z 10003b00 f   MemoryAllocator.obj
+ 0001:00002b90       ?allocateFromBlock@internal@rml@@YAPAUFreeObject@12@PAUBlock@12@@Z 10003b90 f   MemoryAllocator.obj
+ 0001:00002c50       ?moveBlockToBinFront@internal@rml@@YAXPAUBlock@12@@Z 10003c50 f   MemoryAllocator.obj
+ 0001:00002c90       ?processLessUsedBlock@internal@rml@@YAXPAUBlock@12@@Z 10003c90 f   MemoryAllocator.obj
+ 0001:00002d00       ?allocateAligned@internal@rml@@YAPAXII@Z 10003d00 f   MemoryAllocator.obj
+ 0001:00002e40       ?reallocAligned@internal@rml@@YAPAXPAXII@Z 10003e40 f   MemoryAllocator.obj
+ 0001:00003020       ?isProperlyPlaced@internal@rml@@YA_NPBXPBUBlock@12@@Z 10004020 f   MemoryAllocator.obj
+ 0001:00003060       ?findAllocatedObject@internal@rml@@YAPAUFreeObject@12@PBXPBUBlock@12@@Z 10004060 f   MemoryAllocator.obj
+ 0001:000030d0       ?safer_dereference@@YA_KPA_K@Z 100040d0 f   MemoryAllocator.obj
+ 0001:00003180       ?isRecognized@@YA_NPAX@Z   10004180 f   MemoryAllocator.obj
+ 0001:00003a50       ___itt_init_lib            10004a50 f   itt_notify_proxy.obj
+ 0001:00003ba0       ___itt_pause_init          10004ba0 f   itt_notify_proxy.obj
+ 0001:00003bc0       ___itt_resume_init         10004bc0 f   itt_notify_proxy.obj
+ 0001:00003be0       ___itt_markA_init          10004be0 f   itt_notify_proxy.obj
+ 0001:00003c10       ___itt_markW_init          10004c10 f   itt_notify_proxy.obj
+ 0001:00003c40       ___itt_mark_globalA_init   10004c40 f   itt_notify_proxy.obj
+ 0001:00003c70       ___itt_mark_globalW_init   10004c70 f   itt_notify_proxy.obj
+ 0001:00003ca0       ___itt_thread_set_nameA_init 10004ca0 f   itt_notify_proxy.obj
+ 0001:00003cc0       ___itt_thread_set_nameW_init 10004cc0 f   itt_notify_proxy.obj
+ 0001:00003ce0       ___itt_sync_createA_init   10004ce0 f   itt_notify_proxy.obj
+ 0001:00003d10       ___itt_sync_createW_init   10004d10 f   itt_notify_proxy.obj
+ 0001:00003d40       ___itt_sync_renameA_init   10004d40 f   itt_notify_proxy.obj
+ 0001:00003d70       ___itt_sync_renameW_init   10004d70 f   itt_notify_proxy.obj
+ 0001:00003da0       ___itt_sync_destroy_init   10004da0 f   itt_notify_proxy.obj
+ 0001:00003dc0       ___itt_mark_off_init       10004dc0 f   itt_notify_proxy.obj
+ 0001:00003df0       ___itt_mark_global_off_init 10004df0 f   itt_notify_proxy.obj
+ 0001:00003e20       ___itt_thread_ignore_init  10004e20 f   itt_notify_proxy.obj
+ 0001:00003e40       ___itt_sync_prepare_init   10004e40 f   itt_notify_proxy.obj
+ 0001:00003e60       ___itt_sync_cancel_init    10004e60 f   itt_notify_proxy.obj
+ 0001:00003e80       ___itt_sync_acquired_init  10004e80 f   itt_notify_proxy.obj
+ 0001:00003ea0       ___itt_sync_releasing_init 10004ea0 f   itt_notify_proxy.obj
+ 0001:00003ec0       ___itt_sync_released_init  10004ec0 f   itt_notify_proxy.obj
+ 0001:00003ee0       ___itt_memory_read_init    10004ee0 f   itt_notify_proxy.obj
+ 0001:00003f10       ___itt_memory_write_init   10004f10 f   itt_notify_proxy.obj
+ 0001:00003f40       ___itt_memory_update_init  10004f40 f   itt_notify_proxy.obj
+ 0001:00003f70       ___itt_jit_notify_event_init 10004f70 f   itt_notify_proxy.obj
+ 0001:00003fa0       ___itt_mark_createA_init   10004fa0 f   itt_notify_proxy.obj
+ 0001:00003fd0       ___itt_mark_createW_init   10004fd0 f   itt_notify_proxy.obj
+ 0001:00004000       ___itt_fsync_prepare_init  10005000 f   itt_notify_proxy.obj
+ 0001:00004020       ___itt_fsync_cancel_init   10005020 f   itt_notify_proxy.obj
+ 0001:00004040       ___itt_fsync_acquired_init 10005040 f   itt_notify_proxy.obj
+ 0001:00004060       ___itt_fsync_releasing_init 10005060 f   itt_notify_proxy.obj
+ 0001:00004080       ___itt_fsync_released_init 10005080 f   itt_notify_proxy.obj
+ 0001:000040a0       ___itt_notify_sync_prepare_init 100050a0 f   itt_notify_proxy.obj
+ 0001:000040c0       ___itt_notify_sync_cancel_init 100050c0 f   itt_notify_proxy.obj
+ 0001:000040e0       ___itt_notify_sync_acquired_init 100050e0 f   itt_notify_proxy.obj
+ 0001:00004100       ___itt_notify_sync_releasing_init 10005100 f   itt_notify_proxy.obj
+ 0001:00004120       ___itt_notify_cpath_target_init 10005120 f   itt_notify_proxy.obj
+ 0001:00004140       ___itt_sync_set_nameA_init 10005140 f   itt_notify_proxy.obj
+ 0001:00004170       ___itt_sync_set_nameW_init 10005170 f   itt_notify_proxy.obj
+ 0001:000041a0       ___itt_thr_name_setA_init  100051a0 f   itt_notify_proxy.obj
+ 0001:000041d0       ___itt_thr_name_setW_init  100051d0 f   itt_notify_proxy.obj
+ 0001:00004200       ___itt_event_createA_init  10005200 f   itt_notify_proxy.obj
+ 0001:00004230       ___itt_event_createW_init  10005230 f   itt_notify_proxy.obj
+ 0001:00004260       ___itt_thr_ignore_init     10005260 f   itt_notify_proxy.obj
+ 0001:00004280       ___itt_event_start_init    10005280 f   itt_notify_proxy.obj
+ 0001:000042b0       ___itt_event_end_init      100052b0 f   itt_notify_proxy.obj
+ 0001:000042e0       ___itt_state_get_init      100052e0 f   itt_notify_proxy.obj
+ 0001:00004300       ___itt_state_set_init      10005300 f   itt_notify_proxy.obj
+ 0001:00004330       ___itt_obj_mode_set_init   10005330 f   itt_notify_proxy.obj
+ 0001:00004360       ___itt_thr_mode_set_init   10005360 f   itt_notify_proxy.obj
+ 0001:00004390       ___itt_api_version_init    10005390 f   itt_notify_proxy.obj
+ 0001:000043b0       ___itt_jit_get_new_method_id_init 100053b0 f   itt_notify_proxy.obj
+ 0001:000043d0       ___itt_fstrcmp             100053d0 f   itt_notify_proxy.obj
+ 0001:00004480       ___itt_fsplit              10005480 f   itt_notify_proxy.obj
+ 0001:00004630       ___itt_fstrcpyn            10005630 f   itt_notify_proxy.obj
+ 0001:00004680       ___itt_report_error        10005680 f   itt_notify_proxy.obj
+ 0001:000046a0       ___itt_get_env_var         100056a0 f   itt_notify_proxy.obj
+ 0001:00004730       ___itt_get_lib_name        10005730 f   itt_notify_proxy.obj
+ 0001:00004760       ___itt_get_groups          10005760 f   itt_notify_proxy.obj
+ 0001:00004aa0       ?__TBB_machine_fetchadd4@@YAHPCXH@Z 10005aa0 f   tbb_misc.obj
+ 0001:00004ac0       ?__TBB_machine_pause@@YAXH@Z 10005ac0 f   tbb_misc.obj
+ 0001:00004df0       $$000000                   10005df0     atomic_support.obj
+ 0001:00004f30       $$000000                   10005f30     lock_byte.obj
+ 0001:00005000       $$000000                   10006000     MSVCRTD:alloca16.obj
+ 0001:000053c0       _pre_c_init                100063c0 f   MSVCRTD:crtdll.obj
+ 0001:00005760       ___DllMainCRTStartup       10006760 f   MSVCRTD:crtdll.obj
+ 0001:00005930       $$000000                   10006930     MSVCRTD:chkstk.obj
+ 0002:000000d0       _freeBlockList$initializer$ 100070d0     MemoryAllocator.obj
+ 0002:000000dc       _pcinit                    100070dc     MSVCRTD:crtdll.obj
+ 0002:000000e0       _pinit                     100070e0     MSVCRTD:atonexit.obj
+ 0002:00000128       $SG62464                   10007128     MemoryAllocator.obj
+ 0002:00000158       $SG62467                   10007158     MemoryAllocator.obj
+ 0002:0000016c       $SG62468                   1000716c     MemoryAllocator.obj
+ 0002:0000019c       $SG62470                   1000719c     MemoryAllocator.obj
+ 0002:000001b4       $SG62471                   100071b4     MemoryAllocator.obj
+ 0002:000001e4       $SG62481                   100071e4     MemoryAllocator.obj
+ 0002:000001e8       $SG62482                   100071e8     MemoryAllocator.obj
+ 0002:00000218       $SG62488                   10007218     MemoryAllocator.obj
+ 0002:0000021c       $SG62489                   1000721c     MemoryAllocator.obj
+ 0002:0000024c       $SG62491                   1000724c     MemoryAllocator.obj
+ 0002:0000026c       $SG62492                   1000726c     MemoryAllocator.obj
+ 0002:0000029c       $SG62497                   1000729c     MemoryAllocator.obj
+ 0002:000002b4       $SG62498                   100072b4     MemoryAllocator.obj
+ 0002:000002e4       $SG62502                   100072e4     MemoryAllocator.obj
+ 0002:000002f8       $SG62503                   100072f8     MemoryAllocator.obj
+ 0002:00000328       $SG62513                   10007328     MemoryAllocator.obj
+ 0002:00000350       $SG62514                   10007350     MemoryAllocator.obj
+ 0002:00000380       $SG62517                   10007380     MemoryAllocator.obj
+ 0002:000003cc       $SG62524                   100073cc     MemoryAllocator.obj
+ 0002:000003e4       $SG62525                   100073e4     MemoryAllocator.obj
+ 0002:00000414       $SG62528                   10007414     MemoryAllocator.obj
+ 0002:0000042c       $SG62529                   1000742c     MemoryAllocator.obj
+ 0002:0000045c       $SG62531                   1000745c     MemoryAllocator.obj
+ 0002:00000474       $SG62532                   10007474     MemoryAllocator.obj
+ 0002:000004a4       $SG62588                   100074a4     MemoryAllocator.obj
+ 0002:000004b0       $SG62589                   100074b0     MemoryAllocator.obj
+ 0002:000004e0       $SG62618                   100074e0     MemoryAllocator.obj
+ 0002:00000500       $SG62619                   10007500     MemoryAllocator.obj
+ 0002:00000530       $SG62657                   10007530     MemoryAllocator.obj
+ 0002:0000054c       $SG62658                   1000754c     MemoryAllocator.obj
+ 0002:0000057c       $SG62666                   1000757c     MemoryAllocator.obj
+ 0002:0000059c       $SG62667                   1000759c     MemoryAllocator.obj
+ 0002:000005cc       $SG62685                   100075cc     MemoryAllocator.obj
+ 0002:000005d4       $SG62686                   100075d4     MemoryAllocator.obj
+ 0002:00000604       $SG62713                   10007604     MemoryAllocator.obj
+ 0002:00000628       $SG62689                   10007628     MemoryAllocator.obj
+ 0002:00000678       $SG62690                   10007678     MemoryAllocator.obj
+ 0002:000006a8       $SG62705                   100076a8     MemoryAllocator.obj
+ 0002:000006f8       $SG62706                   100076f8     MemoryAllocator.obj
+ 0002:00000728       $SG62714                   10007728     MemoryAllocator.obj
+ 0002:00000758       $SG62717                   10007758     MemoryAllocator.obj
+ 0002:00000770       $SG62718                   10007770     MemoryAllocator.obj
+ 0002:000007a0       $SG62721                   100077a0     MemoryAllocator.obj
+ 0002:000007b8       $SG62722                   100077b8     MemoryAllocator.obj
+ 0002:000007e8       $SG62738                   100077e8     MemoryAllocator.obj
+ 0002:00000800       $SG62739                   10007800     MemoryAllocator.obj
+ 0002:00000830       $SG62751                   10007830     MemoryAllocator.obj
+ 0002:00000850       $SG62752                   10007850     MemoryAllocator.obj
+ 0002:00000880       $SG62766                   10007880     MemoryAllocator.obj
+ 0002:000008a8       $SG62767                   100078a8     MemoryAllocator.obj
+ 0002:000008d8       $SG62777                   100078d8     MemoryAllocator.obj
+ 0002:00000904       $SG62778                   10007904     MemoryAllocator.obj
+ 0002:00000934       $SG62798                   10007934     MemoryAllocator.obj
+ 0002:00000954       $SG62799                   10007954     MemoryAllocator.obj
+ 0002:00000984       $SG4453                    10007984     MemoryAllocator.obj
+ 0002:000009a8       $SG4454                    100079a8     MemoryAllocator.obj
+ 0002:000009c0       $SG4455                    100079c0     MemoryAllocator.obj
+ 0002:00000a04       $SG62865                   10007a04     MemoryAllocator.obj
+ 0002:00000a34       $SG62866                   10007a34     MemoryAllocator.obj
+ 0002:00000a64       $SG62870                   10007a64     MemoryAllocator.obj
+ 0002:00000a7c       $SG62871                   10007a7c     MemoryAllocator.obj
+ 0002:00000aac       $SG62892                   10007aac     MemoryAllocator.obj
+ 0002:00000ad8       $SG62893                   10007ad8     MemoryAllocator.obj
+ 0002:00000b08       $SG62895                   10007b08     MemoryAllocator.obj
+ 0002:00000b20       $SG62896                   10007b20     MemoryAllocator.obj
+ 0002:00000b50       $SG62904                   10007b50     MemoryAllocator.obj
+ 0002:00000b7c       $SG62905                   10007b7c     MemoryAllocator.obj
+ 0002:00000bac       $SG62907                   10007bac     MemoryAllocator.obj
+ 0002:00000bd4       $SG62908                   10007bd4     MemoryAllocator.obj
+ 0002:00000c04       $SG63034                   10007c04     MemoryAllocator.obj
+ 0002:00000c28       $SG62912                   10007c28     MemoryAllocator.obj
+ 0002:00000c6c       $SG62913                   10007c6c     MemoryAllocator.obj
+ 0002:00000c9c       $SG63035                   10007c9c     MemoryAllocator.obj
+ 0002:00000ccc       $SG63069                   10007ccc     MemoryAllocator.obj
+ 0002:00000ce4       $SG63070                   10007ce4     MemoryAllocator.obj
+ 0002:00000d14       $SG63089                   10007d14     MemoryAllocator.obj
+ 0002:00000d18       $SG63075                   10007d18     MemoryAllocator.obj
+ 0002:00000d5c       $SG63076                   10007d5c     MemoryAllocator.obj
+ 0002:00000d8c       $SG63090                   10007d8c     MemoryAllocator.obj
+ 0002:00000dbc       $SG63097                   10007dbc     MemoryAllocator.obj
+ 0002:00000dd4       $SG63098                   10007dd4     MemoryAllocator.obj
+ 0002:00000e04       $SG63117                   10007e04     MemoryAllocator.obj
+ 0002:00000e08       $SG63103                   10007e08     MemoryAllocator.obj
+ 0002:00000e4c       $SG63104                   10007e4c     MemoryAllocator.obj
+ 0002:00000e7c       $SG63118                   10007e7c     MemoryAllocator.obj
+ 0002:00000eac       $SG62115                   10007eac     MemoryAllocator.obj
+ 0002:00000ebc       $SG62116                   10007ebc     MemoryAllocator.obj
+ 0002:00000eec       $SG62134                   10007eec     MemoryAllocator.obj
+ 0002:00000ef0       $SG62135                   10007ef0     MemoryAllocator.obj
+ 0002:00000f20       $SG62150                   10007f20     MemoryAllocator.obj
+ 0002:00000f40       $SG62151                   10007f40     MemoryAllocator.obj
+ 0002:00000f70       $SG62153                   10007f70     MemoryAllocator.obj
+ 0002:00000f88       $SG62154                   10007f88     MemoryAllocator.obj
+ 0002:00000fb8       $SG62156                   10007fb8     MemoryAllocator.obj
+ 0002:00000fcc       $SG62157                   10007fcc     MemoryAllocator.obj
+ 0002:00000ffc       $SG62159                   10007ffc     MemoryAllocator.obj
+ 0002:00001014       $SG62160                   10008014     MemoryAllocator.obj
+ 0002:00001044       $SG62162                   10008044     MemoryAllocator.obj
+ 0002:00001048       $SG62163                   10008048     MemoryAllocator.obj
+ 0002:00001078       $SG62173                   10008078     MemoryAllocator.obj
+ 0002:00001098       $SG62174                   10008098     MemoryAllocator.obj
+ 0002:000010c8       $SG62176                   100080c8     MemoryAllocator.obj
+ 0002:000010e0       $SG62177                   100080e0     MemoryAllocator.obj
+ 0002:00001110       $SG62179                   10008110     MemoryAllocator.obj
+ 0002:00001114       $SG62180                   10008114     MemoryAllocator.obj
+ 0002:00001144       $SG62184                   10008144     MemoryAllocator.obj
+ 0002:00001164       $SG62185                   10008164     MemoryAllocator.obj
+ 0002:00001194       $SG62188                   10008194     MemoryAllocator.obj
+ 0002:000011b4       $SG62189                   100081b4     MemoryAllocator.obj
+ 0002:000011e4       $SG62198                   100081e4     MemoryAllocator.obj
+ 0002:0000120c       $SG62199                   1000820c     MemoryAllocator.obj
+ 0002:0000123c       $SG62207                   1000823c     MemoryAllocator.obj
+ 0002:00001254       $SG62208                   10008254     MemoryAllocator.obj
+ 0002:00001284       $SG62210                   10008284     MemoryAllocator.obj
+ 0002:00001298       $SG62211                   10008298     MemoryAllocator.obj
+ 0002:000012c8       $SG62213                   100082c8     MemoryAllocator.obj
+ 0002:000012cc       $SG62214                   100082cc     MemoryAllocator.obj
+ 0002:000012fc       _emptyEnoughRatio          100082fc     MemoryAllocator.obj
+ 0002:00001300       $SG62227                   10008300     MemoryAllocator.obj
+ 0002:0000131c       $SG62228                   1000831c     MemoryAllocator.obj
+ 0002:0000134c       $SG62230                   1000834c     MemoryAllocator.obj
+ 0002:00001368       $SG62231                   10008368     MemoryAllocator.obj
+ 0002:00001398       $SG62264                   10008398     MemoryAllocator.obj
+ 0002:000013b4       $SG62265                   100083b4     MemoryAllocator.obj
+ 0002:000013e4       $SG62267                   100083e4     MemoryAllocator.obj
+ 0002:000013f4       $SG62268                   100083f4     MemoryAllocator.obj
+ 0002:00001424       $SG62273                   10008424     MemoryAllocator.obj
+ 0002:00001434       $SG62274                   10008434     MemoryAllocator.obj
+ 0002:00001464       $SG62283                   10008464     MemoryAllocator.obj
+ 0002:00001488       $SG62284                   10008488     MemoryAllocator.obj
+ 0002:000014b8       $SG62295                   100084b8     MemoryAllocator.obj
+ 0002:000014e0       $SG62296                   100084e0     MemoryAllocator.obj
+ 0002:00001510       $SG62300                   10008510     MemoryAllocator.obj
+ 0002:00001564       $SG62301                   10008564     MemoryAllocator.obj
+ 0002:00001594       $SG62315                   10008594     MemoryAllocator.obj
+ 0002:00001598       $SG62307                   10008598     MemoryAllocator.obj
+ 0002:000015e8       $SG62308                   100085e8     MemoryAllocator.obj
+ 0002:00001618       $SG62316                   10008618     MemoryAllocator.obj
+ 0002:00001648       $SG62320                   10008648     MemoryAllocator.obj
+ 0002:00001668       $SG62321                   10008668     MemoryAllocator.obj
+ 0002:00001698       $SG62323                   10008698     MemoryAllocator.obj
+ 0002:000016c0       $SG62324                   100086c0     MemoryAllocator.obj
+ 0002:000016f0       $SG62328                   100086f0     MemoryAllocator.obj
+ 0002:00001714       $SG62329                   10008714     MemoryAllocator.obj
+ 0002:00001744       $SG62336                   10008744     MemoryAllocator.obj
+ 0002:00001748       $SG62337                   10008748     MemoryAllocator.obj
+ 0002:00001778       $SG62342                   10008778     MemoryAllocator.obj
+ 0002:000017a4       $SG62343                   100087a4     MemoryAllocator.obj
+ 0002:000017d4       $SG62345                   100087d4     MemoryAllocator.obj
+ 0002:000017f0       $SG62346                   100087f0     MemoryAllocator.obj
+ 0002:00001820       $SG62348                   10008820     MemoryAllocator.obj
+ 0002:00001834       $SG62349                   10008834     MemoryAllocator.obj
+ 0002:00001864       $SG62351                   10008864     MemoryAllocator.obj
+ 0002:0000188c       $SG62352                   1000888c     MemoryAllocator.obj
+ 0002:000018bc       $SG62357                   100088bc     MemoryAllocator.obj
+ 0002:000018e4       $SG62358                   100088e4     MemoryAllocator.obj
+ 0002:00001914       $SG62366                   10008914     MemoryAllocator.obj
+ 0002:00001918       $SG62367                   10008918     MemoryAllocator.obj
+ 0002:00001948       $SG62369                   10008948     MemoryAllocator.obj
+ 0002:00001964       $SG62370                   10008964     MemoryAllocator.obj
+ 0002:00001994       $SG62390                   10008994     MemoryAllocator.obj
+ 0002:000019b8       $SG62391                   100089b8     MemoryAllocator.obj
+ 0002:000019e8       $SG62393                   100089e8     MemoryAllocator.obj
+ 0002:00001a04       $SG62394                   10008a04     MemoryAllocator.obj
+ 0002:00001a34       $SG62428                   10008a34     MemoryAllocator.obj
+ 0002:00001a58       $SG62429                   10008a58     MemoryAllocator.obj
+ 0002:00001a88       $SG62436                   10008a88     MemoryAllocator.obj
+ 0002:00001ab4       $SG62437                   10008ab4     MemoryAllocator.obj
+ 0002:00001ae4       $SG62460                   10008ae4     MemoryAllocator.obj
+ 0002:00001b00       $SG62441                   10008b00     MemoryAllocator.obj
+ 0002:00001b40       $SG62442                   10008b40     MemoryAllocator.obj
+ 0002:00001b70       $SG62461                   10008b70     MemoryAllocator.obj
+ 0002:00001ba0       $SG62463                   10008ba0     MemoryAllocator.obj
+ 0002:00001c10       $SG4453                    10008c10     tbbmalloc.obj
+ 0002:00001c34       $SG4454                    10008c34     tbbmalloc.obj
+ 0002:00001c50       $SG4455                    10008c50     tbbmalloc.obj
+ 0002:00001c98       $SG59707                   10008c98     dynamic_link.obj
+ 0002:00001cd4       $SG59708                   10008cd4     dynamic_link.obj
+ 0002:00001ce0       $SG59709                   10008ce0     dynamic_link.obj
+ 0002:00001d08       $SG59717                   10008d08     dynamic_link.obj
+ 0002:00001d54       $SG59718                   10008d54     dynamic_link.obj
+ 0002:00001d5c       $SG59719                   10008d5c     dynamic_link.obj
+ 0002:00001d90       $SG62617                   10008d90     tbb_misc.obj
+ 0002:00001dc6       $SG5950                    10008dc6     tbb_misc.obj
+ 0002:00001dc8       $SG5946                    10008dc8     tbb_misc.obj
+ 0002:00001df4       $SG5948                    10008df4     tbb_misc.obj
+ 0002:00001e10       $SG5951                    10008e10     tbb_misc.obj
+ 0002:00001e18       $SG5952                    10008e18     tbb_misc.obj
+ 0002:00001e28       $SG5962                    10008e28     tbb_misc.obj
+ 0002:00001e3c       $SG61394                   10008e3c     tbb_misc.obj
+ 0002:00001e40       _VersionString             10008e40     tbb_misc.obj
+ 0002:00001edc       $SG61406                   10008edc     tbb_misc.obj
+ 0002:00001ee0       $SG61407                   10008ee0     tbb_misc.obj
+ 0002:00001eec       _GS_ExceptionPointers      10008eec     MSVCRTD:gs_report.obj
+ 0002:00002178       __sehtable$?safer_dereference@@YA_KPA_K@Z 10009178     MemoryAllocator.obj
+ 0002:00002198       __sehtable$___DllMainCRTStartup 10009198     MSVCRTD:crtdll.obj
+ 0002:000021c0       __sehtable$__IsNonwritableInCurrentImage 100091c0     MSVCRTD:pesect.obj
+ 0002:000021e0       __sehtable$__onexit        100091e0     MSVCRTD:atonexit.obj
+ 0002:00002200       .edata                     10009200     tbbmalloc_debug.exp
+ 0002:00002228       rgpv                       10009228     tbbmalloc_debug.exp
+ 0002:0000225c       rgszName                   1000925c     tbbmalloc_debug.exp
+ 0002:00002290       rgwOrd                     10009290     tbbmalloc_debug.exp
+ 0002:000022aa       szName                     100092aa     tbbmalloc_debug.exp
+ 0002:000022be       $N00001                    100092be     tbbmalloc_debug.exp
+ 0002:000022dd       $N00002                    100092dd     tbbmalloc_debug.exp
+ 0002:000022f1       $N00003                    100092f1     tbbmalloc_debug.exp
+ 0002:00002306       $N00004                    10009306     tbbmalloc_debug.exp
+ 0002:0000231d       $N00005                    1000931d     tbbmalloc_debug.exp
+ 0002:00002333       $N00006                    10009333     tbbmalloc_debug.exp
+ 0002:0000234b       $N00007                    1000934b     tbbmalloc_debug.exp
+ 0002:00002364       $N00008                    10009364     tbbmalloc_debug.exp
+ 0002:00002374       $N00009                    10009374     tbbmalloc_debug.exp
+ 0002:00002382       $N00010                    10009382     tbbmalloc_debug.exp
+ 0002:00002392       $N00011                    10009392     tbbmalloc_debug.exp
+ 0002:000023a1       $N00012                    100093a1     tbbmalloc_debug.exp
+ 0002:000023b9       $N00013                    100093b9     tbbmalloc_debug.exp
+ 0002:0000259a       .idata$6                   1000959a     kernel32:KERNEL32.dll
+ 0002:00002612       .idata$6                   10009612     MSVCRTD:MSVCR120D.dll
+ 0003:00000000       _globalSizeBins            1000a000     MemoryAllocator.obj
+ 0003:00000004       _globalCachedObjectBins    1000a004     MemoryAllocator.obj
+ 0003:00000008       _mmapRequestSize           1000a008     MemoryAllocator.obj
+ 0003:0000001c       $SG75822                   1000a01c     itt_notify_proxy.obj
+ 0003:00000028       $SG75823                   1000a028     itt_notify_proxy.obj
+ 0003:00000038       $SG75824                   1000a038     itt_notify_proxy.obj
+ 0003:00000044       $SG75825                   1000a044     itt_notify_proxy.obj
+ 0003:00000050       $SG75826                   1000a050     itt_notify_proxy.obj
+ 0003:00000064       $SG75827                   1000a064     itt_notify_proxy.obj
+ 0003:00000078       $SG75828                   1000a078     itt_notify_proxy.obj
+ 0003:00000090       $SG75829                   1000a090     itt_notify_proxy.obj
+ 0003:000000a8       $SG75830                   1000a0a8     itt_notify_proxy.obj
+ 0003:000000bc       $SG75831                   1000a0bc     itt_notify_proxy.obj
+ 0003:000000d0       $SG75832                   1000a0d0     itt_notify_proxy.obj
+ 0003:000000e4       $SG75833                   1000a0e4     itt_notify_proxy.obj
+ 0003:000000f8       $SG75834                   1000a0f8     itt_notify_proxy.obj
+ 0003:0000010c       $SG75835                   1000a10c     itt_notify_proxy.obj
+ 0003:0000011c       $SG75836                   1000a11c     itt_notify_proxy.obj
+ 0003:00000134       $SG75837                   1000a134     itt_notify_proxy.obj
+ 0003:00000148       $SG75838                   1000a148     itt_notify_proxy.obj
+ 0003:00000160       $SG75839                   1000a160     itt_notify_proxy.obj
+ 0003:00000174       $SG75840                   1000a174     itt_notify_proxy.obj
+ 0003:00000188       $SG75841                   1000a188     itt_notify_proxy.obj
+ 0003:000001a0       $SG75842                   1000a1a0     itt_notify_proxy.obj
+ 0003:000001b4       $SG75843                   1000a1b4     itt_notify_proxy.obj
+ 0003:000001c8       $SG75844                   1000a1c8     itt_notify_proxy.obj
+ 0003:000001dc       $SG75845                   1000a1dc     itt_notify_proxy.obj
+ 0003:000001f0       $SG75846                   1000a1f0     itt_notify_proxy.obj
+ 0003:00000208       $SG75847                   1000a208     itt_notify_proxy.obj
+ 0003:0000021c       $SG75848                   1000a21c     itt_notify_proxy.obj
+ 0003:00000230       $SG75849                   1000a230     itt_notify_proxy.obj
+ 0003:00000244       $SG75850                   1000a244     itt_notify_proxy.obj
+ 0003:00000258       $SG75851                   1000a258     itt_notify_proxy.obj
+ 0003:0000026c       $SG75852                   1000a26c     itt_notify_proxy.obj
+ 0003:00000284       $SG75853                   1000a284     itt_notify_proxy.obj
+ 0003:0000029c       $SG75854                   1000a29c     itt_notify_proxy.obj
+ 0003:000002b8       $SG75855                   1000a2b8     itt_notify_proxy.obj
+ 0003:000002d4       $SG75856                   1000a2d4     itt_notify_proxy.obj
+ 0003:000002f0       $SG75857                   1000a2f0     itt_notify_proxy.obj
+ 0003:0000030c       $SG75858                   1000a30c     itt_notify_proxy.obj
+ 0003:00000328       $SG75859                   1000a328     itt_notify_proxy.obj
+ 0003:00000340       $SG75860                   1000a340     itt_notify_proxy.obj
+ 0003:00000358       $SG75861                   1000a358     itt_notify_proxy.obj
+ 0003:0000036c       $SG75862                   1000a36c     itt_notify_proxy.obj
+ 0003:00000380       $SG75863                   1000a380     itt_notify_proxy.obj
+ 0003:00000394       $SG75864                   1000a394     itt_notify_proxy.obj
+ 0003:000003a8       $SG75865                   1000a3a8     itt_notify_proxy.obj
+ 0003:000003c0       $SG75866                   1000a3c0     itt_notify_proxy.obj
+ 0003:000003d4       $SG75867                   1000a3d4     itt_notify_proxy.obj
+ 0003:000003e4       $SG75868                   1000a3e4     itt_notify_proxy.obj
+ 0003:000003f4       $SG75869                   1000a3f4     itt_notify_proxy.obj
+ 0003:00000404       $SG75870                   1000a404     itt_notify_proxy.obj
+ 0003:00000418       $SG75871                   1000a418     itt_notify_proxy.obj
+ 0003:0000042c       $SG75872                   1000a42c     itt_notify_proxy.obj
+ 0003:00000440       $SG75873                   1000a440     itt_notify_proxy.obj
+ 0003:0000045c       $SG75878                   1000a45c     itt_notify_proxy.obj
+ 0003:00000474       $SG75886                   1000a474     itt_notify_proxy.obj
+ 0003:00000528       _ittnotify_lib_name        1000a528     itt_notify_proxy.obj
+ 0003:0000052c       $SG75535                   1000a52c     itt_notify_proxy.obj
+ 0003:00000540       $SG75637                   1000a540     itt_notify_proxy.obj
+ 0003:00000558       _group_list                1000a558     itt_notify_proxy.obj
+ 0003:00000598       $SG75644                   1000a598     itt_notify_proxy.obj
+ 0003:000005a0       $SG75645                   1000a5a0     itt_notify_proxy.obj
+ 0003:000005a8       $SG75646                   1000a5a8     itt_notify_proxy.obj
+ 0003:000005b0       $SG75647                   1000a5b0     itt_notify_proxy.obj
+ 0003:000005b8       $SG75648                   1000a5b8     itt_notify_proxy.obj
+ 0003:000005c0       $SG75649                   1000a5c0     itt_notify_proxy.obj
+ 0003:000005c4       $SG75650                   1000a5c4     itt_notify_proxy.obj
+ 0003:000005c8       _group_alias               1000a5c8     itt_notify_proxy.obj
+ 0003:000005e0       $SG75658                   1000a5e0     itt_notify_proxy.obj
+ 0003:000005f4       $SG75659                   1000a5f4     itt_notify_proxy.obj
+ 0003:00000608       _func_map                  1000a608     itt_notify_proxy.obj
+ 0003:000008a8       _globalBinSpace            1000a8a8     MemoryAllocator.obj
+ 0003:000009a8       _globalCachedObjectBinsSpace 1000a9a8     MemoryAllocator.obj
+ 0003:000069a8       _bootStrapBlock            100109a8     MemoryAllocator.obj
+ 0003:000069ac       _bootStrapBlockUsed        100109ac     MemoryAllocator.obj
+ 0003:000069b0       _bootStrapObjectList       100109b0     MemoryAllocator.obj
+ 0003:000069b4       _freeBlockList             100109b4     MemoryAllocator.obj
+ 0003:000069bc       _ThreadIdCount             100109bc     MemoryAllocator.obj
+ 0003:000069c0       _TLS_pointer_key           100109c0     MemoryAllocator.obj
+ 0003:000069c4       _Tid_key                   100109c4     MemoryAllocator.obj
+ 0003:000069c8       _loCacheStat               100109c8     MemoryAllocator.obj
+ 0003:000069d0       _bootStrapLock             100109d0     MemoryAllocator.obj
+ 0003:000069d1       _initAndShutMutex          100109d1     MemoryAllocator.obj
+ 0003:000069d4       _mallocInitialized         100109d4     MemoryAllocator.obj
+ 0003:000069d8       ?init@?1??__itt_init_lib@@9@9 100109d8     itt_notify_proxy.obj
+ 0003:000069dc       ?result@?1??__itt_init_lib@@9@9 100109dc     itt_notify_proxy.obj
+ 0003:000069e0       _error_handler             100109e0     itt_notify_proxy.obj
+ 0003:000069e4       _ittnotify_lib             100109e4     itt_notify_proxy.obj
+ 0003:000069e8       ?env_value@?1??__itt_get_env_var@@9@9 100109e8     itt_notify_proxy.obj
+ 0003:000079e8       _PrintVersionFlag          100119e8     tbb_misc.obj
+ 0003:000079ec       _assertion_handler         100119ec     tbb_misc.obj
+ 0003:000079f0       ?already_failed@?6??assertion_failure@tbb@@YAXPBDH00@Z@4_NA 100119f0     tbb_misc.obj
+ 0003:000079f4       ?cache@?1??__TBB_machine_store8_slow_perf_warning@@9@4PAU?$atomic@PAX@tbb@@A 100119f4     tbb_misc.obj
+ 0003:00007a04       ?k@?1??__TBB_machine_store8_slow_perf_warning@@9@4U?$atomic@I@tbb@@A 10011a04     tbb_misc.obj
+ 0003:00007a08       _GS_ExceptionRecord        10011a08     MSVCRTD:gs_report.obj
+ 0003:00007a58       _GS_ContextRecord          10011a58     MSVCRTD:gs_report.obj
+ 0003:00007d24       _DebuggerWasPresent        10011d24     MSVCRTD:gs_report.obj
+ 0003:00007d28       ___proc_attached           10011d28     MSVCRTD:crtdll.obj
+ 0004:00000060       $R000000                   10012060     * linker generated manifest res *

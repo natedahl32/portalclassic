@@ -141,7 +141,6 @@ bool Pet::LoadPetFromDB(Player* owner, uint32 petentry, uint32 petnumber, bool c
         return false;
     }
 
-
     uint32 summon_spell_id = fields[21].GetUInt32();
     SpellEntry const* spellInfo = sSpellStore.LookupEntry(summon_spell_id);
 
@@ -191,7 +190,7 @@ bool Pet::LoadPetFromDB(Player* owner, uint32 petentry, uint32 petnumber, bool c
     SetUInt32Value(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_NONE);
     SetName(fields[11].GetString());
 
-    SetByteValue(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_UNK3 | UNIT_BYTE2_FLAG_AURAS | UNIT_BYTE2_FLAG_UNK5);
+    SetByteValue(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_SUPPORTABLE | UNIT_BYTE2_FLAG_AURAS);
     SetUInt32Value(UNIT_FIELD_FLAGS, UNIT_FLAG_PVP_ATTACKABLE | UNIT_FLAG_RESTING);
 
     if (getPetType() == HUNTER_PET)
@@ -335,7 +334,13 @@ void Pet::SavePetToDB(PetSaveMode mode)
     {
         // reagents must be returned before save call
         if (mode == PET_SAVE_REAGENTS)
-            mode = PET_SAVE_NOT_IN_SLOT;
+        {
+            // Hunter Pets always save as current if dismissed or unsummoned due to range/etc.
+            if (getPetType() == HUNTER_PET)
+                mode = PET_SAVE_AS_CURRENT;
+            else
+                mode = PET_SAVE_NOT_IN_SLOT;
+        }
         // not save pet as current if another pet temporary unsummoned
         else if (mode == PET_SAVE_AS_CURRENT && pOwner->GetTemporaryUnsummonedPetNumber() &&
                  pOwner->GetTemporaryUnsummonedPetNumber() != m_charmInfo->GetPetNumber())
@@ -1014,7 +1019,7 @@ bool Pet::CreateBaseAtCreature(Creature* creature)
     SetByteValue(UNIT_FIELD_BYTES_0, 3, POWER_FOCUS);
     SetSheath(SHEATH_STATE_MELEE);
 
-    SetByteValue(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_UNK3 | UNIT_BYTE2_FLAG_AURAS | UNIT_BYTE2_FLAG_UNK5);
+    SetByteValue(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_SUPPORTABLE | UNIT_BYTE2_FLAG_AURAS);
     // SetByteFlag(UNIT_FIELD_BYTES_2, 2, UNIT_CAN_BE_RENAMED | UNIT_CAN_BE_ABANDONED); (need to test and check these for vanilla and TBC)
 
     SetUInt32Value(UNIT_FIELD_FLAGS, UNIT_FLAG_PVP_ATTACKABLE | UNIT_FLAG_RENAME);
@@ -1032,13 +1037,13 @@ void Pet::InitStatsForLevel(uint32 petlevel)
 
     SetLevel(petlevel);
 
-    SetAttackTime(BASE_ATTACK, cInfo->MeleeBaseAttackTime);
-    SetAttackTime(OFF_ATTACK, cInfo->MeleeBaseAttackTime);
-    SetAttackTime(RANGED_ATTACK, cInfo->RangedBaseAttackTime);
-
     SetFloatValue(UNIT_MOD_CAST_SPEED, 1.0);
 
     int32 createResistance[MAX_SPELL_SCHOOL] = {0, 0, 0, 0, 0, 0, 0};
+
+    SetAttackTime(BASE_ATTACK, cInfo->MeleeBaseAttackTime);
+    SetAttackTime(OFF_ATTACK, cInfo->MeleeBaseAttackTime);
+    SetAttackTime(RANGED_ATTACK, cInfo->RangedBaseAttackTime);
 
     if (getPetType() == HUNTER_PET)
         SetMeleeDamageSchool(SpellSchools(SPELL_SCHOOL_NORMAL));
@@ -1088,8 +1093,7 @@ void Pet::InitStatsForLevel(uint32 petlevel)
                 SetUInt32Value(UNIT_FIELD_PETNEXTLEVELEXP, 1000);
             }
 
-            PetLevelInfo const* pInfo = sObjectMgr.GetPetLevelInfo(1, petlevel);
-            if (pInfo)
+            if (PetLevelInfo const* pInfo = sObjectMgr.GetPetLevelInfo(1, petlevel))
             {
                 for (int i = STAT_STRENGTH; i < MAX_STATS;++i)
                     SetCreateStat(Stats(i), float(pInfo->stats[i]));
@@ -1129,8 +1133,7 @@ void Pet::InitStatsForLevel(uint32 petlevel)
             SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, (mDmg - mDmg / 5));
             SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, (mDmg + mDmg / 5));
 
-            PetLevelInfo const* pInfo = sObjectMgr.GetPetLevelInfo(cInfo->Entry, petlevel);
-            if (pInfo)
+            if (PetLevelInfo const* pInfo = sObjectMgr.GetPetLevelInfo(cInfo->Entry, petlevel))
             {
                 for (int i = STAT_STRENGTH; i < MAX_STATS;++i)
                     SetCreateStat(Stats(i), float(pInfo->stats[i]));
@@ -1514,7 +1517,7 @@ void Pet::_SaveAuras()
 
         // skip all holders from spells that are passive or channeled
         // do not save single target holders (unless they were cast by the player)
-        if (save && !holder->IsPassive() && !IsChanneledSpell(holder->GetSpellProto()) && (holder->GetCasterGuid() == GetObjectGuid() || holder->GetTrackedAuraType() != TRACK_AURA_TYPE_NOT_TRACKED))
+        if (save && !holder->IsPassive() && !IsChanneledSpell(holder->GetSpellProto()) && (holder->GetCasterGuid() == GetObjectGuid() || holder->GetTrackedAuraType() == TRACK_AURA_TYPE_NOT_TRACKED))
         {
             int32  damage[MAX_EFFECT_INDEX];
             uint32 periodicTime[MAX_EFFECT_INDEX];
@@ -1888,7 +1891,7 @@ bool Pet::Create(uint32 guidlow, CreatureCreatePos& cPos, CreatureInfo const* ci
         return false;
 
     SetSheath(SHEATH_STATE_MELEE);
-    SetByteValue(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_UNK3 | UNIT_BYTE2_FLAG_AURAS | UNIT_BYTE2_FLAG_UNK5);
+    SetByteValue(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_SUPPORTABLE | UNIT_BYTE2_FLAG_AURAS);
 
     if (getPetType() == MINI_PET)                           // always non-attackable
         SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
@@ -1993,4 +1996,24 @@ void Pet::SetModeFlags(PetModeFlags mode)
     data << GetObjectGuid();
     data << uint32(m_petModeFlags);
     ((Player*)owner)->GetSession()->SendPacket(&data);
+}
+
+void Pet::SetStayPosition(bool stay)
+{
+    if (stay)
+    {
+        m_stayPosX = GetPositionX();
+        m_stayPosY = GetPositionY();
+        m_stayPosZ = GetPositionZ();
+        m_stayPosO = GetOrientation();
+    }
+    else
+    {
+        m_stayPosX = 0;
+        m_stayPosY = 0;
+        m_stayPosZ = 0;
+        m_stayPosO = 0;
+    }
+
+    m_stayPosSet = stay;
 }
