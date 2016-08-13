@@ -1197,6 +1197,16 @@ void Aura::HandleAuraDummy(bool apply, bool Real)
 						m_periodicTimer = m_modifier.periodictime;
 					return;
 					}
+					case 25471:
+					{
+						m_isPeriodic = true;
+						m_modifier.periodictime = 2 * IN_MILLISECONDS;
+						m_periodicTimer = m_modifier.periodictime;
+						//if (target->GetTypeId() != TYPEID_PLAYER)
+						//	return;
+						//target->CastSpell(target, 25473, true, nullptr, this);
+						//return;
+					}
 					}
                 break;
             }
@@ -4814,6 +4824,14 @@ void Aura::PeriodicDummyTick()
 						if (Unit* target = GetTarget())
 							target->CastSpell(target, 23365, true, nullptr, this);
 					}
+					return;
+				}
+				case 25471:
+				{
+					if (target->GetTypeId() != TYPEID_PLAYER)
+						return;
+					if (Unit* target = GetTarget())
+						target->CastSpell(target, 25473, true, nullptr, this);
 					return;
 				}
             }
