@@ -353,10 +353,13 @@ void PetAI::UpdateAI(const uint32 diff)
 
                     if (m_creature->GetPositionX() == stayPosX
                         && m_creature->GetPositionY() == stayPosY
+                        && m_creature->GetPositionZ() == stayPosZ)
                     {
+                        float StayPosO = pet->GetStayPosO();
 
                         if (m_creature->hasUnitState(UNIT_STAT_MOVING))
                         {
+                            m_creature->GetMotionMaster()->Clear(false);
                             m_creature->GetMotionMaster()->MoveIdle();
                         }
                         else if (m_creature->GetOrientation() != StayPosO)
