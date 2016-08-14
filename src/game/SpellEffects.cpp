@@ -1612,12 +1612,12 @@ void Spell::EffectApplyAura(SpellEffectIndex eff_idx)
 {
     if (!unitTarget)
         return;
-	if (m_spellInfo->Id == 30918)                           // Improved Sprint
+	/*if (m_spellInfo->Id == 30918)                           // Improved Sprint
 	{
 		// Don't need to apply any actual aura here, just remove snare and root effects from the target!
 		unitTarget->RemoveAurasAtMechanicImmunity(IMMUNE_TO_ROOT_AND_SNARE_MASK, 30918, true);
 		return;
-	}
+	}*/
     // ghost spell check, allow apply any auras at player loading in ghost mode (will be cleanup after load)
     if ((!unitTarget->isAlive() && !(IsDeathOnlySpell(m_spellInfo) || IsDeathPersistentSpell(m_spellInfo))) &&
             (unitTarget->GetTypeId() != TYPEID_PLAYER || !((Player*)unitTarget)->GetSession()->PlayerLoading()))
