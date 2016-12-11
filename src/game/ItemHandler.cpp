@@ -145,10 +145,15 @@ void WorldSession::HandleAutoEquipItemOpcode(WorldPacket& recv_data)
 
     recv_data >> srcbag >> srcslot;
     // DEBUG_LOG("STORAGE: receive srcbag = %u, srcslot = %u", srcbag, srcslot);
+	
 
     Item* pSrcItem  = _player->GetItemByPos(srcbag, srcslot);
-    if (!pSrcItem)
-        return;                                             // only at cheat
+	if (!pSrcItem)
+	{
+		sLog.outError("CMSG_AUTOEQUIP_ITEM Source item not found: receive srcbag = %u, srcslot = %u", srcbag, srcslot);
+		return;                                             // only at cheat
+	}
+        
 
     uint16 dest;
     InventoryResult msg = _player->CanEquipItem(NULL_SLOT, dest, pSrcItem, !pSrcItem->IsBag());
@@ -159,8 +164,11 @@ void WorldSession::HandleAutoEquipItemOpcode(WorldPacket& recv_data)
     }
 
     uint16 src = pSrcItem->GetPos();
-    if (dest == src)                                        // prevent equip in same slot, only at cheat
-        return;
+	if (dest == src)                                        // prevent equip in same slot, only at cheat
+	{
+		sLog.outError("CMSG_AUTOEQUIP_ITEM Trying to equip to same slot: dest = %u, source = %u", dest, src);
+		return;
+	}
 
     Item* pDstItem = _player->GetItemByPos(dest);
     if (!pDstItem)                                          // empty slot, simple case

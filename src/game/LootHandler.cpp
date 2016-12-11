@@ -102,6 +102,8 @@ void WorldSession::HandleLootOpcode(WorldPacket& recv_data)
 
     if (Loot* loot = sLootMgr.GetLoot(_player, lguid))
         loot->ShowContentTo(_player);
+	else
+		sLog.outError("LootMgr::HandleLootOpcode> No loot was found guid that was sent!");
 }
 
 void WorldSession::HandleLootReleaseOpcode(WorldPacket& recv_data)

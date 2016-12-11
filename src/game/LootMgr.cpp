@@ -2609,8 +2609,11 @@ Loot* LootMgr::GetLoot(Player* player, ObjectGuid const& targetGuid)
         if (lguid.IsEmpty())
         {
             lguid = player->GetTargetGuid();
-            if (lguid.IsEmpty())
-                return nullptr;
+			if (lguid.IsEmpty())
+			{
+				sLog.outError("LootMgr::GetLoot> Target Guid was empty, could not find usable guid!");
+				return nullptr;
+			}
         }
     }
     else
@@ -2653,8 +2656,12 @@ Loot* LootMgr::GetLoot(Player* player, ObjectGuid const& targetGuid)
 
             break;
         }
-        default:
-            return nullptr;                                         // unlootable type
+		default:
+		{
+			sLog.outError("LootMgr::GetLoot> Valid lootable gameobject was not found for guid!");
+			return nullptr;                                         // unlootable type
+		}
+            
     }
 
     return loot;
